@@ -51,5 +51,32 @@
     with open(ruta, "wb") as f:
         f.write(sobre_xml_bytes)
     print("El sobre XML se ha descargado correctamente.")
+
+
+----------  # Facturación individual-----------
+    
+    response = client_api.Facturacion.facturacion_individualV2_Dte(solicitud)
+    ruta = "factura.json"  # Ruta donde se guardará la factura
+    with open(ruta, "wb") as f:
+        f.write(response)
+    print("La factura se ha descargado correctamente.")
+
+------  # Facturación individual boletas--------
+    response = client_api.Facturacion.facturacion_individualV2_Boletas(solicitud)
+    ruta = "boleta.json"  # Ruta donde se guardará la factura
+    with open(ruta, "wb") as f:
+        f.write(response)
+    print("La factura se ha descargado correctamente.")
+
+----------      # Facturación individual Exportaciones-----------
+
+    response = client_api.Facturacion.facturacion_individualV2_Exportacion(solicitud)
+    ruta = "exportaciones.json"  # Ruta donde se guardará la factura
+    with open(ruta, "wb") as f:
+        f.write(response)
+
+    print("La factura se ha descargado correctamente.")
+
+
     
     

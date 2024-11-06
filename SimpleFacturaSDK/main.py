@@ -12,65 +12,105 @@ client_api = APIClient(username, password)
 
 # Crear la solicitud
 solicitud = {
-        "Documento": {
-            "Encabezado": {
-                "IdDoc": {
-                    "TipoDTE": 33,
-                    "FchEmis": "2024-09-05",
-                    "FmaPago": 1,
-                    "FchVenc": "2024-09-05"
-                },
-                "Emisor": {
-                    "RUTEmisor": "76269769-6",
-                    "RznSoc": "SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
-                    "GiroEmis": "Desarrollo de software",
-                    "Telefono": [
-                        "912345678"
-                    ],
-                    "CorreoEmisor": "mvega@chilesystems.com",
-                    "Acteco": [
-                        620200
-                    ],
-                    "DirOrigen": "Calle 7 numero 3",
-                    "CmnaOrigen": "Santiago",
-                    "CiudadOrigen": "Santiago"
-                },
-                "Receptor": {
-                    "RUTRecep": "17096073-4",
-                    "RznSocRecep": "Hotel Iquique",
-                    "GiroRecep": "test",
-                    "CorreoRecep": "mvega@chilesystems.com",
-                    "DirRecep": "calle 12",
-                    "CmnaRecep": "Paine",
-                    "CiudadRecep": "Santiago"
-                },
-                "Totales": {
-                    "MntNeto": "832",
-                    "TasaIVA": "19",
-                    "IVA": "158",
-                    "MntTotal": "990"
-                }
+    "Exportaciones": {
+        "Encabezado": {
+            "IdDoc": {
+                "TipoDTE": 110,
+                "FchEmis": "2023-10-17",
+                "FmaPago": 1,
+                "FchVenc": "2023-10-17"
             },
-            "Detalle": [
-                {
-                    "NroLinDet": "1",
-                    "NmbItem": "Alfajor",
-                    "CdgItem": [
+            "Emisor": {
+                "RUTEmisor": "76269769-6",
+                "RznSoc": "Chilesystems",
+                "GiroEmis": "Desarrollo de software",
+                "Telefono": [
+                    "912345678"
+                ],
+                "CorreoEmisor": "mvega@chilesystems.com",
+                "Acteco": [
+                    620200
+                ],
+                "DirOrigen": "Calle 7 numero 3",
+                "CmnaOrigen": "Santiago",
+                "CiudadOrigen": "Santiago"
+            },
+            "Receptor": {
+                "RUTRecep": "55555555-5",
+                "RznSocRecep": "CLIENTE INTERNACIONAL EXP IMP",
+                "Extranjero": {
+                    "NumId": "331-555555",
+                    "Nacionalidad": 331
+                },
+                "GiroRecep": "Giro de Cliente",
+                "CorreoRecep": "amamani@chilesystems.com",
+                "DirRecep": "Dirección de Cliente",
+                "CmnaRecep": "Comuna de Cliente",
+                "CiudadRecep": "Ciudad de Cliente"
+            },
+            "Transporte": {
+                "Aduana": {
+                    "CodModVenta": 1,
+                    "CodClauVenta": 5,
+                    "TotClauVenta": "1984.65",
+                    "CodViaTransp": 4,
+                    "CodPtoEmbarque": 901,
+                    "CodPtoDesemb": 262,
+                    "Tara": "1",
+                    "CodUnidMedTara": 10,
+                    "PesoBruto": "10.65",
+                    "CodUnidPesoBruto": 6,
+                    "PesoNeto": "9.56",
+                    "CodUnidPesoNeto": 6,
+                    "TotBultos": "30",
+                    "TipoBultos": [
                         {
-                            "TpoCodigo": "ALFA",
-                            "VlrCodigo": "123"
+                            "CodTpoBultos": 75,
+                            "CantBultos": "30",
+                            "IdContainer": "1-2",
+                            "Sello": "1-3",
+                            "EmisorSello": "CONTENEDOR"
                         }
                     ],
-                    "QtyItem": "1",
-                    "UnmdItem": "un",
-                    "PrcItem": "831.932773",
-                    "MontoItem": "832"
+                    "MntFlete": "965.1",
+                    "MntSeguro": "10.25",
+                    "CodPaisRecep": 224,
+                    "CodPaisDestin": 224
                 }
-            ]
+            },
+            "Totales": {
+                "TpoMoneda": 13,
+                "MntExe": "1000",
+                "MntTotal": "1000"
+            },
+            "OtraMoneda": {
+                "TpoMoneda": 200,
+                "TpoCambio": "800.36",
+                "MntExeOtrMnda": "45454.36",
+                "MntTotOtrMnda": "45454.36"
+            }
         },
-        "Observaciones": "NOTA AL PIE DE PAGINA",
-        "TipoPago": "30 dias"
-}
+        "Detalle": [
+            {
+                "NroLinDet": "1",
+                "CdgItem": [
+                    {
+                        "TpoCodigo": "INT1",
+                        "VlrCodigo": "39"
+                    }
+                ],
+                "IndExe": 1,
+                "NmbItem": "CHATARRA DE ALUMINIO",
+                "DscItem": "OPCIONAL",
+                "QtyItem": "1",
+                "UnmdItem": "U",
+                "PrcItem": "1000",
+                "MontoItem": "1000"
+            }
+        ]
+    },
+    "Observaciones": "NOTA AL PIE DE PAGINA"
+};
 
 
 try:
@@ -120,9 +160,8 @@ try:
     with open(ruta, "wb") as f:
         f.write(sobre_xml_bytes)
     print("El sobre XML se ha descargado correctamente.")
-        
-        '''
-    
+
+      
     # Facturación individual
     response = client_api.Facturacion.facturacion_individualV2_Dte(solicitud)
     ruta = "factura.json"  # Ruta donde se guardará la factura
@@ -130,10 +169,16 @@ try:
         f.write(response)
     print("La factura se ha descargado correctamente.")
 
+    # Facturación individual boletas
+    response = client_api.Facturacion.facturacion_individualV2_Boletas(solicitud)
+    ruta = "boleta.json"  # Ruta donde se guardará la factura
+    with open(ruta, "wb") as f:
+        f.write(response)
+    print("La factura se ha descargado correctamente.")
+        
+        '''
     
-    
-    
-    
+  
 
 
 

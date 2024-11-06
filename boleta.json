@@ -1,0 +1,13 @@
+{
+    "status": 200,
+    "message": "Con fecha 06-11-2024 15:05:11, se emitió el DTE tipo Boleta Electrónica número 25248 desde la sucursal Casa Matriz del emisor SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+    "data": {
+        "tipoDTE": 39,
+        "rutEmisor": "76269769-6",
+        "rutReceptor": "66666666-6",
+        "folio": 25248,
+        "fechaEmision": "20-04-2023",
+        "total": 990
+    },
+    "errors": null
+}
