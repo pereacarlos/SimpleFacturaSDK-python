@@ -1,24 +1,28 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+def truncate(value: str, length: int) -> str:
+    return value[:length] if value else ''
+
 @dataclass
 class Emisor:
     RUTEmisor: str = ''
-    _razonSocial: Optional[str] = ''
-    _razonSocialBoleta: Optional[str] = ''
-    _giro: Optional[str] = ''
-    _giroEmisor: Optional[str] = ''
-    _telefono: List[str] = field(default_factory=list)
-    CorreoEmisor: Optional[str] = ''
     Acteco: List[int] = field(default_factory=list)
-    GuiaExport: Optional[str] = None
-    _sucursal: str = ''
+    Telefono: List[str] = field(default_factory=list)
+    CorreoEmisor: Optional[str] = None
+    GuiaExport: Optional[GuiaExportacion] = None
     CdgSIISucur: int = 0
-    _dirOrigen: str = ''
     CmnaOrigen: str = ''
     CiudadOrigen: str = ''
-    _codigoVendedor: str = ''
-    _idAdicionalEmisor: str = ''
+
+    _razonSocial: Optional[str] = field(default=None, init=False)
+    _razonSocialBoleta: Optional[str] = field(default=None, init=False)
+    _giro: Optional[str] = field(default=None, init=False)
+    _giroEmisor: Optional[str] = field(default=None, init=False)
+    _sucursal: Optional[str] = field(default=None, init=False)
+    _dirOrigen: Optional[str] = field(default=None, init=False)
+    _codigoVendedor: Optional[str] = field(default=None, init=False)
+    _idAdicionalEmisor: Optional[str] = field(default=None, init=False)
 
     @property
     def RznSoc(self) -> Optional[str]:
@@ -26,7 +30,7 @@ class Emisor:
 
     @RznSoc.setter
     def RznSoc(self, value: Optional[str]):
-        self._razonSocial = value[:70] if value else ''
+        self._razonSocial = truncate(value, 70)
 
     @property
     def RznSocEmisor(self) -> Optional[str]:
@@ -34,7 +38,7 @@ class Emisor:
 
     @RznSocEmisor.setter
     def RznSocEmisor(self, value: Optional[str]):
-        self._razonSocialBoleta = value[:100] if value else ''
+        self._razonSocialBoleta = truncate(value, 100)
 
     @property
     def GiroEmis(self) -> Optional[str]:
@@ -42,7 +46,7 @@ class Emisor:
 
     @GiroEmis.setter
     def GiroEmis(self, value: Optional[str]):
-        self._giro = value[:80] if value else ''
+        self._giro = truncate(value, 80)
 
     @property
     def GiroEmisor(self) -> Optional[str]:
@@ -50,47 +54,39 @@ class Emisor:
 
     @GiroEmisor.setter
     def GiroEmisor(self, value: Optional[str]):
-        self._giroEmisor = value[:80] if value else ''
+        self._giroEmisor = truncate(value, 80)
 
     @property
-    def Telefono(self) -> List[str]:
-        return self._telefono
-
-    @Telefono.setter
-    def Telefono(self, value: List[str]):
-        self._telefono = [x[:20] for x in value]
-
-    @property
-    def Sucursal(self) -> str:
+    def Sucursal(self) -> Optional[str]:
         return self._sucursal
 
     @Sucursal.setter
-    def Sucursal(self, value: str):
-        self._sucursal = value[:20]
+    def Sucursal(self, value: Optional[str]):
+        self._sucursal = truncate(value, 20)
 
     @property
-    def DirOrigen(self) -> str:
+    def DirOrigen(self) -> Optional[str]:
         return self._dirOrigen
 
     @DirOrigen.setter
-    def DirOrigen(self, value: str):
-        self._dirOrigen = value[:70]
+    def DirOrigen(self, value: Optional[str]):
+        self._dirOrigen = truncate(value, 70)
 
     @property
-    def CdgVendedor(self) -> str:
+    def CdgVendedor(self) -> Optional[str]:
         return self._codigoVendedor
 
     @CdgVendedor.setter
-    def CdgVendedor(self, value: str):
-        self._codigoVendedor = value[:60]
+    def CdgVendedor(self, value: Optional[str]):
+        self._codigoVendedor = truncate(value, 60)
 
     @property
-    def IdAdicEmisor(self) -> str:
+    def IdAdicEmisor(self) -> Optional[str]:
         return self._idAdicionalEmisor
 
     @IdAdicEmisor.setter
-    def IdAdicEmisor(self, value: str):
-        self._idAdicionalEmisor = value[:20]
+    def IdAdicEmisor(self, value: Optional[str]):
+        self._idAdicionalEmisor = truncate(value, 20)
 
     def __init__(self):
         self.RUTEmisor = ''
