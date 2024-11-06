@@ -12,6 +12,7 @@ from ComisionRecargo import ComisionRecargo
 class Documento:
  
     Id: Optional[str] = None
+
     Encabezado: Optional[Encabezado] = field(default_factory=Encabezado)
 
     Detalle: List[Detalle] = field(default_factory=list)
@@ -28,8 +29,8 @@ class Documento:
     def __init__(self):
         self.Id = None
         self.Encabezado = Encabezado()
-        self.Detalle = []
-        self.SubTotInfo = []
-        self.DscRcgGlobal = []
-        self.Referencia = []
-        self.Comisiones = []
+        self.Detalle = List[Detalle]
+        self.SubTotInfo = List[SubTotal]
+        self.DscRcgGlobal = List[DescuentosRecargos]
+        self.Referencia = List[Referencia]
+        self.Comisiones = List[ComisionRecargo]
