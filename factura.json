@@ -1,0 +1,13 @@
+{
+    "status": 200,
+    "message": "Con fecha 06-11-2024 14:53:05, se emitió el DTE tipo Factura Electrónica número 6702 desde la sucursal Casa Matriz del emisor SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+    "data": {
+        "tipoDTE": 33,
+        "rutEmisor": "76269769-6",
+        "rutReceptor": "17096073-4",
+        "folio": 6702,
+        "fechaEmision": "05-09-2024",
+        "total": 990
+    },
+    "errors": null
+}

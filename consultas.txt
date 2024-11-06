@@ -43,4 +43,13 @@
     with open(ruta, "wb") as f:
         f.write(dte_bytes)
     print("El DTE se ha descargado correctamente.")
+
+
+-----------   # Obtener sobre XML----------
+    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud)
+    ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
+    with open(ruta, "wb") as f:
+        f.write(sobre_xml_bytes)
+    print("El sobre XML se ha descargado correctamente.")
+    
     

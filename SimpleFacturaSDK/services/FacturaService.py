@@ -45,3 +45,23 @@ class FacturacionService:
         else:
             error_message = response.json().get("errors", "Unknown error")
             raise Exception(f"Error en la petición: {error_message}")
+   
+    def obtener_sobreXml(self, solicitud):
+        url = "https://api.simplefactura.cl/dte/xml/sobre/0"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")
+    
+    def facturacion_individualV2_Dte(self, solicitud):
+        url = "https://api.simplefactura.cl/invoiceV2/Casa_Matriz"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")
