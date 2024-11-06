@@ -23,3 +23,25 @@ class FacturacionService:
         else:
             error_message = response.json().get("errors", "Unknown error")
             raise Exception(f"Error en la petición: {error_message}")
+        
+
+    def obtener_xml_dte(self, solicitud):
+        url = "https://api.simplefactura.cl/dte/xml"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")
+        
+
+    def obtener_dte(self, solicitud):
+        url = "https://api.simplefactura.cl/documentIssued"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")
