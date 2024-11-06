@@ -1,0 +1,25 @@
+import json
+
+class FacturacionService:
+    def __init__(self, session):
+        self.session = session
+
+    def obtener_pdf_dte(self, solicitud):
+        url = "https://api.simplefactura.cl/dte/pdf"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")
+
+    def obtener_timbre_dte(self, solicitud):
+        url = "https://api.simplefactura.cl/dte/timbre"
+        response = self.session.post(url, data=json.dumps(solicitud))
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            error_message = response.json().get("errors", "Unknown error")
+            raise Exception(f"Error en la petición: {error_message}")

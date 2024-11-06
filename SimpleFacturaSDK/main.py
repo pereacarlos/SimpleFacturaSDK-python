@@ -1,6 +1,5 @@
-from services.Base import APIClient  # Assuming APIClient class is in Base.py
-from models.GetPdf.SolicitudPdfDte import SolicitudPdfDte
-import json
+from Base import APIClient 
+
 
 # Datos de autenticación
 username = "demo@chilesystems.com"
@@ -9,7 +8,7 @@ password = "Rv8Il4eV"
 # Crear instancia del cliente API
 client_api = APIClient(username, password)
 
-# Crear la solicitud con el campo 'Credenciales'
+# Crear la solicitud
 solicitud = {
     "Credenciales": {
         "RutEmisor": "76269769-6",
@@ -24,7 +23,7 @@ solicitud = {
 
 try:
     # Llamar al método para obtener el PDF
-    pdf_bytes = client_api.obtener_pdf_dte(solicitud)
+    pdf_bytes = client_api.Facturacion.obtener_pdf_dte(solicitud)
     ruta = "dte.pdf"  # Ruta donde se guardará el PDF
     with open(ruta, "wb") as f:
         f.write(pdf_bytes)
