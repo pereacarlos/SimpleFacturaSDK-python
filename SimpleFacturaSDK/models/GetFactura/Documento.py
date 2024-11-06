@@ -1,65 +1,35 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 from datetime import datetime
-
-# Import or define the classes used by Documento
-class Encabezado:
-    """Class definition for Encabezado"""
-    pass
-
-class Detalle:
-    """Class definition for Detalle"""
-    pass
-
-class SubTotal:
-    """Class definition for SubTotal"""
-    pass
-
-class DescuentosRecargos:
-    """Class definition for DescuentosRecargos"""
-    pass
-
-class Referencia:
-    """Class definition for Referencia"""
-    pass
-
-class ComisionRecargo:
-    """Class definition for ComisionRecargo"""
-    pass
+from Encabezado import Encabezado
+from Detalle import Detalle
+from SubTotal import SubTotal
+from DescuentosRecargos import DescuentosRecargos
+from Referencia import Referencia
+from ComisionRecargo import ComisionRecargo
 
 @dataclass
 class Documento:
-    """
-    Información tributaria del DTE
-    """
-    Id: str = field(default_factory=lambda: f"T_{int(datetime.now().timestamp() * 1e6)}")
+ 
+    Id: Optional[str] = None
+    Encabezado: Optional[Encabezado] = field(default_factory=Encabezado)
 
-    Encabezado: Encabezado = field(default_factory=Encabezado)
+    Detalle: List[Detalle] = field(default_factory=list)
 
-    Detalles: List[Detalle] = field(default_factory=list)
+    SubTotInfo: List[SubTotal] = field(default_factory=list)
 
-    SubTotales: List[SubTotal] = field(default_factory=list)
-    def ShouldSerializeSubTotales(self) -> bool:
-        return bool(self.SubTotales)
+    DscRcgGlobal: Optional[List[DescuentosRecargos]] = field(default_factory=list)
 
-    DescuentosRecargos: List[DescuentosRecargos] = field(default_factory=list)
-    def ShouldSerializeDescuentosRecargos(self) -> bool:
-        return bool(self.DescuentosRecargos)
+    Referencia: Optional[List[Referencia]] = field(default_factory=list)
 
-    Referencias: List[Referencia] = field(default_factory=list)
-    def ShouldSerializeReferencias(self) -> bool:
-        return bool(self.Referencias)
+   
+    Comisiones: Optional[List[ComisionRecargo]] = field(default_factory=list)
 
-    Comisiones: List[ComisionRecargo] = field(default_factory=list)
-    def ShouldSerializeComisiones(self) -> bool:
-        return bool(self.Comisiones)
-
-    def __post_init__(self):
-        # Initialize with default values similar to the C# constructor
-        self.Id = self.Id or f"T_{int(datetime.now().timestamp() * 1e6)}"
-        self.Encabezado = self.Encabezado or Encabezado()
-        self.Detalles = self.Detalles or []
-        self.SubTotales = self.SubTotales or []
-        self.DescuentosRecargos = self.DescuentosRecargos or []
-        self.Referencias = self.Referencias or []
-        self.Comisiones = self.Comisiones or []
+    def __init__(self):
+        self.Id = None
+        self.Encabezado = Encabezado()
+        self.Detalle = []
+        self.SubTotInfo = []
+        self.DscRcgGlobal = []
+        self.Referencia = []
+        self.Comisiones = []
