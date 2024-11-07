@@ -1,21 +1,26 @@
+
 import json
-from models.GetFactura.Dte import Dte
-from models.GetFactura.ResponseDTE import ResponseDTE
+from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.ResponseDTE import Response
 
 class FacturacionService:
     def __init__(self, session, base_url):
         self.session = session
         self.base_url = base_url
 
-    def obtener_dte(self, solicitud) -> ResponseDTE:
+    def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
         response = self.session.post(url, json=solicitud)
         contenidoRespuesta = response.text
         print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            resultado = ResponseDTE.from_dict(response_json)
-            return resultado
+            resultado = Response.from_dict(response_json, data_type=Dte)
+            # Aquí puedes acceder a los datos directamente
+            print("Status:", resultado.status)
+            print("Message:", resultado.message)
+            print("DTE Data:", resultado.data)  # Accede a los datos del DTE
+            return resultado.data  # Retorna el objeto Dte directamente
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 

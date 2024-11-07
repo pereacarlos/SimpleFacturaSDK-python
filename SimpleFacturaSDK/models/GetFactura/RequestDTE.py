@@ -10,7 +10,7 @@ from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicio
 
 
 @dataclass
-class DTE:
+class RequestDTE:
     Documento: Optional[Documento] = field(default_factory=Documento)
     Exportaciones: Optional[Exportaciones] = None
     Observaciones: Optional[str] = None

@@ -1,7 +1,6 @@
 from dataclasses import dataclass, asdict
-from typing import List, Optional
-from models.GetFactura.DetalleDte import DetalleDte 
-from models.GetFactura.ReferenciaDte import ReferenciaDte
+from SimpleFacturaSDK.models.GetFactura.DetalleDte import DetalleDte 
+from typing import Optional, List
 
 @dataclass
 class Dte:
@@ -36,14 +35,14 @@ class Dte:
         return cls(
             ambiente=data.get('ambiente'),
             folioReutilizado=data.get('folioReutilizado'),
-             importado=data.get('importado'),
+            folio=data.get('folio'),
+            importado=data.get('importado'),
             codigoSii=data.get('codigoSii'),
             tipoDte=data.get('tipoDte'),
             estadoAcuse=data.get('estadoAcuse'),
             estadoSII=data.get('estadoSII'),
             fechaDte=data.get('fechaDte'),
             fechaCreacion=data.get('fechaCreacion'),
-            folio=data.get('folio'),
             razonSocialReceptor=data.get('razonSocialReceptor'),
             rutReceptor=data.get('rutReceptor'),
             trackId=data.get('trackId'),

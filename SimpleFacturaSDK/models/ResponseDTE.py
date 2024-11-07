@@ -1,19 +1,20 @@
-from dataclasses import dataclass
-from typing import Optional
-from models.GetFactura.Dte import Dte
+from dataclasses import dataclass, asdict
+from typing import Generic, List, Optional, TypeVar
+
+T = TypeVar("T")
 
 @dataclass
-class ResponseDTE:
+class Response(Generic[T]):
     status: int
     message: str
-    data: Optional[Dte] = None
-    errors: Optional[str] = None
+    data: Optional[T] = None
+    errors: Optional[object] = None
 
     @classmethod
-    def from_dict(cls, dict_data):
+    def from_dict(cls, dict_data, data_type: Optional[type] = None):
         data_field = dict_data.get('data')
-        if data_field:
-            data_field = Dte.from_dict(data_field)
+        if data_field and data_type:
+            data_field = data_type.from_dict(data_field)
         return cls(
             status=dict_data.get('status'),
             message=dict_data.get('message'),
@@ -25,6 +26,6 @@ class ResponseDTE:
         return {
             "status": self.status,
             "message": self.message,
-            "data": self.data.to_dict() if self.data else None,
+            "data": self.data.to_dict() if hasattr(self.data, 'to_dict') else self.data,
             "errors": self.errors
         }
