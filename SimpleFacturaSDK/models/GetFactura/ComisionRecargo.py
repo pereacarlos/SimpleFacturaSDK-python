@@ -1,38 +1,15 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from enum import Enum
-
-# Definición de las enumeraciones
-class TipoRecargoComisionEnum(Enum):
-    NOT_SET = "NotSet"
-    # Agrega otros valores según sea necesario
-
+from SimpleFacturaSDK.enum.TipoRecargoComisionEnum import TipoRecargoComisionEnum
 @dataclass
 class ComisionRecargo:
-    """
-    Clase que representa la comisión o recargo del documento.
-    """
-
     NroLinCom: int = 0
-    """Número secuencial de la línea."""
-
-    TipoMovim: TipoRecargoComisionEnum = TipoRecargoComisionEnum.NOT_SET
-    """C (Comisión) u O (Otros cargos)."""
-
+    TipoMovim: TipoRecargoComisionEnum = TipoRecargoComisionEnum.NotSet
     _glosa: str = ''
-    """Especificación de la comisión u otro cargo."""
-
     _tasa: float = 0.0
-    """Valor porcentual de la comisión u otro cargo."""
-
     ValComNeto: int = 0
-    """Valor neto de la comisión u otro cargo."""
-
     ValComExe: int = 0
-    """Valor no afecto o exento de la comisión u otros cargos."""
-
     ValComIVA: int = 0
-    """Valor IVA de la comisión u otros cargos."""
 
     @property
     def Glosa(self) -> str:
@@ -40,7 +17,7 @@ class ComisionRecargo:
 
     @Glosa.setter
     def Glosa(self, value: str):
-        self._glosa = value[:60]  # Truncate to 60 characters
+        self._glosa = value[:60]
 
     @property
     def TasaComision(self) -> float:
@@ -52,7 +29,7 @@ class ComisionRecargo:
 
     def __init__(self):
         self.NroLinCom = 0
-        self.TipoMovim = TipoRecargoComisionEnum.NOT_SET
+        self.TipoMovim = TipoRecargoComisionEnum.NotSet
         self.Glosa = ''
         self.TasaComision = 0.0
         self.ValComNeto = 0

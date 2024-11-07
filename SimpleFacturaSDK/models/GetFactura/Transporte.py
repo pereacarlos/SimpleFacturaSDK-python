@@ -11,7 +11,7 @@ class Transporte:
     _patente: Optional[str] = field(default=None, init=False)
     RUTTrans: Optional[str] = None
     Chofer: Optional[Chofer] = None
-    _dirDestino: Optional[str] = field(default=None, init=False)
+    __dirDestino: Optional[str] = field(default=None, init=False)
     CmnaDest: Optional[str] = None
     CiudadDest: Optional[str] = None
     Aduana: Optional[Aduana] = None
@@ -26,8 +26,8 @@ class Transporte:
 
     @property
     def DirDest(self) -> Optional[str]:
-        return self._dirDestino
+        return self.__dirDestino
 
     @DirDest.setter
     def DirDest(self, value: Optional[str]):
-        self._dirDestino = truncate(value, 70)
+        self.__dirDestino = truncate(value, 70)

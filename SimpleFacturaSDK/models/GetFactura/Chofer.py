@@ -6,15 +6,15 @@ def truncate(value: str, length: int) -> str:
 @dataclass
 class Chofer:
     RUTChofer: str = ''
-    _nombre: str = field(default="", init=False)
+    __nombre: str = field(default="", init=False)
 
     @property
     def NombreChofer(self) -> str:
-        return self._nombre
+        return self.__nombre
 
     @NombreChofer.setter
     def NombreChofer(self, value: str):
-        self._nombre = truncate(value, 30)
+        self.__nombre = truncate(value, 30)
 
 
     def __init__(self):

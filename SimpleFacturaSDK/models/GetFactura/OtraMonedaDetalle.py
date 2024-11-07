@@ -2,67 +2,52 @@ from dataclasses import dataclass
 
 @dataclass
 class OtraMonedaDetalle:
-    """
-    Clase que representa los detalles en otra moneda del documento.
-    """
-
-    _precioUnitario: float = 0.0
-    """Precio unitario en otra moneda."""
-
+    __precioUnitario: float = 0.0
     Moneda: str = ''
-    """Código de otra moneda."""
-
-    _factorConversion: float = 0.0
-    """Factor para conversión a pesos."""
-
-    _descuento: float = 0.0
-    """Descuento en otra moneda."""
-
-    _recargo: float = 0.0
-    """Recargo en otra moneda."""
-
-    _valor: float = 0.0
-    """Valor por línea de detalle en otra moneda."""
+    __factorConversion: float = 0.0
+    __descuento: float = 0.0
+    __recargo: float = 0.0
+    __valor: float = 0.0
 
     @property
     def PrcOtrMon(self) -> float:
-        return round(self._precioUnitario, 4)
+        return round(self.__precioUnitario, 4)
 
     @PrcOtrMon.setter
     def PrcOtrMon(self, value: float):
-        self._precioUnitario = value
+        self.__precioUnitario = value
 
     @property
     def FctConv(self) -> float:
-        return round(self._factorConversion, 4)
+        return round(self.__factorConversion, 4)
 
     @FctConv.setter
     def FctConv(self, value: float):
-        self._factorConversion = value
+        self.__factorConversion = value
 
     @property
     def DctoOtrMnda(self) -> float:
-        return round(self._descuento, 4)
+        return round(self.__descuento, 4)
 
     @DctoOtrMnda.setter
     def DctoOtrMnda(self, value: float):
-        self._descuento = value
+        self.__descuento = value
 
     @property
     def RecargoOtrMnda(self) -> float:
-        return round(self._recargo, 4)
+        return round(self.__recargo, 4)
 
     @RecargoOtrMnda.setter
     def RecargoOtrMnda(self, value: float):
-        self._recargo = value
+        self.__recargo = value
 
     @property
     def MontoItemOtrMnda(self) -> float:
-        return round(self._valor, 4)
+        return round(self.__valor, 4)
 
     @MontoItemOtrMnda.setter
     def MontoItemOtrMnda(self, value: float):
-        self._valor = value
+        self.__valor = value
 
     def __init__(self):
         self.PrcOtrMon = 0.0

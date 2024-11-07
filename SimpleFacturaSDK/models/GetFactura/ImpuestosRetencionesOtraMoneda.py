@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from enum import Enum
 from SimpleFacturaSDK.enum.TipoImpuesto import TipoImpuestoEnum
 
 @dataclass

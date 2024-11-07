@@ -1,9 +1,5 @@
 from dataclasses import dataclass, field
-from enum import Enum
-
-class TipoBultoEnum(Enum):
-    NotSet = 0
-    # Agregar otros valores según sea necesario
+from SimpleFacturaSDK.enum.CodigosAduana import TipoBultoEnum
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

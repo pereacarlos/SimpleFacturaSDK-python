@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-
-@dataclass
-class DetalleExportacion:
-    # Implementación de DetalleExportacion
-    pass
+from .Encabezado import Encabezado
+from .SubTotal import SubTotal
+from .DescuentosRecargos import DescuentosRecargos
+from .Referencia import Referencia
+from .ComisionRecargo import ComisionRecargo
+from .DetalleExportacion import DetalleExportacion
 @dataclass
 class Exportaciones:
     Id: Optional[str] = None

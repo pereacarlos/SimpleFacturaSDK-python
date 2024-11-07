@@ -3,84 +3,62 @@ from typing import List
 
 @dataclass
 class SubTotal:
-    """
-    Clase que representa el subtotal del documento.
-    """
-
     NroSTI: int = 0
-    """Número de sub-total. Número secuencial de acuerdo al número de subtotales."""
-
-    _glosa: str = ''
-    """Glosa. Título del subtotal."""
-
+    __glosa: str = ''
     OrdenSTI: int = 0
-    """Ubicación para impresión. De uso para el contribuyente como ayuda para indicar cómo se imprimirá los subtotales."""
-
-    _neto: float = 0.0
-    """Valor neto del subtotal."""
-
-    _iva: float = 0.0
-    """Valor del IVA del subtotal."""
-
-    _impuestoAdicional: float = 0.0
-    """Valor de los impuestos adicionales o específicos del subtotal."""
-
-    _montoExento: float = 0.0
-    """Valor no afecto o exento del subtotal."""
-
-    _total: float = 0.0
-    """Valor de la línea de subtotal."""
-
+    __neto: float = 0.0
+    __iva: float = 0.0
+    __impuestoAdicional: float = 0.0
+    __montoExento: float = 0.0
+    __total: float = 0.0
     LineasDeta: List[int] = field(default_factory=list)
-    """Tabla de líneas de detalle que se agrupan en el subtotal."""
-
     @property
     def GlosaSTI(self) -> str:
-        return self._glosa
+        return self.__glosa
 
     @GlosaSTI.setter
     def GlosaSTI(self, value: str):
-        self._glosa = value[:40]  # Truncate to 40 characters
+        self.__glosa = value[:40]
 
     @property
     def SubTotNetoSTI(self) -> float:
-        return round(self._neto, 2)
+        return round(self.__neto, 2)
 
     @SubTotNetoSTI.setter
     def SubTotNetoSTI(self, value: float):
-        self._neto = value
+        self.__neto = value
 
     @property
     def SubTotIVASTI(self) -> float:
-        return round(self._iva, 2)
+        return round(self.__iva, 2)
 
     @SubTotIVASTI.setter
     def SubTotIVASTI(self, value: float):
-        self._iva = value
+        self.__iva = value
 
     @property
     def SubTotAdicSTI(self) -> float:
-        return round(self._impuestoAdicional, 2)
+        return round(self.__impuestoAdicional, 2)
 
     @SubTotAdicSTI.setter
     def SubTotAdicSTI(self, value: float):
-        self._impuestoAdicional = value
+        self.__impuestoAdicional = value
 
     @property
     def SubTotExeSTI(self) -> float:
-        return round(self._montoExento, 2)
+        return round(self.__montoExento, 2)
 
     @SubTotExeSTI.setter
     def SubTotExeSTI(self, value: float):
-        self._montoExento = value
+        self.__montoExento = value
 
     @property
     def ValSubtotSTI(self) -> float:
-        return round(self._total, 2)
+        return round(self.__total, 2)
 
     @ValSubtotSTI.setter
     def ValSubtotSTI(self, value: float):
-        self._total = value
+        self.__total = value
 
     def __init__(self):
         self.NroSTI = 0

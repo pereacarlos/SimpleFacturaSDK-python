@@ -8,85 +8,93 @@ def truncate(value: str, length: int) -> str:
 class Emisor:
     RUTEmisor: str = ''
     Acteco: List[int] = field(default_factory=list)
-    Telefono: List[str] = field(default_factory=list)
     CorreoEmisor: Optional[str] = None
     GuiaExport: Optional[GuiaExportacion] = None
     CdgSIISucur: int = 0
     CmnaOrigen: str = ''
     CiudadOrigen: str = ''
 
-    _razonSocial: Optional[str] = field(default=None, init=False)
-    _razonSocialBoleta: Optional[str] = field(default=None, init=False)
-    _giro: Optional[str] = field(default=None, init=False)
-    _giroEmisor: Optional[str] = field(default=None, init=False)
-    _sucursal: Optional[str] = field(default=None, init=False)
-    _dirOrigen: Optional[str] = field(default=None, init=False)
-    _codigoVendedor: Optional[str] = field(default=None, init=False)
-    _idAdicionalEmisor: Optional[str] = field(default=None, init=False)
+    __razonSocial: Optional[str] = field(default=None, init=False)
+    __razonSocialBoleta: Optional[str] = field(default=None, init=False)
+    __giro: Optional[str] = field(default=None, init=False)
+    __giroEmisor: Optional[str] = field(default=None, init=False)
+    __Telefono: List[str] = field(default_factory=list)
+    __sucursal: Optional[str] = field(default=None, init=False)
+    __dirOrigen: Optional[str] = field(default=None, init=False)
+    __codigoVendedor: Optional[str] = field(default=None, init=False)
+    __idAdicionalEmisor: Optional[str] = field(default=None, init=False)
 
     @property
     def RznSoc(self) -> Optional[str]:
-        return self._razonSocial
+        return self.__razonSocial
 
     @RznSoc.setter
     def RznSoc(self, value: Optional[str]):
-        self._razonSocial = truncate(value, 70)
+        self.__razonSocial = truncate(value, 70)
 
     @property
     def RznSocEmisor(self) -> Optional[str]:
-        return self._razonSocialBoleta
+        return self.__razonSocialBoleta
 
     @RznSocEmisor.setter
     def RznSocEmisor(self, value: Optional[str]):
-        self._razonSocialBoleta = truncate(value, 100)
+        self.__razonSocialBoleta = truncate(value, 100)
 
     @property
     def GiroEmis(self) -> Optional[str]:
-        return self._giro
+        return self.__giro
 
     @GiroEmis.setter
     def GiroEmis(self, value: Optional[str]):
-        self._giro = truncate(value, 80)
+        self.__giro = truncate(value, 80)
 
     @property
     def GiroEmisor(self) -> Optional[str]:
-        return self._giroEmisor
+        return self.__giroEmisor
 
     @GiroEmisor.setter
     def GiroEmisor(self, value: Optional[str]):
-        self._giroEmisor = truncate(value, 80)
+        self.__giroEmisor = truncate(value, 80)
+
+    @property
+    def Telefono(self) -> Optional[str]:
+        return self.__Telefono
+
+    @Telefono.setter
+    def Telefono(self, value: Optional[str]):
+        self.__Telefono = truncate(value, 20)
 
     @property
     def Sucursal(self) -> Optional[str]:
-        return self._sucursal
+        return self.__sucursal
 
     @Sucursal.setter
     def Sucursal(self, value: Optional[str]):
-        self._sucursal = truncate(value, 20)
+        self.__sucursal = truncate(value, 20)
 
     @property
     def DirOrigen(self) -> Optional[str]:
-        return self._dirOrigen
+        return self.__dirOrigen
 
     @DirOrigen.setter
     def DirOrigen(self, value: Optional[str]):
-        self._dirOrigen = truncate(value, 70)
+        self.__dirOrigen = truncate(value, 70)
 
     @property
     def CdgVendedor(self) -> Optional[str]:
-        return self._codigoVendedor
+        return self.__codigoVendedor
 
     @CdgVendedor.setter
     def CdgVendedor(self, value: Optional[str]):
-        self._codigoVendedor = truncate(value, 60)
+        self.__codigoVendedor = truncate(value, 60)
 
     @property
     def IdAdicEmisor(self) -> Optional[str]:
-        return self._idAdicionalEmisor
+        return self.__idAdicionalEmisor
 
     @IdAdicEmisor.setter
     def IdAdicEmisor(self, value: Optional[str]):
-        self._idAdicionalEmisor = truncate(value, 20)
+        self.__idAdicionalEmisor = truncate(value, 20)
 
     def __init__(self):
         self.RUTEmisor = ''

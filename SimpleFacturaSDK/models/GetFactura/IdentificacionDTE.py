@@ -119,25 +119,25 @@ class IdentificacionDTE:
         self.__terminoPagoGlosa = truncate(value, 100)
 
     def __init__(self):
-        self.TipoDTE = DTEType.NOT_SET
+        self.TipoDTE = DTEType.NotSet
         self.Folio = 0
         self.FechaEmisionString = ''
         self.IndNoRebaja = 0
-        self.TipoDespacho = TipoDespachoEnum.NOT_SET
-        self.IndTraslado = TipoTrasladoEnum.NOT_SET
+        self.TipoDespacho = TipoDespachoEnum.NotSet
+        self.IndTraslado = TipoTrasladoEnum.NotSet
         self.TpoImpresion = TipoImpresionEnum.N
-        self.IndServicio = IndicadorServicioEnum.NOT_SET
+        self.IndServicio = IndicadorServicioEnum.NotSet
         self.MntBruto = 0
-        self.FmaPago = FormaPagoEnum.NOT_SET
-        self.FmaPagExp = FormaPagoExportacionEnum.NOT_SET
+        self.FmaPago = FormaPagoEnum.NotSet
+        self.FmaPagExp = FormaPagoExportacionEnum.NotSet
         self.FechaCancelacionString = ''
         self.MntCancel = 0
         self.SaldoInsol = 0
         self.MntPagos = []
         self.PeriodoDesdeString = ''
         self.PeriodoHastaString = ''
-        self.MedioPago = MedioPagoEnum.NOT_SET
-        self.TpoCtaPago = TipoCuentaPagoEnum.NOT_SET
+        self.MedioPago = MedioPagoEnum.NotSet
+        self.TpoCtaPago = TipoCuentaPagoEnum.NotSet
         self.NumCtaPago = ''
         self.BcoPago = ''
         self.TermPagoCdg = ''

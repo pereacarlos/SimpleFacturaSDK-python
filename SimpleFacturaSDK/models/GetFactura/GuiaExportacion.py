@@ -1,15 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
 from SimpleFacturaSDK.enum.CodigoTraslado import CodigoTrasladoEnum
-
-class CodigoTrasladoEnum(Enum):
-    NotSet = 0
-    Exportador = 1
-    AgenteDeAduana = 2
-    Vendedor = 3
-    ContribuyenteAutorizado = 4
-    # Agregar otros códigos si es necesario
 
 @dataclass
 class GuiaExportacion:
@@ -27,6 +18,6 @@ class GuiaExportacion:
 
 
     def __init__(self):
-        self.CdgTraslado = CodigoTrasladoEnum.NOT_SET
+        self.CdgTraslado = CodigoTrasladoEnum.NotSet
         self.FolioAut = 0
         self.FechaAutorizacionString = ''

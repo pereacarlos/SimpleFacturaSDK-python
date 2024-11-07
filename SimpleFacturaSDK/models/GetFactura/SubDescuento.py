@@ -4,10 +4,7 @@ from SimpleFacturaSDK.enum.TipoDescuento import ExpresionDineroEnum
 @dataclass
 class SubDescuento:
     TipoDscto: ExpresionDineroEnum = ExpresionDineroEnum.NotSet
-
     __valorDescuento: float = 0.0
-
-
     @property
     def ValorDscto(self) -> float:
         return round(self.__valorDescuento, 2)
