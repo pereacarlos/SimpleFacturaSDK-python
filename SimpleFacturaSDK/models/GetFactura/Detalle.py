@@ -17,6 +17,7 @@ class DetalleExportacion:
     FechaElaboracionString: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
     FechaVencimientoString: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
     OtrMnda: Optional[OtraMonedaDetalle] = None
+    recargo_monto: int = 0
     SubDscto: Optional[List[SubDescuento]] = None
     SubRecargo: Optional[List[SubRecargo]] = None
     CodigoImpuestoAdicional: Optional[List[TipoImpuestoEnum]] = None
