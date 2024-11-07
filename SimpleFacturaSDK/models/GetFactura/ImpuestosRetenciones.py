@@ -1,9 +1,5 @@
 from dataclasses import dataclass, field
-from enum import Enum
-
-class TipoImpuestoEnum(Enum):
-    NotSet = 0
-    # Agregar otros códigos de tipo de impuesto según sea necesario
+from SimpleFacturaSDK.enums.TipoImpuestoEnum import TipoImpuestoEnum
 
 @dataclass
 class ImpuestosRetenciones:
@@ -20,6 +16,6 @@ class ImpuestosRetenciones:
         self._tasaImpuesto = value
 
     def __init__(self):
-        self.TipoImp = TipoImpuestoEnum.NOT_SET
+        self.TipoImp = TipoImpuestoEnum.NotSet
         self.TasaImp = 0.0
         self.MontoImp = 0

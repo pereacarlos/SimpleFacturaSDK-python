@@ -1,17 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from datetime import datetime
-from enum import Enum
-
-# Enumeraciones y clases auxiliares
-class IndicadorFacturacionExencionEnum(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class TipoImpuestoEnum(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
+from SimpleFacturaSDK.enum.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
+from SimpleFacturaSDK.enum.TipoImpuesto import TipoImpuestoEnum
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
@@ -152,7 +143,7 @@ class DetalleExportacion:
         self.NmbItem = ''
         self.MontoItem = 0.0
         self.CdgItem = []
-        self.IndExe = IndicadorFacturacionExencionEnum.NOT_SET
+        self.IndExe = IndicadorFacturacionExencionEnum.NotSet
         self.Retenedor = None
         self.DscItem = ''
         self.QtyRef = 0.0

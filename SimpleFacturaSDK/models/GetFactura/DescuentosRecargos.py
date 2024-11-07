@@ -1,62 +1,50 @@
 from dataclasses import dataclass, field
 from typing import Optional
+from SimpleFacturaSDK.enum.TipoMovimientoEnum import TipoMovimientoEnum
+from SimpleFacturaSDK.enum.ExpresionDineroEnum import ExpresionDineroEnum
+from SimpleFacturaSDK.enum.IndicadorExentoEnum import IndicadorExentoEnum
+def truncate(value: str, length: int) -> str:
+    return value[:length] if value else ''
 
 @dataclass
 class DescuentosRecargos:
-    """
-    Clase que representa los descuentos y recargos del documento.
-    """
-
-    NroLinDR: int = 0
-    """Número secuencial de línea."""
-
-    TpoMov: Optional[str] = None
-    """Tipo de movimiento."""
-
-    _glosa: str = ''
-    """Descripción del descuento o recargo."""
-
-    TpoValor: Optional[str] = None
-    """Unidad en que se expresa el valor."""
-
-    _valor: float = 0.0
-    """Valor del descuento o recargo."""
-
-    _valorOtraMoneda: float = 0.0
-    """Valor en otra moneda."""
-
-    IndExeDR: Optional[str] = None
-    """Indica si el descuento o recargo es No afecto o no facturable."""
+    nro_lin_dr: int = 0
+    tpo_mov: TipoMovimientoEnum = TipoMovimientoEnum.NotSet
+    __glosa_dr: str = field(default="", metadata={"max_length": 45})
+    tpo_valor: ExpresionDineroEnum = ExpresionDineroEnum.NotSet
+    __valor_dr: float = 0.0
+    __valorOtroMnda: float = 0.0
+    ind_exe_dr: IndicadorExentoEnum = IndicadorExentoEnum.NotSet
 
     @property
-    def GlosaDR(self) -> str:
-        return self._glosa
+    def glosa_dr(self) -> str:
+        return self.__glosa_dr
 
-    @GlosaDR.setter
-    def GlosaDR(self, value: str):
-        self._glosa = value[:45]  # Truncate to 45 characters
-
-    @property
-    def ValorDR(self) -> float:
-        return round(self._valor, 2)
-
-    @ValorDR.setter
-    def ValorDR(self, value: float):
-        self._valor = value
+    @glosa_dr.setter
+    def glosa_dr(self, value: str):
+        self.__glosa_dr = truncate(value, 45)
 
     @property
-    def ValorDROtrMnda(self) -> float:
-        return round(self._valorOtraMoneda, 4)
+    def valor_dr(self) -> float:
+        return round(self.__valor_dr, 2)
 
-    @ValorDROtrMnda.setter
-    def ValorDROtrMnda(self, value: float):
-        self._valorOtraMoneda = value
+    @valor_dr.setter
+    def valor_dr(self, value: float):
+        self.__valor_dr = value
+
+    @property
+    def valorOtroMnda(self) -> float:
+        return round(self.__valorOtroMnda, 4)
+
+    @valorOtroMnda.setter
+    def valor_dr_otr_mnda(self, value: float):
+        self.__valorOtroMnda = value
 
     def __init__(self):
         self.NroLinDR = 0
-        self.TpoMov = None
+        self.TpoMov = TipoMovimientoEnum.NotSet
         self.GlosaDR = ''
-        self.TpoValor = None
+        self.TpoValor = ExpresionDineroEnum.NotSet
         self.ValorDR = 0.0
         self.ValorDROtrMnda = 0.0
-        self.IndExeDR = None
+        self.IndExeDR = IndicadorExentoEnum.NotSet

@@ -1,10 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from enum import Enum
-
-class Moneda(Enum):
-    NotSet = 0
-    # Agregar otros valores de moneda según sea necesario
+from SimpleFacturaSDK.models.GetFactura.Moneda import Moneda
 
 @dataclass
 class ImpuestosRetencionesOtraMoneda:
@@ -90,7 +86,7 @@ class OtraMoneda:
         self.__montoTotal = value
 
     def __init__(self):
-        self.TpoMoneda = Moneda.NOT_SET
+        self.TpoMoneda = Moneda.NotSet
         self.TpoCambio = 0.0
         self.MntNetoOtrMnda = 0.0
         self.MntExeOtrMnda = 0.0

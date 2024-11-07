@@ -1,53 +1,15 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional
-from enum import Enum
-
-# Definir las enumeraciones correspondientes
-class DTEType(Enum):
-    NotSet = 0
-    # Agregar otros tipos de DTE según sea necesario
-
-class TipoDespachoEnum(Enum):
-    NotSet = 0
-    # Agregar otros tipos de despacho según sea necesario
-
-class TipoTrasladoEnum(Enum):
-    NotSet = 0
-    # Agregar otros tipos de traslado según sea necesario
-
-class TipoImpresionEnum(Enum):
-    N = "N"
-    # Agregar otros tipos de impresión según sea necesario
-
-class IndicadorServicioEnum(Enum):
-    NotSet = 0
-    # Agregar otros indicadores de servicio según sea necesario
-
-class FormaPagoEnum(Enum):
-    NotSet = 0
-    # Agregar otras formas de pago según sea necesario
-
-class FormaPagoExportacionEnum(Enum):
-    NotSet = 0
-    # Agregar otras formas de pago para exportación según sea necesario
-
-class MedioPagoEnum(Enum):
-    NotSet = 0
-    # Agregar otros medios de pago según sea necesario
-
-class TipoCuentaPagoEnum(Enum):
-    NotSet = 0
-    # Agregar otros tipos de cuenta de pago según sea necesario
-
-class TipoTransCompra(Enum):
-    NotSet = 0
-    # Agregar otros tipos de transacción de compra según sea necesario
-
-class TipoTransVenta(Enum):
-    NotSet = 0
-    # Agregar otros tipos de transacción de venta según sea necesario
-
+from SimpleFacturaSDK.enum.TipoDTE import DTEType
+from SimpleFacturaSDK.enum.TipoDespacho import TipoDespachoEnum
+from SimpleFacturaSDK.enum.TipoTraslado import TipoTrasladoEnum
+from SimpleFacturaSDK.enum.TipoImpresion import TipoImpresionEnum
+from SimpleFacturaSDK.enum.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.enum.FormaPago import FormaPagoEnum
+from SimpleFacturaSDK.enum.CodigosAduana import FormaPagoExportacionEnum
+from SimpleFacturaSDK.enum.MedioPago import MedioPagoEnum
+from SimpleFacturaSDK.enum.TipoCuentaPago import TipoCuentaPagoEnum
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
@@ -79,10 +41,10 @@ class IdentificacionDTE:
     TipoTranVenta: Optional[TipoTransVenta] = None
     IndMntNeto: int = 0
 
-    _cuentaPago: str = field(default="", init=False)
-    _bancoPago: str = field(default="", init=False)
-    _terminoPagoCodigo: str = field(default="", init=False)
-    _terminoPagoGlosa: str = field(default="", init=False)
+    __cuentaPago: str = field(default="", init=False)
+    __bancoPago: str = field(default="", init=False)
+    __terminoPagoCodigo: str = field(default="", init=False)
+    __terminoPagoGlosa: str = field(default="", init=False)
 
     @property
     def FchEmis(self) -> datetime:
@@ -126,35 +88,35 @@ class IdentificacionDTE:
 
     @property
     def NumCtaPago(self) -> str:
-        return self._cuentaPago
+        return self.__cuentaPago
 
     @NumCtaPago.setter
     def NumCtaPago(self, value: str):
-        self._cuentaPago = truncate(value, 20)
+        self.__cuentaPago = truncate(value, 20)
 
     @property
     def BcoPago(self) -> str:
-        return self._bancoPago
+        return self.__bancoPago
 
     @BcoPago.setter
     def BcoPago(self, value: str):
-        self._bancoPago = truncate(value, 40)
+        self.__bancoPago = truncate(value, 40)
 
     @property
     def TermPagoCdg(self) -> str:
-        return self._terminoPagoCodigo
+        return self.__terminoPagoCodigo
 
     @TermPagoCdg.setter
     def TermPagoCdg(self, value: str):
-        self._terminoPagoCodigo = truncate(value, 4)
+        self.__terminoPagoCodigo = truncate(value, 4)
 
     @property
     def TermPagoGlosa(self) -> str:
-        return self._terminoPagoGlosa
+        return self.__terminoPagoGlosa
 
     @TermPagoGlosa.setter
     def TermPagoGlosa(self, value: str):
-        self._terminoPagoGlosa = truncate(value, 100)
+        self.__terminoPagoGlosa = truncate(value, 100)
 
     def __init__(self):
         self.TipoDTE = DTEType.NOT_SET

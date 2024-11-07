@@ -1,32 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from enum import Enum
-
-# Enumeraciones y clases auxiliares
-class ModalidadVenta(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class ClausulaCompraVenta(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class ViasdeTransporte(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class Puertos(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class UnidadMedida(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
-class Paises(Enum):
-    NotSet = 0
-    # Agregar otros valores si es necesario
-
+from SimpleFacturaSDK.enum.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises, TipoBulto
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

@@ -1,14 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from enum import Enum
+from SimpleFacturaSDK.enum.CodigosAduana import Paises
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
 
-# Definir la enumeración para los países
-class Paises(Enum):
-    NotSet = 0
-    # Agregar otros códigos de países según sea necesario
 
 @dataclass
 class Extranjero:
@@ -27,4 +24,4 @@ class Extranjero:
 
     def __init__(self):
         self.NumId = ''
-        self.Nacionalidad = Paises.NOT_SET
+        self.Nacionalidad = Paises.NotSet

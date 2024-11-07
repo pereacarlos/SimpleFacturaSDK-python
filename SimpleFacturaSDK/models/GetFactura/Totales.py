@@ -1,11 +1,9 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from enum import Enum
+from  SimpleFacturaSDK.enum.CodigosAduana import Moneda
 
-# Definición de la enumeración
-class Moneda(Enum):
-    NOT_SET = "NotSet"
-    # Agrega otros valores según sea necesario
+
 
 @dataclass
 class Totales:
@@ -30,7 +28,7 @@ class Totales:
     VlrPagar: int = 0
 
     def __init__(self):
-        self.TpoMoneda = Moneda.NOT_SET
+        self.TpoMoneda = Moneda.NotSet
         self.MntNeto = 0.0
         self.MntExe = 0.0
         self.MntBase = 0
