@@ -1,0 +1,39 @@
+{
+    "status": 200,
+    "message": "DTE encontrado",
+    "data": {
+        "ambiente": "Certificación",
+        "folioReutilizado": "No",
+        "importado": "No",
+        "codigoSii": 39,
+        "tipoDte": "Boleta Electrónica",
+        "estadoAcuse": "Pendiente",
+        "estadoSII": "Documento Aceptado con Reparos",
+        "fechaDte": "20-04-2023",
+        "fechaCreacion": "20-04-2023 17:22",
+        "folio": 12553,
+        "razonSocialReceptor": "Cliente Generico",
+        "rutReceptor": "66666666-6",
+        "trackId": 21356542,
+        "neto": 832,
+        "exento": 0,
+        "iva": 158,
+        "ivaTerceros": 0,
+        "ivaPropio": 0,
+        "totalImpuestosAdicionales": 0,
+        "total": 990,
+        "detalles": [
+            {
+                "nombre": "Alfajor",
+                "descripcion": "Sin Descripción",
+                "exento": "NO",
+                "precio": 990,
+                "cantidad": 1,
+                "totalImpuestos": 0,
+                "total": 990
+            }
+        ],
+        "referencias": []
+    },
+    "errors": null
+}
