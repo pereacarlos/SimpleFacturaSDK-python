@@ -2,87 +2,92 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 from enum import Enum
 
-# Definición de la enumeración
 class Moneda(Enum):
-    NOT_SET = "NotSet"
-    # Agrega otros valores según sea necesario
+    NotSet = 0
+    # Agregar otros valores de moneda según sea necesario
+
+@dataclass
+class ImpuestosRetencionesOtraMoneda:
+    # Implementación de ImpuestosRetencionesOtraMoneda
+    pass
 
 @dataclass
 class OtraMoneda:
-    TpoMoneda: Moneda = Moneda.NOT_SET
-    __tipoCambio: float = 0.0
-    __montoNeto: float = 0.0
-    __montoExento: float = 0.0
-    __montoBaseFaenamientoCarne: float = 0.0
-    __montoBaseMargenComercial: float = 0.0
-    __VAOtrMnda: float = 0.0
-    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]] = None
-    _IVANoRetenido: float = 0.0
-    _montoTotal: float = 0.0
+    TpoMoneda: Moneda = Moneda.NotSet
+    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]] = field(default_factory=list)
+
+    __tipoCambio: float = field(default=0.0, init=False)
+    __montoNeto: float = field(default=0.0, init=False)
+    __montoExento: float = field(default=0.0, init=False)
+    __montoBaseFaenamientoCarne: float = field(default=0.0, init=False)
+    __montoBaseMargenComercial: float = field(default=0.0, init=False)
+    __IVA: float = field(default=0.0, init=False)
+    __IVANoRetenido: float = field(default=0.0, init=False)
+    __montoTotal: float = field(default=0.0, init=False)
 
     @property
     def TpoCambio(self) -> float:
-        return round(self._tipoCambio, 4)
+        return round(self.__tipoCambio, 4)
 
     @TpoCambio.setter
     def TpoCambio(self, value: float):
-        self._tipoCambio = value
+        self.__tipoCambio = value
 
     @property
     def MntNetoOtrMnda(self) -> float:
-        return round(self._montoNeto, 4)
+        return round(self.__montoNeto, 4)
 
     @MntNetoOtrMnda.setter
     def MntNetoOtrMnda(self, value: float):
-        self._montoNeto = value
+        self.__montoNeto = value
 
     @property
     def MntExeOtrMnda(self) -> float:
-        return round(self._montoExento, 4)
+        return round(self.__montoExento, 4)
 
     @MntExeOtrMnda.setter
     def MntExeOtrMnda(self, value: float):
-        self._montoExento = value
+        self.__montoExento = value
 
     @property
     def MntFaeCarneOtrMnda(self) -> float:
-        return round(self._montoBaseFaenamientoCarne, 4)
+        return round(self.__montoBaseFaenamientoCarne, 4)
 
     @MntFaeCarneOtrMnda.setter
     def MntFaeCarneOtrMnda(self, value: float):
-        self._montoBaseFaenamientoCarne = value
+        self.__montoBaseFaenamientoCarne = value
 
     @property
     def MntMargComOtrMnda(self) -> float:
-        return round(self._montoBaseMargenComercial, 4)
+        return round(self.__montoBaseMargenComercial, 4)
 
     @MntMargComOtrMnda.setter
     def MntMargComOtrMnda(self, value: float):
-        self._montoBaseMargenComercial = value
+        self.__montoBaseMargenComercial = value
 
     @property
     def IVAOtrMnda(self) -> float:
-        return round(self._IVA, 4)
+        return round(self.__IVA, 4)
 
     @IVAOtrMnda.setter
     def IVAOtrMnda(self, value: float):
-        self._IVA = value
+        self.__IVA = value
 
     @property
     def IVANoRetOtrMnda(self) -> float:
-        return round(self._IVANoRetenido, 4)
+        return round(self.__IVANoRetenido, 4)
 
     @IVANoRetOtrMnda.setter
     def IVANoRetOtrMnda(self, value: float):
-        self._IVANoRetenido = value
+        self.__IVANoRetenido = value
 
     @property
     def MntTotOtrMnda(self) -> float:
-        return round(self._montoTotal, 4)
+        return round(self.__montoTotal, 4)
 
     @MntTotOtrMnda.setter
     def MntTotOtrMnda(self, value: float):
-        self._montoTotal = value
+        self.__montoTotal = value
 
     def __init__(self):
         self.TpoMoneda = Moneda.NOT_SET

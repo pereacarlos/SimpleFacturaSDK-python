@@ -9,7 +9,7 @@ class Moneda(Enum):
 
 @dataclass
 class Totales:
-    TpoMoneda: Moneda = Moneda.NOT_SET
+    TpoMoneda: Moneda = Moneda.NotSet
     MntNeto: float = 0.0
     MntExe: float = 0.0
     MntBase: int = 0
@@ -18,11 +18,11 @@ class Totales:
     IVA: int = 0
     IVAProp: int = 0
     IVATerc: int = 0
-    ImptoReten: Optional[List[ImpuestosRetenciones]] = None
+    ImptoReten: Optional[List[ImpuestosRetenciones]] = field(default_factory=list)
     IVANoRet: int = 0
     CredEC: int = 0
     GrntDep: int = 0
-    Comisiones: Optional[List[Comisiones]] = None
+    Comisiones: Optional[List[Comisiones]] = field(default_factory=list)
     MntTotal: float = 0.0
     MontoNF: int = 0
     MontoPeriodo: int = 0

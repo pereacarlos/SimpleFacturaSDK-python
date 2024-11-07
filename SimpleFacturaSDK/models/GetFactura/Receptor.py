@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
+from Extranjero import Extranjero
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
@@ -7,39 +8,35 @@ def truncate(value: str, length: int) -> str:
 @dataclass
 class Receptor:
     RUTRecep: str = ''
-    __cdgIntRecep: str = ''
-    razonSocial: str = ''
-    Extranjero: Optional[str] = ''
-    __giroRecep: str = ''
-    __contacto: Optional[str] = ''
-    CorreoRecep: Optional[str] = ''
-    DirRecep: Optional[str] = field(default='', init=False)
-    __ComunaRecep: str = ''
+    RznSocRecep: str = ''
+    Extranjero: Optional[Extranjero] = None
+    CorreoRecep: Optional[str] = None
     CiudadRecep: str = ''
-    DirPostal: str = ''
     CmnaPostal: str = ''
     CiudadPostal: str = ''
-    
 
-
+    __codigoInterno: str = field(default="", init=False)
+    __giro: str = field(default="", init=False)
+    __contacto: str = field(default="", init=False)
+    __direccion: str = field(default="", init=False)
+    __comuna: str = field(default="", init=False)
+    __dirPostal: str = field(default="", init=False)
 
     @property
-    def CodigoIntRecep(self) -> Optional[str]:
-        return self.__cdgIntRecep
+    def CdgIntRecep(self) -> str:
+        return self.__codigoInterno
 
-    @CodigoIntRecep.setter
-    def CodigoIntRecep(self, value: Optional[str]):
-        self.__cdgIntRecep =  truncate(value, 20)
+    @CdgIntRecep.setter
+    def CdgIntRecep(self, value: str):
+        self.__codigoInterno = truncate(value, 20)
 
-    
     @property
-    def GiroRecep(self) -> Optional[str]:
-        return self.__giroRecep
+    def GiroRecep(self) -> str:
+        return self.__giro
 
     @GiroRecep.setter
-    def GiroRecep(self, value: Optional[str]):
-        self.__giroRecep =  truncate(value, 40)
-
+    def GiroRecep(self, value: str):
+        self.__giro = truncate(value, 40)
 
     @property
     def Contacto(self) -> Optional[str]:
@@ -47,33 +44,31 @@ class Receptor:
 
     @Contacto.setter
     def Contacto(self, value: Optional[str]):
-        self.__contacto =  truncate(value, 80)
+        self.__contacto = truncate(value, 80) if value else None
 
     @property
-    def DirRecep(self) -> str:
-        return self._direccion
+    def DirRecep(self) -> Optional[str]:
+        return self.__direccion
 
     @DirRecep.setter
-    def DirRecep(self, value: str):
-        self._direccion = truncate(value, 70)
+    def DirRecep(self, value: Optional[str]):
+        self.__direccion = truncate(value, 70) if value else None
 
     @property
-    def ComunaRecep(self) -> str:
-        return self.__ComunaRecep
+    def CmnaRecep(self) -> str:
+        return self.__comuna
 
-    @ComunaRecep.setter
-    def ComunaRecep(self, value: str):
-        self.__ComunaRecep = truncate(value, 20)
+    @CmnaRecep.setter
+    def CmnaRecep(self, value: str):
+        self.__comuna = truncate(value, 20)
 
     @property
     def DirPostal(self) -> str:
-        return self._dir_postal
+        return self.__dirPostal
 
     @DirPostal.setter
     def DirPostal(self, value: str):
-        self._dir_postal = truncate(value, 70)
-
-   
+        self.__dirPostal = truncate(value, 70)
 
     def __init__(self):
         self.RUTRecep = ''
