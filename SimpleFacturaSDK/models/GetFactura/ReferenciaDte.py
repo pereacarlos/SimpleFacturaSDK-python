@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from SimpleFacturaSDK.Enum.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 
 
 @dataclass

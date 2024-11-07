@@ -1,15 +1,15 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional
-from SimpleFacturaSDK.enum.TipoDTE import DTEType
-from SimpleFacturaSDK.enum.TipoDespacho import TipoDespachoEnum
-from SimpleFacturaSDK.enum.TipoTraslado import TipoTrasladoEnum
-from SimpleFacturaSDK.enum.TipoImpresion import TipoImpresionEnum
-from SimpleFacturaSDK.enum.IndicadorServicio import IndicadorServicioEnum
-from SimpleFacturaSDK.enum.FormaPago import FormaPagoEnum
-from SimpleFacturaSDK.enum.CodigosAduana import FormaPagoExportacionEnum
-from SimpleFacturaSDK.enum.MedioPago import MedioPagoEnum
-from SimpleFacturaSDK.enum.TipoCuentaPago import TipoCuentaPagoEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.TipoDespacho import TipoDespachoEnum
+from SimpleFacturaSDK.enumeracion.TipoTraslado import TipoTrasladoEnum
+from SimpleFacturaSDK.enumeracion.TipoImpresion import TipoImpresionEnum
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.enumeracion.FormaPago import FormaPagoEnum
+from SimpleFacturaSDK.enumeracion.CodigosAduana import FormaPagoExportacionEnum
+from SimpleFacturaSDK.enumeracion.MedioPago import MedioPagoEnum
+from SimpleFacturaSDK.enumeracion.TipoCuentaPago import TipoCuentaPagoEnum
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

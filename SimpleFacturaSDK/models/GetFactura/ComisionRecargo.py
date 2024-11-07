@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from SimpleFacturaSDK.enum.TipoRecargoComisionEnum import TipoRecargoComisionEnum
+from SimpleFacturaSDK.enumeracion.TipoRecargoComisionEnum import TipoRecargoComisionEnum
 @dataclass
 class ComisionRecargo:
     NroLinCom: int = 0

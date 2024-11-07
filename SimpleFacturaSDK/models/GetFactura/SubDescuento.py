@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from SimpleFacturaSDK.enum.TipoDescuento import ExpresionDineroEnum   
+from SimpleFacturaSDK.enumeracion.TipoDescuento import ExpresionDineroEnum   
 
 @dataclass
 class SubDescuento:

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from SimpleFacturaSDK.enum.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises, TipoBulto
+from SimpleFacturaSDK.enumeracion.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises, TipoBulto
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

@@ -5,8 +5,8 @@ from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
 from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
-from SimpleFacturaSDK.enum.TipoDTE import TipoDTE
-from SimpleFacturaSDK.enum.IndicadorServicio import IndicadorServicio
+from SimpleFacturaSDK.enumeracion.TipoDTE import TipoDTE
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicio
 
 
 @dataclass

@@ -1,7 +1,6 @@
 import json
+from models.GetFactura.Dte import Dte
 from models.GetFactura.ResponseDTE import ResponseDTE
-from requests import Response
-
 
 class FacturacionService:
     def __init__(self, session, base_url):

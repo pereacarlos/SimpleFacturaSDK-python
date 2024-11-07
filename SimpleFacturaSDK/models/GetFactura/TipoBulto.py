@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from SimpleFacturaSDK.enum.CodigosAduana import TipoBultoEnum
+from SimpleFacturaSDK.enumeracion.CodigosAduana import TipoBultoEnum
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

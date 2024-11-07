@@ -1,4 +1,4 @@
-from .Base import APIClient
+from Base import APIClient
 import base64
 import json
 from models.GetFactura.Credenciales import Credenciales
