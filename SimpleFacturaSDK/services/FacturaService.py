@@ -1,8 +1,10 @@
 import json
 
 class FacturacionService:
-    def __init__(self, session):
+    def __init__(self, session, base_url):
         self.session = session
+        self.base_url = base_url
+
 
     def obtener_pdf_dte(self, solicitud):
         url = "https://api.simplefactura.cl/dte/pdf"
@@ -37,7 +39,7 @@ class FacturacionService:
         
 
     def obtener_dte(self, solicitud):
-        url = "https://api.simplefactura.cl/documentIssued"
+        url =  f"{self.base_url}/documentIssued"
         response = self.session.post(url, data=json.dumps(solicitud))
         
         if response.status_code == 200:
@@ -88,7 +90,7 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {error_message}")
     
     def facturacion_individualV2_Exportacion(self, solicitud):
-        url = "https://api.simplefactura.cl/dte/exportacion/Casa Matriz"
+        url = f"{self.base_url}/invoiceV2/Casa_Matriz"
         response = self.session.post(url, data=json.dumps(solicitud))
         
         if response.status_code == 200:

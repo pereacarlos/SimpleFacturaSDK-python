@@ -23,5 +23,5 @@ class APIClient:
         })
         
         # Initialize services
-        self.Facturacion = FacturacionService(self.session)
+        self.Facturacion = FacturacionService(self.session, self.base_url)
         #self.Productos = ProductosService(self.session)
