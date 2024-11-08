@@ -243,7 +243,7 @@ class TipoBultoEnum(Enum):
 
 
 class Paises(Enum):
-    NOT_SET = (0, "No Asignado")
+    NotSet = (0, "No Asignado")
     SENEGAL = (101, "Senegal")
     GAMBIA = (102, "Gambia")
     GUINEA_BISSAU = (103, "Guinea Bissau")

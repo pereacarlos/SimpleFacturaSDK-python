@@ -70,3 +70,17 @@ class SubTotal:
         self.SubTotExeSTI = 0.0
         self.ValSubtotSTI = 0.0
         self.LineasDeta = []
+
+    def to_dict(self):
+
+        return {
+            "NroSTI": self.NroSTI,
+            "GlosaSTI": self.GlosaSTI,
+            "OrdenSTI": self.OrdenSTI,
+            "SubTotNetoSTI": self.SubTotNetoSTI,
+            "SubTotIVASTI": self.SubTotIVASTI,
+            "SubTotAdicSTI": self.SubTotAdicSTI,
+            "SubTotExeSTI": self.SubTotExeSTI,
+            "ValSubtotSTI": self.ValSubtotSTI,
+            "LineasDeta": self.LineasDeta
+        }

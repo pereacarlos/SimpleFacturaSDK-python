@@ -21,6 +21,12 @@ class CodigoItem:
     def VlrCodigo(self, value: str):
         self.__valorCodigo = value[:35] 
 
-    def __init__(self):
-        self.TpoCodigo = ''
-        self.VlrCodigo = ''
+    def __init__(self, TpoCodigo: str = '', VlrCodigo: str = ''):
+        self.TpoCodigo = TpoCodigo
+        self.VlrCodigo = VlrCodigo
+
+    def to_dict(self):
+        return {
+            "TpoCodigo": self.TpoCodigo,
+            "VlrCodigo": self.VlrCodigo
+        }

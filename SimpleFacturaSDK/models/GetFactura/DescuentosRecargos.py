@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from SimpleFacturaSDK.enumeracion.TipoMovimientoEnum import TipoMovimientoEnum
-from SimpleFacturaSDK.enumeracion.ExpresionDineroEnum import ExpresionDineroEnum
-from SimpleFacturaSDK.enumeracion.IndicadorExentoEnum import IndicadorExentoEnum
+from SimpleFacturaSDK.enumeracion.TipoMovimiento import TipoMovimientoEnum
+from SimpleFacturaSDK.enumeracion.ExpresionDinero import ExpresionDineroEnum
+from SimpleFacturaSDK.enumeracion.IndicadorExento import IndicadorExentoEnum
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
 

@@ -28,7 +28,7 @@ class Totales:
     SaldoAnterior: int = 0
     VlrPagar: int = 0
 
-    def __init__(self):
+    def __post_init__(self):
         self.TpoMoneda = Moneda.NotSet
         self.MntNeto = 0.0
         self.MntExe = 0.0

@@ -25,13 +25,13 @@ class DetalleDte:
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            Nombre=data.get('Nombre'),
-            Descripcion=data.get('Descripcion'),
-            Exento=data.get('Exento'),
-            Precio=data.get('Precio'),
-            Cantidad=data.get('Cantidad'),
-            TotalImpuestos=data.get('TotalImpuestos'),
-            Total=data.get('Total'),
+            Nombre=data.get('nombre'),
+            Descripcion=data.get('descripcion'),
+            Exento=data.get('exento'),
+            Precio=data.get('precio'),
+            Cantidad=data.get('cantidad'),
+            TotalImpuestos=data.get('totalImpuestos'),
+            Total=data.get('total'),
             Fecha=data.get('Fecha'),
             CodigoSii=data.get('CodigoSii'),
             TipoDTE=data.get('TipoDTE'),
