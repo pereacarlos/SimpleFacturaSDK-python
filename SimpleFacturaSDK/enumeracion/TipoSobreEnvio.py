@@ -4,6 +4,8 @@ class TipoSobreEnvio(Enum):
     AlSII = (0, "Al SII")
     AlReceptor = (1, "Al Receptor")
 
-    @property
-    def description(self):
-        return self.value[1]
+    def __new__(cls, value, description):
+        obj = object.__new__(cls)
+        obj._value_ = value  # Asignamos el valor interno del Enum
+        obj.description = description  # Asignamos la descripción
+        return obj

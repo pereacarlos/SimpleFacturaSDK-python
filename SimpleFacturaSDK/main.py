@@ -18,22 +18,23 @@ client_api = APIClient(username, password)
 
 solicitud = SolicitudPdfDte(
     credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        nombre_sucursal="Casa Matriz"
+        rut_emisor="76269769-6"
     ),
     dte_referenciado_externo=DteReferenciadoExterno(
-        folio=4117,
+        folio=2963,
         codigo_tipo_dte=33,
         ambiente=0
     )
 )
 try: 
-    # Obtener PDF
-    pdf = client_api.Facturacion.obtener_pdf(solicitud)
-    # Guardar PDF
-    with open("factura.pdf", "wb") as file:
-        file.write(pdf)
-    print("PDF guardado exitosamente", pdf)
+ 
+    #OBTENER SOBREXML
+    xml = client_api.Facturacion.obtener_sobreXml(solicitud, sobre=0)
+    ruta = "sobre.xml"
+    with open(ruta, "wb") as file:
+        file.write(xml)
+    print(f"Archivo guardado en {ruta}")
+
 except Exception as ex:
     print(f"Error: {str(ex)}")
 

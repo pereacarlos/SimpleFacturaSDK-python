@@ -2,6 +2,7 @@
 import json
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 
 class FacturacionService:
     def __init__(self, session, base_url):
@@ -14,6 +15,44 @@ class FacturacionService:
         response = self.session.post(url, json=solicitud.to_dict())
         contenidoRespuesta = response.text
         #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    def obtener_timbre(self, solicitud):
+        url = f"{self.base_url}/dte/timbre"
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    def obtener_xml(self, solicitud):
+        url = f"{self.base_url}/dte/xml"
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    def obtener_sobreXml(self, solicitud, sobre) -> bytes:
+        if isinstance(sobre, TipoSobreEnvio):
+            sobre_value = sobre.value
+        elif isinstance(sobre, int):
+            try:
+                sobre_enum = TipoSobreEnvio(sobre)
+                sobre_value = sobre_enum.value
+            except ValueError:
+                raise ValueError(f"El valor numérico de 'sobre' debe ser uno de {[e.value for e in TipoSobreEnvio]}, no '{sobre}'")
+        # Construir la URL con el valor numérico
+        url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
         if response.status_code == 200:
             return response.content
         else:

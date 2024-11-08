@@ -9,33 +9,28 @@
 
 
 -----------Timbre--------------------
-    timbre_response = client_api.Facturacion.obtener_timbre_dte(solicitud)
-    
-    timbre_data = json.loads(timbre_response)
-    
-    if 'data' in timbre_data:
-        timbre_base64 = timbre_data['data']
-
-        timbre_bytes = base64.b64decode(timbre_base64)
-        
-        # Save as PNG
+        # Obtener timbre
+    Timbre = client_api.Facturacion.obtener_timbre(solicitud)
+    Timbre_data = json.loads(Timbre)
+    if 'data' in Timbre_data:
+        timbre_base64 = Timbre_data['data']
+        timbre = base64.b64decode(timbre_base64)
         with open("timbre.png", "wb") as file:
-            file.write(timbre_bytes)
-        
-        print("Timbre obtenido correctamente y guardado como timbre.png")
+            file.write(timbre)
+        print("Timbre obtenido correctamente", timbre_base64)   
     else:
-        print("Error: No se encontró la clave 'data' en la respuesta.")
-        print("Respuesta completa:", timbre_data)
+        print("Error al obtener timbre")
+
+
 
 
 -------------------Obtener XML-------------------
-    xml_bytes = client_api.Facturacion.obtener_xml_dte(solicitud)
-    ruta = "dte.xml"  # Ruta donde se guardará el XML
-    with open(ruta, "wb") as f:
-        f.write(xml_bytes)
-    print("El XML se ha descargado correctamente.")
-        
-        '''
+ #OBTENER XML
+    xml = client_api.Facturacion.obtener_xml(solicitud)
+    ruta = "xml.xml"
+    with open(ruta, "wb") as file:
+        file.write(xml)
+    print("XML guardado en:", ruta)
 
 
 ------------# Obtener DTE--------------
