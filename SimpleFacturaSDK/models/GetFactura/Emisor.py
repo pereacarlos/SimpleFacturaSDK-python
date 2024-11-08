@@ -41,3 +41,24 @@ class Emisor:
         self._telefono = self.Telefono
         self._codigoVendedor = self.CdgVendedor
         self._idAdicionalEmisor = self.IdAdicEmisor
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            RUTEmisor=data.get('RUTEmisor'),
+            RznSoc=data.get('RznSoc'),
+            RznSocEmisor=data.get('RznSocEmisor'),
+            GiroEmis=data.get('GiroEmis'),
+            GiroEmisor=data.get('GiroEmisor'),
+            Telefono=data.get('Telefono'),
+            CorreoEmisor=data.get('CorreoEmisor'),
+            Acteco=data.get('Acteco'),
+            GuiaExport=GuiaExportacion.from_dict(data.get('GuiaExport')),
+            Sucursal=data.get('Sucursal'),
+            CdgSIISucur=data.get('CdgSIISucur'),
+            DirOrigen=data.get('DirOrigen'),
+            CmnaOrigen=data.get('CmnaOrigen'),
+            CiudadOrigen=data.get('CiudadOrigen'),
+            CdgVendedor=data.get('CdgVendedor'),
+            IdAdicEmisor=data.get('IdAdicEmisor')
+        )

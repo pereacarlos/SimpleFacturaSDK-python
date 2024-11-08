@@ -26,22 +26,25 @@ class Documento:
    
     Comisiones: Optional[List[ComisionRecargo]] = field(default_factory=list)
 
-    def __init__(self, Id: str = '', encabezado: Encabezado = None, Detalle: List[Detalle] = None, SubTotInfo: List[SubTotal] = None, DscRcgGlobal: List[DescuentosRecargos] = None, Referencia: List[Referencia] = None, Comisiones: List[ComisionRecargo] = None):
+    def __init__(self, Id: str = '', Encabezado: Encabezado = None, Detalle: List[Detalle] = None, SubTotInfo: List[SubTotal] = None, DscRcgGlobal: List[DescuentosRecargos] = None, Referencia: List[Referencia] = None, Comisiones: List[ComisionRecargo] = None):
         self.Id = Id
-        self.Encabezado = encabezado
+        self.Encabezado = Encabezado
         self.Detalle = Detalle
         self.SubTotInfo = SubTotInfo
         self.DscRcgGlobal = DscRcgGlobal
         self.Referencia = Referencia
         self.Comisiones = Comisiones
 
-    def to_dict(self):
-        return {
-            "Id": self.Id,
-            "Encabezado": self.Encabezado.to_dict() if self.Encabezado else None,
-            "Detalle": [x.to_dict() for x in self.Detalle] if self.Detalle else None,
-            "SubTotInfo": [x.to_dict() for x in self.SubTotInfo] if self.SubTotInfo else None,
-            "DscRcgGlobal": [x.to_dict() for x in self.DscRcgGlobal] if self.DscRcgGlobal else None,
-            "Referencia": [x.to_dict() for x in self.Referencia] if self.Referencia else None,
-            "Comisiones": [x.to_dict() for x in self.Comisiones] if self.Comisiones else None
-        }
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            Id=data.get('id'),
+            Encabezado=Encabezado.from_dict(data.get('Encabezado')) if data.get('Encabezado') else None,
+            Detalle=[Detalle.from_dict(d) for d in data.get('Detalle', [])] if data.get('Detalle') else [],
+            SubTotInfo=[SubTotal.from_dict(s) for s in data.get('SubTotInfo', [])] if data.get('SubTotInfo') else [],
+            DscRcgGlobal=[DescuentosRecargos.from_dict(d) for d in data.get('DscRcgGlobal', [])] if data.get('DscRcgGlobal') else [],
+            Referencia=[Referencia.from_dict(r) for r in data.get('Referencia', [])] if data.get('Referencia') else [],
+            Comisiones=[ComisionRecargo.from_dict(c) for c in data.get('Comisiones', [])] if data.get('Comisiones') else []
+        )
+
+        

@@ -48,3 +48,28 @@ class Totales:
         self.MontoPeriodo = 0
         self.SaldoAnterior = 0
         self.VlrPagar = 0
+
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            TpoMoneda=data.get('TpoMoneda'),
+            MntNeto=data.get('MntNeto'),
+            MntExe=data.get('MntExe'),
+            MntBase=data.get('MntBase'),
+            MntMargenCom=data.get('MntMargenCom'),
+            TasaIVA=data.get('TasaIVA'),
+            IVA=data.get('IVA'),
+            IVAProp=data.get('IVAProp'),
+            IVATerc=data.get('IVATerc'),
+            ImptoReten=[ImpuestosRetenciones.from_dict(d) for d in data.get('ImptoReten')],
+            IVANoRet=data.get('IVANoRet'),
+            CredEC=data.get('CredEC'),
+            GrntDep=data.get('GrntDep'),
+            Comisiones=[Comisiones.from_dict(d) for d in data.get('Comisiones')],
+            MntTotal=data.get('MntTotal'),
+            MontoNF=data.get('MontoNF'),
+            MontoPeriodo=data.get('MontoPeriodo'),
+            SaldoAnterior=data.get('SaldoAnterior'),
+            VlrPagar=data.get('VlrPagar')
+        )

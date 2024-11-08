@@ -18,28 +18,15 @@ class RequestDTE:
     TipoPago: Optional[str] = None
     Propina: Optional[int] = None
 
-    def __init__(self, documento: Optional[Documento] = None, emisor: Optional[Emisor] = None, receptor: Optional[Receptor] = None, folio: Optional[int] = None, TipoDTE: Optional[DTEType] = None, Observaciones: Optional[str] = None, Cajero: Optional[str] = None, TipoPago: Optional[str] = None, Propina: Optional[int] = None):
-        if emisor and receptor and folio and tipo:
-            self.Documento = documento
-            self.Documento.Encabezado.Emisor = emisor
-            self.Documento.Encabezado.Receptor = receptor
-            self.Documento.Encabezado.IdDoc.Folio = folio
-            self.Documento.Encabezado.IdDoc.TipoDTE = tipo
-            self.Documento.Encabezado.IdDoc.FchEmis = datetime.now()
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            Documento=Documento.from_dict(data.get('Documento')) if data.get('Documento') else None,
+            Exportaciones=Exportaciones.from_dict(data.get('Exportaciones')) if data.get('Exportaciones') else None,
+            Observaciones=data.get('Observaciones'),
+            Cajero=data.get('Cajero'),
+            TipoPago=data.get('TipoPago'),
+            Propina=data.get('Propina')
+        )
 
-            if tipo in [DTEType.BoletaElectronica, DTEType.BoletaElectronicaExenta]:
-                self.Documento.Encabezado.IdDoc.IndServicio = IndicadorServicioEnum.BoletaVentasYServicios
-
-        else:
-            self.Documento = None
-
-
-    def to_dict(self):
-        return {
-            "Documento": self.Documento.to_dict() if self.Documento else None,
-            "Exportaciones": self.Exportaciones.to_dict() if self.Exportaciones else None,
-            "Observaciones": self.Observaciones,
-            "Cajero": self.Cajero,
-            "TipoPago": self.TipoPago,
-            "Propina": self.Propina
-        }
+        

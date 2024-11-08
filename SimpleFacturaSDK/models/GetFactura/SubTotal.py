@@ -71,16 +71,16 @@ class SubTotal:
         self.ValSubtotSTI = 0.0
         self.LineasDeta = []
 
-    def to_dict(self):
-
-        return {
-            "NroSTI": self.NroSTI,
-            "GlosaSTI": self.GlosaSTI,
-            "OrdenSTI": self.OrdenSTI,
-            "SubTotNetoSTI": self.SubTotNetoSTI,
-            "SubTotIVASTI": self.SubTotIVASTI,
-            "SubTotAdicSTI": self.SubTotAdicSTI,
-            "SubTotExeSTI": self.SubTotExeSTI,
-            "ValSubtotSTI": self.ValSubtotSTI,
-            "LineasDeta": self.LineasDeta
-        }
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            NroSTI=data.get('NroSTI'),
+            GlosaSTI=data.get('GlosaSTI'),
+            OrdenSTI=data.get('OrdenSTI'),
+            SubTotNetoSTI=data.get('SubTotNetoSTI'),
+            SubTotIVASTI=data.get('SubTotIVASTI'),
+            SubTotAdicSTI=data.get('SubTotAdicSTI'),
+            SubTotExeSTI=data.get('SubTotExeSTI'),
+            ValSubtotSTI=data.get('ValSubtotSTI'),
+            LineasDeta=data.get('LineasDeta')
+        )

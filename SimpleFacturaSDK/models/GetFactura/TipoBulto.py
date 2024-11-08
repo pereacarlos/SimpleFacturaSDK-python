@@ -46,10 +46,13 @@ class TipoBulto:
     def EmisorSello(self, value: str):
         self.__emisorSello = truncate(value, 70)
 
-    def __init__(self):
-        self.CodTpoBultos = TipoBultoEnum.NotSet
-        self.CantBultos = 0
-        self.Marcas = ''
-        self.IdContainer = ''
-        self.Sello = ''
-        self.EmisorSello = ''
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            CodTpoBultos=data.get('CodTpoBultos'),
+            CantBultos=data.get('CantBultos'),
+            Marcas=data.get('Marcas'),
+            IdContainer=data.get('IdContainer'),
+            Sello=data.get('Sello'),
+            EmisorSello=data.get('EmisorSello')
+        )

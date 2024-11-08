@@ -12,6 +12,9 @@ class SubCantidad:
     def SubCod(self, value: str):
         self.__codigo = value[:35]
 
-    def __init__(self):
-        self.SubQty = 0.0
-        self.SubCod = ''
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            SubQty=data.get('SubQty'),
+            SubCod=data.get('SubCod')
+        )

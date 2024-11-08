@@ -40,20 +40,24 @@ class Receptor:
         self.__direccion = truncate(self.DirRecep, 70) if self.DirRecep else None
         self.__comuna = truncate(self.CmnaRecep, 20)
         self.__dirPostal = truncate(self.DirPostal, 70)
-        
-    def to_dict(self):
-        return {
-            "RUTRecep": self.RUTRecep,
-            "RznSocRecep": self.RznSocRecep,
-            "Extranjero": self.Extranjero.to_dict() if self.Extranjero else None,
-            "CorreoRecep": self.CorreoRecep,
-            "CiudadRecep": self.CiudadRecep,
-            "CmnaPostal": self.CmnaPostal,
-            "CiudadPostal": self.CiudadPostal,
-            "CdgIntRecep": self.__codigoInterno,
-            "GiroRecep": self.__giro,
-            "Contacto": self.__contacto,
-            "DirRecep": self.__direccion,
-            "CmnaRecep": self.__comuna,
-            "DirPostal": self.__dirPostal
-        }
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        extranjero = data.get('Extranjero')
+        if extranjero:
+            extranjero = Extranjero.from_dict(extranjero)
+        return cls(
+            RUTRecep=data.get('RUTRecep'),
+            RznSocRecep=data.get('RznSocRecep'),
+            Extranjero=extranjero,
+            CorreoRecep=data.get('CorreoRecep'),
+            CiudadRecep=data.get('CiudadRecep'),
+            CmnaPostal=data.get('CmnaPostal'),
+            CiudadPostal=data.get('CiudadPostal'),
+            CdgIntRecep=data.get('CdgIntRecep'),
+            GiroRecep=data.get('GiroRecep'),
+            Contacto=data.get('Contacto'),
+            DirRecep=data.get('DirRecep'),
+            CmnaRecep=data.get('CmnaRecep'),
+            DirPostal=data.get('DirPostal')
+        )

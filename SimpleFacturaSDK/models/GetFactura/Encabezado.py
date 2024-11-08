@@ -27,4 +27,19 @@ class Encabezado:
         self.Transporte = Transporte
         self.Totales = Totales
         self.OtraMoneda = OtraMoneda
+
+
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            IdDoc=IdentificacionDTE.from_dict(data.get('IdDoc')),
+            Emisor=Emisor.from_dict(data.get('Emisor')),
+            RUTMandante=data.get('RUTMandante', ''),
+            Receptor=Receptor.from_dict(data.get('Receptor')),
+            RUTSolicita=data.get('RUTSolicita', ''),
+            Transporte=Transporte.from_dict(data.get('Transporte')) if data.get('Transporte') else None,
+            Totales=Totales.from_dict(data.get('Totales')),
+            OtraMoneda=OtraMoneda.from_dict(data.get('OtraMoneda')) if data.get('OtraMoneda') else None
+        )
         
