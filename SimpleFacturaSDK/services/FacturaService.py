@@ -41,18 +41,20 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
     def obtener_sobreXml(self, solicitud, sobre) -> bytes:
-        if isinstance(sobre, TipoSobreEnvio):
-            sobre_value = sobre.value
-        elif isinstance(sobre, int):
+        if isinstance(sobre, int):
             try:
                 sobre_enum = TipoSobreEnvio(sobre)
                 sobre_value = sobre_enum.value
             except ValueError:
-                raise ValueError(f"El valor numérico de 'sobre' debe ser uno de {[e.value for e in TipoSobreEnvio]}, no '{sobre}'")
-        # Construir la URL con el valor numérico
+                allowed_values = [e.value for e in TipoSobreEnvio]
+                raise ValueError(f"El valor numérico de 'sobre' debe ser uno de {allowed_values}, no '{sobre}'")
+        else:
+            raise ValueError("El parámetro 'sobre' debe ser un número entero.")
+
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
         response = self.session.post(url, json=solicitud.to_dict())
         contenidoRespuesta = response.text
+
         if response.status_code == 200:
             return response.content
         else:
