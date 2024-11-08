@@ -1,10 +1,11 @@
 '''Obtener PDF y timbre
 
-    pdf_bytes = client_api.Facturacion.obtener_pdf_dte(solicitud)
-    ruta = "dte.pdf"  # Ruta donde se guardará el PDF
-    with open(ruta, "wb") as f:
-        f.write(pdf_bytes)
-    print("El PDF se ha descargado correctamente.")
+     # Obtener PDF
+    pdf = client_api.Facturacion.obtener_pdf(solicitud)
+    # Guardar PDF
+    with open("factura.pdf", "wb") as file:
+        file.write(pdf)
+    print("PDF guardado exitosamente", pdf)
 
 
 -----------Timbre--------------------
@@ -38,11 +39,14 @@
 
 
 ------------# Obtener DTE--------------
-    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
-    ruta = "dte.json"  # Ruta donde se guardará el DTE
-    with open(ruta, "wb") as f:
-        f.write(dte_bytes)
-    print("El DTE se ha descargado correctamente.")
+   solicitud_dict = solicitud.to_dict() 
+    # Obtener DTE
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud_dict)
+    ruta = "dte.json"
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(dte_bytes, f, default=lambda o: o.__dict__, ensure_ascii=False)
+    
+    print("El DTE se ha descargado correctamente.", dte_bytes.folio)
 
 
 -----------   # Obtener sobre XML----------

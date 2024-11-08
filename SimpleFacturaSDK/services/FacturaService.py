@@ -8,19 +8,29 @@ class FacturacionService:
         self.session = session
         self.base_url = base_url
 
+
+    def obtener_pdf(self, solicitud):
+        url = f"{self.base_url}/dte/pdf"
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
     def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
         response = self.session.post(url, json=solicitud)
         contenidoRespuesta = response.text
-        print("Respuesta completa:", contenidoRespuesta)
+        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
             resultado = Response.from_dict(response_json, data_type=Dte)
-            # Aquí puedes acceder a los datos directamente
-            print("Status:", resultado.status)
-            print("Message:", resultado.message)
-            print("DTE Data:", resultado.data)  # Accede a los datos del DTE
-            return resultado.data  # Retorna el objeto Dte directamente
+             #print("Status:", resultado.status)
+             #print("Message:", resultado.message)
+             #print("DTE Data:", resultado.data) 
+            return resultado.data
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 

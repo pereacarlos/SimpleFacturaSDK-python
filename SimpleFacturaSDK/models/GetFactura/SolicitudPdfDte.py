@@ -1,4 +1,3 @@
-
 class SolicitudPdfDte:
     def __init__(self, credenciales, dte_referenciado_externo):
         self.credenciales = credenciales

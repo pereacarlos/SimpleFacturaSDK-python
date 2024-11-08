@@ -1,1 +1,42 @@
-{"ambiente": "Certificación", "folioReutilizado": "No", "folio": 12553, "importado": "No", "codigoSii": 39, "tipoDte": "Boleta Electrónica", "estadoAcuse": "Pendiente", "estadoSII": "Documento Aceptado con Reparos", "fechaDte": "20-04-2023", "fechaCreacion": "20-04-2023 17:22", "razonSocialReceptor": "Cliente Generico", "rutReceptor": "66666666-6", "trackId": 21356542, "neto": 832, "exento": 0, "iva": 158, "ivaTerceros": 0, "ivaPropio": 0, "totalImpuestosAdicionales": 0, "total": 990, "detalles": [{"Nombre": null, "Descripcion": null, "Exento": null, "Precio": null, "Cantidad": null, "TotalImpuestos": null, "Total": null, "Fecha": null, "CodigoSii": null, "TipoDTE": null, "CantidadEmitidos": null, "CantidadAnulados": null, "TotalNeto": null, "TotalExento": null, "TotalIva": null}], "referencias": []}
+{
+    "ambiente": "Certificación",
+    "folioReutilizado": "No",
+    "folio": 12553,
+    "importado": "No",
+    "codigoSii": 39,
+    "tipoDte": "Boleta Electrónica",
+    "estadoAcuse": "Pendiente",
+    "estadoSII": "Documento Aceptado con Reparos",
+    "fechaDte": "20-04-2023",
+    "fechaCreacion": "20-04-2023 17:22",
+    "razonSocialReceptor": "Cliente Generico",
+    "rutReceptor": "66666666-6",
+    "trackId": 21356542,
+    "neto": 832,
+    "exento": 0,
+    "iva": 158,
+    "ivaTerceros": 0,
+    "ivaPropio": 0,
+    "totalImpuestosAdicionales": 0,
+    "total": 990,
+    "detalles": [
+        {
+            "Nombre": null,
+            "Descripcion": null,
+            "Exento": null,
+            "Precio": null,
+            "Cantidad": null,
+            "TotalImpuestos": null,
+            "Total": null,
+            "Fecha": null,
+            "CodigoSii": null,
+            "TipoDTE": null,
+            "CantidadEmitidos": null,
+            "CantidadAnulados": null,
+            "TotalNeto": null,
+            "TotalExento": null,
+            "TotalIva": null
+        }
+    ],
+    "referencias": []
+}
