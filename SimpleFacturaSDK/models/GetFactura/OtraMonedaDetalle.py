@@ -49,10 +49,13 @@ class OtraMonedaDetalle:
     def MontoItemOtrMnda(self, value: float):
         self.__valor = value
 
-    def __init__(self):
-        self.PrcOtrMon = 0.0
-        self.Moneda = ''
-        self.FctConv = 0.0
-        self.DctoOtrMnda = 0.0
-        self.RecargoOtrMnda = 0.0
-        self.MontoItemOtrMnda = 0.0
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            PrcOtrMon=data.get('PrcOtrMon'),
+            Moneda=data.get('Moneda'),
+            FctConv=data.get('FctConv'),
+            DctoOtrMnda=data.get('DctoOtrMnda'),
+            RecargoOtrMnda=data.get('RecargoOtrMnda'),
+            MontoItemOtrMnda=data.get('MontoItemOtrMnda')
+        )

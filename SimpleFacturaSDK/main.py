@@ -36,9 +36,9 @@ solicitud = RequestDTE(
     Documento=Documento(
         Encabezado=Encabezado(
             IdDoc=IdentificacionDTE(
-                TipoDTE=DTEType.FacturaElectronica,
+                TipoDTE=33,
                 FchEmis=datetime.now(),
-                FmaPago=FormaPagoEnum.Contado,
+                FmaPago=1,
                 FchVenc=datetime.now() + relativedelta(months=6)
             ),
             Emisor=Emisor(
@@ -89,8 +89,9 @@ solicitud = RequestDTE(
     TipoPago="30 dias"
 )
 try: 
-    
-    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud, "Casa_Matriz")
+
+    solicitud_dict = solicitud.to_dict()
+    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
     print("carlos")
 
 

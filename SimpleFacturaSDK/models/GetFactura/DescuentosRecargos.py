@@ -40,11 +40,14 @@ class DescuentosRecargos:
     def valor_dr_otr_mnda(self, value: float):
         self.__valorOtroMnda = value
 
-    def __init__(self):
-        self.NroLinDR = 0
-        self.TpoMov = TipoMovimientoEnum.NotSet
-        self.GlosaDR = ''
-        self.TpoValor = ExpresionDineroEnum.NotSet
-        self.ValorDR = 0.0
-        self.ValorDROtrMnda = 0.0
-        self.IndExeDR = IndicadorExentoEnum.NotSet
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            nro_lin_dr=data.get('nroLinDR'),
+            tpo_mov=TipoMovimientoEnum(data.get('tpoMov')),
+            glosa_dr=data.get('glosaDR'),
+            tpo_valor=ExpresionDineroEnum(data.get('tpoValor')),
+            valor_dr=data.get('valorDR'),
+            valorOtroMnda=data.get('valorOtroMnda'),
+            ind_exe_dr=IndicadorExentoEnum(data.get('indExeDR'))
+        )

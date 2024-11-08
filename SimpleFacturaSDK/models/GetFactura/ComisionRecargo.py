@@ -27,11 +27,14 @@ class ComisionRecargo:
     def TasaComision(self, value: float):
         self._tasa = value
 
-    def __init__(self):
-        self.NroLinCom = 0
-        self.TipoMovim = TipoRecargoComisionEnum.NotSet
-        self.Glosa = ''
-        self.TasaComision = 0.0
-        self.ValComNeto = 0
-        self.ValComExe = 0
-        self.ValComIVA = 0
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            NroLinCom=data.get('NroLinCom'),
+            TipoMovim=TipoRecargoComisionEnum(data.get('TipoMovim')),
+            Glosa=data.get('Glosa'),
+            TasaComision=data.get('TasaComision'),
+            ValComNeto=data.get('ValComNeto'),
+            ValComExe=data.get('ValComExe'),
+            ValComIVA=data.get('ValComIVA')
+        )

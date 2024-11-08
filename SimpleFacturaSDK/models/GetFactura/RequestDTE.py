@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import Optional
 from datetime import datetime
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento
@@ -29,4 +29,5 @@ class RequestDTE:
             Propina=data.get('Propina')
         )
 
-        
+    def to_dict(self):
+        return asdict(self)

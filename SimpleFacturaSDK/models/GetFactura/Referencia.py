@@ -31,12 +31,15 @@ class Referencia:
     def RazonRef(self, value: str):
         self._razonReferencia = value[:90]
 
-    def __init__(self):
-        self.NroLinRef = 0
-        self.TpoDocRef = ''
-        self.FolioRef = ''
-        self.FchRef = datetime.min
-        self.IndGlobal = 0
-        self.RUTOtr = ''
-        self.CodRef = TipoReferenciaEnum.NotSet
-        self.RazonRef = ''
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            NroLinRef=data.get('NroLinRef'),
+            TpoDocRef=data.get('TpoDocRef'),
+            IndGlobal=data.get('IndGlobal'),
+            FolioRef=data.get('FolioRef'),
+            RUTOtr=data.get('RUTOtr'),
+            FechaDocumentoReferenciaString=data.get('FchRef'),
+            CodRef=TipoReferenciaEnum(data.get('CodRef')),
+            RazonRef=data.get('RazonRef')
+        )
