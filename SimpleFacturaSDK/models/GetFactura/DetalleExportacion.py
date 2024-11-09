@@ -21,129 +21,91 @@ class DetalleExportacion:
     CdgItem: Optional[List[CodigoItem]] = None
     IndExe: IndicadorFacturacionExencionEnum = IndicadorFacturacionExencionEnum.NotSet
     Retenedor: Optional[Retenedor] = None
+    NmbItem: str = ""
+    DscItem: str = ""
+    QtyRef: float = 0.0
+    UnmdRef: str = ""
+    PrcRef: float = 0.0
+    QtyItem: float = 0.0
     Subcantidad: Optional[List[SubCantidad]] = None
-    FechaElaboracionString: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
-    FechaVencimientoString: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
+    FechaElaboracionString: str = ""
+    FchElabor = datetime.now() 
+    FechaVencimientoString: str = ""
+    FchVenc = datetime.now()
+    UnmdItem: str = ""
+    PrcItem: float = 0.0
     OtrMnda: Optional[OtraMonedaDetalle] = None
+    DescuentoPct: float = 0.0
+    DescuentoMonto: int = 0
     SubDscto: Optional[List[SubDescuento]] = None
+    RecargoPct: float = 0.0
+    RecargoMonto: int = 0
     SubRecargo: Optional[List[SubRecargo]] = None
     CodigoImpuestoAdicional: Optional[List[TipoImpuestoEnum]] = None
+    MontoItem: float = 0.0
 
-    __nombre: str = field(default="", init=False)
-    __descripcion: str = field(default="", init=False)
-    __cantidadUnidadMedidaReferencia: float = field(default=0.0, init=False)
-    __unidadMedidaReferencia: str = field(default="", init=False)
-    __precioUnitarioUnidadMedidaReferencia: float = field(default=0.0, init=False)
-    __cantidad: float = field(default=0.0, init=False)
-    __unidadMedida: str = field(default="", init=False)
+
+
+    __nombre: str = field(default="", init=False, metadata={"max_length": 80})
+    __descripcion: str = field(default="", init=False, metadata={"max_length": 1000})
+    __cantidadUnidadMedidaReferencia: float = field(default=0.0, init=False, metadata={"decimals": 6})
+    __unidadMedidaReferencia: str = field(default="", init=False, metadata={"max_length": 4})
+    __precioUnitarioUnidadMedidaReferencia: float = field(default=0.0, init=False, metadata={"decimals": 6})
+    __cantidad: float = field(default=0.0, init=False, metadata={"decimals": 6})
+    __unidadMedida: str = field(default="", init=False, metadata={"max_length": 4})
     __precio: float = field(default=0.0, init=False)
-    __descuentoPorcentaje: float = field(default=0.0, init=False)
-    __recargoPorcentaje: float = field(default=0.0, init=False)
-    __montoItem: float = field(default=0.0, init=False)
+    __descuentoPorcentaje: float = field(default=0.0, init=False, metadata={"decimals": 2})
+    __recargoPorcentaje: float = field(default=0.0, init=False, metadata={"decimals": 2})
+    __montoItem: float = field(default=0.0, init=False, metadata={"decimals": 6})
 
-    @property
-    def nmb_item(self) -> str:
-        return self._nmb_item
-
-    @nmb_item.setter
-    def nmb_item(self, value: str):
-        self._nmb_item = truncate(value, 80)
-
-    @property
-    def dsc_item(self) -> str:
-        return self._dsc_item
-
-    @dsc_item.setter
-    def dsc_item(self, value: str):
-        self._dsc_item = truncate(value, 1000)
-
-    @property
-    def qty_ref(self) -> float:
-        return round(self._qty_ref, 6)
-
-    @qty_ref.setter
-    def qty_ref(self, value: float):
-        self._qty_ref = value
-
-    @property
-    def prc_ref(self) -> float:
-        return round(self._prc_ref, 6)
-
-    @prc_ref.setter
-    def prc_ref(self, value: float):
-        self._prc_ref = value
-
-    @property
-    def qty_item(self) -> float:
-        return round(self._qty_item, 6)
-
-    @qty_item.setter
-    def qty_item(self, value: float):
-        self._qty_item = value
-
-    @property
-    def descuento_pct(self) -> float:
-        return round(self._descuento_pct, 2)
-
-    @descuento_pct.setter
-    def descuento_pct(self, value: float):
-        self._descuento_pct = value
-
-    @property
-    def recargo_pct(self) -> float:
-        return round(self._recargo_pct, 2)
-
-    @recargo_pct.setter
-    def recargo_pct(self, value: float):
-        self._recargo_pct = value
-
-    @property
-    def monto_item(self) -> float:
-        return round(self._monto_item, 6)
-
-    @monto_item.setter
-    def monto_item(self, value: float):
-        self._monto_item = value
-
-    @property
-    def fecha_elaboracion(self) -> Optional[str]:
-        return self._fecha_elaboracion.strftime("%Y-%m-%d") if self._fecha_elaboracion else None
-
-    @fecha_elaboracion.setter
-    def fecha_elaboracion(self, value: datetime):
-        self._fecha_elaboracion = value
-
-    @property
-    def fecha_vencimiento(self) -> Optional[str]:
-        return self._fecha_vencimiento.strftime("%Y-%m-%d") if self._fecha_vencimiento else None
-
-    @fecha_vencimiento.setter
-    def fecha_vencimiento(self, value: datetime):
-        self._fecha_vencimiento = value
+    def __post_init__(self):
+        self.FchVenc = datetime.strptime(self.FechaVencimientoString, "%Y-%m-%d") if self.FechaVencimientoString else None
+        self.FchElabor = datetime.strptime(self.FechaElaboracionString, "%Y-%m-%d") if self.FechaElaboracionString else None
+        self.__nombre = truncate(self.NmbItem, 80)
+        self.__descripcion = truncate(self.DscItem, 1000)
+        self.__cantidadUnidadMedidaReferencia = round(self.QtyRef, 6)
+        self.__unidadMedidaReferencia = truncate(self.UnmdRef, 4)
+        self.__precioUnitarioUnidadMedidaReferencia = round(self.PrcRef, 6)
+        self.__cantidad = round(self.QtyItem, 6)
+        self.__unidadMedida = truncate(self.UnmdItem, 4)
+        self.__precio = self.PrcItem
+        self.__descuentoPorcentaje = round(self.DescuentoPct, 2)
+        self.__recargoPorcentaje = round(self.RecargoPct, 2)
+        self.__montoItem = round(self.MontoItem, 6)
 
 
-    def __init__(self):
-        self.NroLinDet = 0
-        self.NmbItem = ''
-        self.MontoItem = 0.0
-        self.CdgItem = []
-        self.IndExe = IndicadorFacturacionExencionEnum.NOT_SET
-        self.Retenedor = None
-        self.DscItem = ''
-        self.QtyRef = 0.0
-        self.UnmdRef = ''
-        self.PrcRef = 0.0
-        self.QtyItem = 0.0
-        self.Subcantidad = []
-        self.FchElabor = datetime.min
-        self.FchVencim = datetime.min
-        self.UnmdItem = ''
-        self.PrcItem = 0.0
-        self.OtrMnda = None
-        self.DescuentoPct = 0.0
-        self.DescuentoMonto = 0
-        self.SubDscto = []
-        self.RecargoPct = 0.0
-        self.RecargoMonto = 0
-        self.SubRecargo = []
-        self.CodigoImpuestoAdicional = []
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            NroLinDet=data.get('NroLinDet'),
+            CdgItem=[CodigoItem.from_dict(item) for item in data.get('CdgItem')],
+            IndExe=IndicadorFacturacionExencionEnum(data.get('IndExe')),
+            Retenedor=Retenedor.from_dict(data.get('Retenedor')),
+            NmbItem=data.get('NmbItem'),
+            DscItem=data.get('DscItem'),
+            QtyRef=data.get('QtyRef'),
+            UnmdRef=data.get('UnmdRef'),
+            PrcRef=data.get('PrcRef'),
+            QtyItem=data.get('QtyItem'),
+            Subcantidad=[SubCantidad.from_dict(item) for item in data.get('Subcantidad')],
+            FechaElaboracionString=data.get('FechaElaboracionString'),
+            FchElabor=data.get('FchElabor'),
+            FechaVencimientoString=data.get('FechaVencimientoString'),
+            FchVenc=data.get('FchVenc'),
+            UnmdItem=data.get('UnmdItem'),
+            PrcItem=data.get('PrcItem'),
+            OtrMnda=OtraMonedaDetalle.from_dict(data.get('OtrMnda')),
+            DescuentoPct=data.get('DescuentoPct'),
+            DescuentoMonto=data.get('DescuentoMonto'),
+            SubDscto=[SubDescuento.from_dict(item) for item in data.get('SubDscto')],
+            RecargoPct=data.get('RecargoPct'),
+            RecargoMonto=data.get('RecargoMonto'),
+            SubRecargo=[SubRecargo.from_dict(item) for item in data.get('SubRecargo')],
+            CodigoImpuestoAdicional=[TipoImpuestoEnum(item) for item in data.get('CodigoImpuestoAdicional')],
+            MontoItem=data.get('MontoItem')
+        )
+
+
+
+

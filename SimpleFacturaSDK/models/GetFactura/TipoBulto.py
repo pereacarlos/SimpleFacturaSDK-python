@@ -8,44 +8,23 @@ def truncate(value: str, length: int) -> str:
 class TipoBulto:
     CodTpoBultos: TipoBultoEnum = TipoBultoEnum.NotSet
     CantBultos: int = 0
+    Marcas: str = ""
+    IdContainer: str = ""
+    Sello: str = ""
+    EmisorSello: str = ""
 
-    __marcas: str = field(default="", init=False)
-    __idContainer: str = field(default="", init=False)
-    __sello: str = field(default="", init=False)
-    __emisorSello: str = field(default="", init=False)
+    __marcas: str = field(default="", init=False, metadata={"max_length": 255})
+    __idContainer: str = field(default="", init=False, metadata={"max_length": 25})
+    __sello: str = field(default="", init=False, metadata={"max_length": 20})
+    __emisorSello: str = field(default="", init=False, metadata={"max_length": 70})
 
-    @property
-    def Marcas(self) -> str:
-        return self.__marcas
+    def __post_init__(self):
+        self.__marcas = truncate(self.Marcas, 255)
+        self.__idContainer = truncate(self.IdContainer, 25)
+        self.__sello = truncate(self.Sello, 20)
+        self.__emisorSello = truncate(self.EmisorSello, 70)
 
-    @Marcas.setter
-    def Marcas(self, value: str):
-        self.__marcas = truncate(value, 255)
-
-    @property
-    def IdContainer(self) -> str:
-        return self.__idContainer
-
-    @IdContainer.setter
-    def IdContainer(self, value: str):
-        self.__idContainer = truncate(value, 25)
-
-    @property
-    def Sello(self) -> str:
-        return self.__sello
-
-    @Sello.setter
-    def Sello(self, value: str):
-        self.__sello = truncate(value, 20)
-
-    @property
-    def EmisorSello(self) -> str:
-        return self.__emisorSello
-
-    @EmisorSello.setter
-    def EmisorSello(self, value: str):
-        self.__emisorSello = truncate(value, 70)
-
+    
     @classmethod
     def from_dict(cls, data: dict):
         return cls(

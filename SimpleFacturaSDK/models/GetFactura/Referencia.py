@@ -3,6 +3,9 @@ from typing import Optional
 from datetime import datetime
 from SimpleFacturaSDK.enumeracion.TipoReferencia import TipoReferenciaEnum
 
+def truncate(value: str, length: int) -> str:
+    return value[:length] if value else ''
+
 @dataclass
 class Referencia:
     NroLinRef: int = 0
@@ -11,26 +14,15 @@ class Referencia:
     FolioRef: str = ''
     RUTOtr: str = ''
     FechaDocumentoReferenciaString: str = ''
-    
+    FchRef = datetime.strptime(FechaDocumentoReferenciaString, '%Y-%m-%d')
     CodRef: TipoReferenciaEnum = TipoReferenciaEnum.NotSet
-    _razonReferencia: str = ''
-    @property
-    def FchRef(self) -> datetime:
-        return datetime.strptime(self.FechaDocumentoReferenciaString, "%Y-%m-%d")
+    RazonRef: str = ''
 
-    @FchRef.setter
-    def FchRef(self, value: datetime):
-        self.FechaDocumentoReferenciaString = value.strftime("%Y-%m-%d")
+    _razonReferencia: str = field(default="", metadata={"max_length": 100})
 
-
-    @property
-    def RazonRef(self) -> str:
-        return self._razonReferencia
-
-    @RazonRef.setter
-    def RazonRef(self, value: str):
-        self._razonReferencia = value[:90]
-
+    def __post_init__(self):
+        self._razonReferencia = truncate(self.RazonRef, 90)
+  
     @classmethod
     def from_dict(cls, data: dict):
         return cls(

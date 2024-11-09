@@ -51,43 +51,12 @@ class IdentificacionDTE:
     PeriodoHasta: Optional[datetime] = None
 
     # Private fields for internal use
-    _cuentaPago: Optional[str] = field(init=False, default=None)
-    _bancoPago: Optional[str] = field(init=False, default=None)
-    _terminoPagoCodigo: Optional[str] = field(init=False, default=None)
-    _terminoPagoGlosa: Optional[str] = field(init=False, default=None)
+    __cuentaPago: Optional[str] = field(init=False, default=None)
+    __bancoPago: Optional[str] = field(init=False, default=None)
+    __terminoPagoCodigo: Optional[str] = field(init=False, default=None)
+    __terminoPagoGlosa: Optional[str] = field(init=False, default=None)
 
-    # Properties with truncation logic
-    @property
-    def NumCtaPago(self) -> str:
-        return truncate(self._cuentaPago, 20) if self._cuentaPago else ''
-
-    @NumCtaPago.setter
-    def NumCtaPago(self, value: str):
-        self._cuentaPago = value
-
-    @property
-    def BcoPago(self) -> str:
-        return truncate(self._bancoPago, 40) if self._bancoPago else ''
-
-    @BcoPago.setter
-    def BcoPago(self, value: str):
-        self._bancoPago = value
-
-    @property
-    def TermPagoCdg(self) -> str:
-        return truncate(self._terminoPagoCodigo, 4) if self._terminoPagoCodigo else ''
-
-    @TermPagoCdg.setter
-    def TermPagoCdg(self, value: str):
-        self._terminoPagoCodigo = value
-
-    @property
-    def TermPagoGlosa(self) -> str:
-        return truncate(self._terminoPagoGlosa, 100) if self._terminoPagoGlosa else ''
-
-    @TermPagoGlosa.setter
-    def TermPagoGlosa(self, value: str):
-        self._terminoPagoGlosa = value
+   
 
     def __post_init__(self):
         self.FchEmis = datetime.strptime(self.FechaEmisionString, '%Y-%m-%d') if self.FechaEmisionString else None
@@ -95,10 +64,10 @@ class IdentificacionDTE:
         self.FchCancel = datetime.strptime(self.FechaCancelacionString, '%Y-%m-%d') if self.FechaCancelacionString else None
         self.PeriodoDesde = datetime.strptime(self.PeriodoDesdeString, '%Y-%m-%d') if self.PeriodoDesdeString else None
         self.PeriodoHasta = datetime.strptime(self.PeriodoHastaString, '%Y-%m-%d') if self.PeriodoHastaString else None
-        self._cuentaPago = self.NumCtaPago
-        self._bancoPago = self.BcoPago
-        self._terminoPagoCodigo = self.TermPagoCdg
-        self._terminoPagoGlosa = self.TermPagoGlosa
+        self.__cuentaPago = self.NumCtaPago
+        self.__bancoPago = self.BcoPago
+        self.__terminoPagoCodigo = self.TermPagoCdg
+        self.__terminoPagoGlosa = self.TermPagoGlosa
    
 
     @classmethod

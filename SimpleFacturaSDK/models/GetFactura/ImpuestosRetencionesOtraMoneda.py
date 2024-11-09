@@ -4,27 +4,20 @@ from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
 @dataclass
 class ImpuestosRetencionesOtraMoneda:
     TipoImpOtrMnda: TipoImpuestoEnum = TipoImpuestoEnum.NotSet
-    __tasaImpuesto: float = field(default=0.0, init=False)
-    __montoImpuesto: float = field(default=0.0, init=False)
+    TasaImpOtrMnda: float = 0.0
+    VlrImpOtrMnda: float = 0.0
 
-    @property
-    def TasaImpOtrMnda(self) -> float:
-        return round(self.__tasaImpuesto, 2)
+    __tasaImpuesto: float = field(default=0.0, init=False, metadata={"decimals": 2})
+    __montoImpuesto: float = field(default=0.0, init=False, metadata={"decimals": 4})
 
-    @TasaImpOtrMnda.setter
-    def TasaImpOtrMnda(self, value: float):
-        self.__tasaImpuesto = value
+    def __post_init__(self):
+        self.__tasaImpuesto = round(self.TasaImpOtrMnda, 2)
+        self.__montoImpuesto = round(self.VlrImpOtrMnda, 4)
 
-    @property
-    def VlrImpOtrMnda(self) -> float:
-        return round(self.__montoImpuesto, 4)
-
-    @VlrImpOtrMnda.setter
-    def VlrImpOtrMnda(self, value: float):
-        self.__montoImpuesto = value
-
-
-    def __init__(self):
-        self.TipoImpOtrMnda = TipoImpuestoEnum.NotSet
-        self.TasaImpOtrMnda = 0.0
-        self.VlrImpOtrMnda = 0.0
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            TipoImpOtrMnda=TipoImpuestoEnum(data.get('TipoImpOtrMnda')),
+            TasaImpOtrMnda=data.get('TasaImpOtrMnda'),
+            VlrImpOtrMnda=data.get('VlrImpOtrMnda')
+        )

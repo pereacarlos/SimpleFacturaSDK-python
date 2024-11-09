@@ -8,38 +8,26 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class DescuentosRecargos:
-    nro_lin_dr: int = 0
-    tpo_mov: TipoMovimientoEnum = TipoMovimientoEnum.NotSet
-    __glosa_dr: str = field(default="", metadata={"max_length": 45})
+    NroLinDR: int = 0
+    TpoMov: TipoMovimientoEnum = TipoMovimientoEnum.NotSet
+    GlosaDR: str = ""
     tpo_valor: ExpresionDineroEnum = ExpresionDineroEnum.NotSet
-    __valor_dr: float = 0.0
-    __valorOtroMnda: float = 0.0
+    ValorDR: float = 0.0
+    ValorDROtrMnda: float = 0.0
+
+    __glosa: str = field(default="", metadata={"max_length": 45})
+    __valor: float = field(default=0.0, metadata={"decimals": 2})
+    __valorOtraMoneda: float = field(default=0.0, metadata={"decimals": 4})
     ind_exe_dr: IndicadorExentoEnum = IndicadorExentoEnum.NotSet
 
-    @property
-    def glosa_dr(self) -> str:
-        return self.__glosa_dr
+    def __post_init__(self):
+        self.__glosa = truncate(self.GlosaDR, 45)
+        self.__valor = round(self.ValorDR, 2)
+        self.__valorOtraMoneda = round(self.ValorDROtrMnda, 4)
 
-    @glosa_dr.setter
-    def glosa_dr(self, value: str):
-        self.__glosa_dr = truncate(value, 45)
+        
 
-    @property
-    def valor_dr(self) -> float:
-        return round(self.__valor_dr, 2)
-
-    @valor_dr.setter
-    def valor_dr(self, value: float):
-        self.__valor_dr = value
-
-    @property
-    def valorOtroMnda(self) -> float:
-        return round(self.__valorOtroMnda, 4)
-
-    @valorOtroMnda.setter
-    def valor_dr_otr_mnda(self, value: float):
-        self.__valorOtroMnda = value
-
+   
     @classmethod
     def from_dict(cls, data: dict):
         return cls(

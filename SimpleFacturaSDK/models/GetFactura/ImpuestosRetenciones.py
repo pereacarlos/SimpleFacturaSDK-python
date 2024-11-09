@@ -4,18 +4,17 @@ from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
 @dataclass
 class ImpuestosRetenciones:
     TipoImp: TipoImpuestoEnum = TipoImpuestoEnum.NotSet
+    TasaImp: float = 0.0
     MontoImp: int = 0
-    _tasaImpuesto: float = field(default=0.0, init=False)
+    _tasaImpuesto: float = field(default=0.0, init=False, metadata={"decimals": 2})
 
-    @property
-    def TasaImp(self) -> float:
-        return round(self._tasaImpuesto, 2)
-
-    @TasaImp.setter
-    def TasaImp(self, value: float):
-        self._tasaImpuesto = value
-
-    def __init__(self):
-        self.TipoImp = TipoImpuestoEnum.NotSet
-        self.TasaImp = 0.0
-        self.MontoImp = 0
+    def __post_init__(self):
+        self._tasaImpuesto = round(self.TasaImp, 2)
+        
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            TipoImp=TipoImpuestoEnum(data.get('TipoImp')),
+            TasaImp=data.get('TasaImp'),
+            MontoImp=data.get('MontoImp')
+        )

@@ -8,19 +8,17 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class Extranjero:
+    NumId : str = ""
     Nacionalidad: Paises = Paises.NotSet
 
-    _id: str = field(default="", init=False)
+    _id: str = field(default="", init=False,metadata={"max_length": 20})
 
-    @property
-    def NumId(self) -> str:
-        return self._id
+    def __post_init__(self):
+        self._id = truncate(self.NumId, 20)
 
-    @NumId.setter
-    def NumId(self, value: str):
-        self._id = truncate(value, 20)
-
-
-    def __init__(self):
-        self.NumId = ''
-        self.Nacionalidad = Paises.NotSet
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            NumId=data.get('NumId'),
+            Nacionalidad=Paises(data.get('Nacionalidad'))
+        )

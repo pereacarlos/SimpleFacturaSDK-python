@@ -1,16 +1,16 @@
-from dataclasses import dataclass
-
+from dataclasses import dataclass, field
+def truncate(value: str, length: int) -> str:
+    return value[:length] if value else ''
 @dataclass
 class SubCantidad:
     SubQty: float = 0.0
-    __codigo: str = ''
-    @property
-    def SubCod(self) -> str:
-        return self.__codigo
+    SubCod: str = ''
 
-    @SubCod.setter
-    def SubCod(self, value: str):
-        self.__codigo = value[:35]
+    __codigo: str = field(default="", metadata={"max_length": 35})
+
+    def __post_init__(self):
+        self.__codigo = truncate(self.SubCod, 35)
+
 
     @classmethod
     def from_dict(cls, data: dict):

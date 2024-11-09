@@ -41,125 +41,29 @@ class Detalle:
     MontoItem: int = 0
 
     # Private fields for internal use
-    _nombre: str = field(init=False, default="")
-    _descripcion: str = field(init=False, default="")
-    _cantidadUnidadMedidaReferencia: float = field(init=False, default=0.0)
-    _unidadMedidaReferencia: str = field(init=False, default="")
-    _precioUnitarioUnidadMedidaReferencia: float = field(init=False, default=0.0)
-    _cantidad: float = field(init=False, default=0.0)
-    _unidadMedida: str = field(init=False, default="")
-    _precio: float = field(init=False, default=0.0)
-    _descuentoPorcentaje: float = field(init=False, default=0.0)
-    _recargoPorcentaje: float = field(init=False, default=0.0)
+    __nombre: str = field(init=False, default="", metadata={"max_length": 80})
+    __descripcion: str = field(init=False, default="", metadata={"max_length": 1000})
+    __cantidadUnidadMedidaReferencia: float = field(init=False, default=0.0, metadata={"decimals": 6})
+    __unidadMedidaReferencia: str = field(init=False, default="", metadata={"max_length": 4})
+    __precioUnitarioUnidadMedidaReferencia: float = field(init=False, default=0.0, metadata={"decimals": 6})
+    __cantidad: float = field(init=False, default=0.0, metadata={"decimals": 6})
+    __unidadMedida: str = field(init=False, default="", metadata={"max_length": 4})
+    __precio: float = field(init=False, default=0.0)
+    __descuentoPorcentaje: float = field(init=False, default=0.0, metadata={"decimals": 2})
+    __recargoPorcentaje: float = field(init=False, default=0.0, metadata={"decimals": 2})
 
     def __post_init__(self):
-        self._nombre = self.NmbItem
-        self._descripcion = self.DscItem
-        self._cantidadUnidadMedidaReferencia = self.QtyRef
-        self._unidadMedidaReferencia = self.UnmdRef
-        self._precioUnitarioUnidadMedidaReferencia = self.PrcRef
-        self._cantidad = self.QtyItem
-        self._unidadMedida = self.UnmdItem
-        self._precio = self.PrcItem
-        self._descuentoPorcentaje = self.DescuentoPct
-        self._recargoPorcentaje = self.RecargoPct
+        self.__nombre = truncate(self.NmbItem, 80)
+        self.__descripcion = truncate(self.DscItem, 1000)
+        self.__cantidadUnidadMedidaReferencia = round(self.QtyRef, 6)
+        self.__unidadMedidaReferencia = truncate(self.UnmdRef, 4)
+        self.__precioUnitarioUnidadMedidaReferencia = round(self.PrcRef, 6)
+        self.__cantidad = round(self.QtyItem, 6)
+        self.__unidadMedida = truncate(self.UnmdItem, 4)
+        self.__precio = self.PrcItem
+        self.__descuentoPorcentaje = round(self.DescuentoPct, 2)
+        self.__recargoPorcentaje = round(self.RecargoPct, 2)
 
-    @property
-    def FechaElaboracion(self) -> datetime:
-        return datetime.strptime(self.FechaElaboracionString, "%Y-%m-%d")
-
-    @FechaElaboracion.setter
-    def FechaElaboracion(self, value: datetime):
-        self.FechaElaboracionString = value.strftime("%Y-%m-%d")
-
-    @property
-    def FechaVencimiento(self) -> datetime:
-        return datetime.strptime(self.FechaVencimientoString, "%Y-%m-%d")
-
-    @FechaVencimiento.setter
-    def FechaVencimiento(self, value: datetime):
-        self.FechaVencimientoString = value.strftime("%Y-%m-%d")
-
-    @property
-    def Nombre(self) -> str:
-        return self._nombre
-
-    @Nombre.setter
-    def Nombre(self, value: str):
-        self._nombre = truncate(value, 80)
-
-    @property
-    def Descripcion(self) -> str:
-        return self._descripcion
-
-    @Descripcion.setter
-    def Descripcion(self, value: str):
-        self._descripcion = truncate(value, 1000)
-
-    @property
-    def CantidadUnidadMedidaReferencia(self) -> float:
-        return self._cantidadUnidadMedidaReferencia
-
-    @CantidadUnidadMedidaReferencia.setter
-    def CantidadUnidadMedidaReferencia(self, value: 6):
-        self._cantidadUnidadMedidaReferencia = value
-
-    @property
-    def UnidadMedidaReferencia(self) -> str:
-        return self._unidadMedidaReferencia
-
-    @UnidadMedidaReferencia.setter
-    def UnidadMedidaReferencia(self, value: str):
-        self._unidadMedidaReferencia = truncate(value, 4)
-
-    @property
-    def PrecioUnitarioUnidadMedidaReferencia(self) -> float:
-        return self._precioUnitarioUnidadMedidaReferencia
-
-    @PrecioUnitarioUnidadMedidaReferencia.setter
-    def PrecioUnitarioUnidadMedidaReferencia(self, value: 6):
-        self._precioUnitarioUnidadMedidaReferencia = value
-
-    @property
-    def Cantidad(self) -> float:
-        return self._cantidad
-
-    @Cantidad.setter
-    def Cantidad(self, value: 6):
-        self._cantidad = value
-
-    @property
-    def UnidadMedida(self) -> str:
-        return self._unidadMedida
-
-    @UnidadMedida.setter
-    def UnidadMedida(self, value: str):
-        self._unidadMedida = truncate(value, 4)
-
-    @property
-    def Precio(self) -> float:
-        return self._precio
-
-    @Precio.setter
-    def Precio(self, value: float):
-        self._precio = value
-
-
-    @property
-    def DescuentoPorcentaje(self) -> float:
-        return self._descuentoPorcentaje
-
-    @DescuentoPorcentaje.setter
-    def DescuentoPorcentaje(self, value: 2):
-        self._descuentoPorcentaje = value
-
-    @property
-    def RecargoPorcentaje(self) -> float:
-        return self._recargoPorcentaje
-
-    @RecargoPorcentaje.setter
-    def RecargoPorcentaje(self, value: 2):
-        self._recargoPorcentaje = value
 
     @classmethod
     def from_dict(cls, data: dict):

@@ -1,18 +1,19 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from SimpleFacturaSDK.enumeracion.TipoDescuento import ExpresionDineroEnum   
 
 @dataclass
 class SubDescuento:
     TipoDscto: ExpresionDineroEnum = ExpresionDineroEnum.NotSet
-    __valorDescuento: float = 0.0
-    @property
-    def ValorDscto(self) -> float:
-        return round(self.__valorDescuento, 2)
+    ValorDscto: float = 0.0
+    __valorDescuento: float = field(default=0.0, metadata={"decimals": 2})
 
-    @ValorDscto.setter
-    def ValorDscto(self, value: float):
-        self.__valorDescuento = value
+    def __post_init__(self):
+        self.__valorDescuento = round(self.ValorDscto, 2)
 
-    def __init__(self):
-        self.TipoDscto = ExpresionDineroEnum.NotSet
-        self.ValorDscto = 0.0
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            TipoDscto=ExpresionDineroEnum(data.get('TipoDscto')),
+            ValorDscto=data.get('ValorDscto')
+        )
+  

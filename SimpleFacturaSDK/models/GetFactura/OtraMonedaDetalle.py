@@ -1,53 +1,28 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class OtraMonedaDetalle:
-    __precioUnitario: float = 0.0
+    PrcOtrMon: float = 0.0
     Moneda: str = ''
-    __factorConversion: float = 0.0
-    __descuento: float = 0.0
-    __recargo: float = 0.0
-    __valor: float = 0.0
+    FctConv: float = 0.0
+    DctoOtrMnda: float = 0.0
+    RecargoOtrMnda: float = 0.0
+    MontoItemOtrMnda: float = 0.0
 
-    @property
-    def PrcOtrMon(self) -> float:
-        return round(self.__precioUnitario, 4)
+    __precioUnitario: float = field(default=0.0, metadata={"decimals": 4})
+    __factorConversion: float = field(default=0.0, metadata={"decimals": 4})
+    __descuento: float = field(default=0.0, metadata={"decimals": 4})
+    __recargo: float = field(default=0.0, metadata={"decimals": 4})
+    __valor: float = field(default=0.0, metadata={"decimals": 4})
 
-    @PrcOtrMon.setter
-    def PrcOtrMon(self, value: float):
-        self.__precioUnitario = value
+    def __post_init__(self):
+        self.__precioUnitario = round(self.PrcOtrMon, 4)
+        self.__factorConversion = round(self.FctConv, 4)
+        self.__descuento = round(self.DctoOtrMnda, 4)
+        self.__recargo = round(self.RecargoOtrMnda, 4)
+        self.__valor = round(self.MontoItemOtrMnda, 4)
 
-    @property
-    def FctConv(self) -> float:
-        return round(self.__factorConversion, 4)
 
-    @FctConv.setter
-    def FctConv(self, value: float):
-        self.__factorConversion = value
-
-    @property
-    def DctoOtrMnda(self) -> float:
-        return round(self.__descuento, 4)
-
-    @DctoOtrMnda.setter
-    def DctoOtrMnda(self, value: float):
-        self.__descuento = value
-
-    @property
-    def RecargoOtrMnda(self) -> float:
-        return round(self.__recargo, 4)
-
-    @RecargoOtrMnda.setter
-    def RecargoOtrMnda(self, value: float):
-        self.__recargo = value
-
-    @property
-    def MontoItemOtrMnda(self) -> float:
-        return round(self.__valor, 4)
-
-    @MontoItemOtrMnda.setter
-    def MontoItemOtrMnda(self, value: float):
-        self.__valor = value
 
     @classmethod
     def from_dict(cls, data: dict):

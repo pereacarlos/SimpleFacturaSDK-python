@@ -8,20 +8,16 @@ def truncate(value: str, length: int) -> str:
 class MontoPagoItem:
     FchPago: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
     MntPago: int = 0
-    __glosa: str = field(default="", init=False)
+    Glosa: str = ""
+    __glosa: str = field(default="", init=False, metadata={"max_length": 40})
 
-    @property
-    def GlosaPagos(self) -> str:
-        return self.__glosa
+    def __post_init__(self):
+        self.__glosa = truncate(self.Glosa, 40)
 
-    @GlosaPagos.setter
-    def GlosaPagos(self, value: str):
-        self.__glosa = truncate(value, 40)
-
-    @property
-    def FchPagoDate(self) -> datetime:
-        return datetime.strptime(self.FchPago, "%Y-%m-%d")
-
-    @FchPagoDate.setter
-    def FchPagoDate(self, value: datetime):
-        self.FchPago = value.strftime("%Y-%m-%d")
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            FchPago=data.get('FchPago'),
+            MntPago=data.get('MntPago'),
+            Glosa=data.get('Glosa')
+        )

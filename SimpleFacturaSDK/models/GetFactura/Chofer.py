@@ -6,17 +6,16 @@ def truncate(value: str, length: int) -> str:
 @dataclass
 class Chofer:
     RUTChofer: str = ''
-    __nombre: str = field(default="", init=False)
+    NombreChofer: str = ''
 
-    @property
-    def NombreChofer(self) -> str:
-        return self.__nombre
+    __nombre: str = field(default="", metadata={"max_length": 30})
 
-    @NombreChofer.setter
-    def NombreChofer(self, value: str):
-        self.__nombre = truncate(value, 30)
+    def __post_init__(self):
+        self.__nombre = truncate(self.NombreChofer, 30)
 
-
-    def __init__(self):
-        self.RUTChofer = ''
-        self.NombreChofer = ''
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            RUTChofer=data.get('RUTChofer'),
+            NombreChofer=data.get('NombreChofer')
+        )

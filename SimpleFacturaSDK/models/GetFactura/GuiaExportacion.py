@@ -16,6 +16,14 @@ class GuiaExportacion:
     def FchAut(self, value: datetime):
         self.FechaAutorizacionString = value.strftime("%Y-%m-%d")
 
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            CdgTraslado=CodigoTrasladoEnum(data.get('CdgTraslado')),
+            FolioAut=data.get('FolioAut'),
+            FechaAutorizacionString=data.get('FchAut')
+        )
+
 
     def __init__(self):
         self.CdgTraslado = CodigoTrasladoEnum.NotSet

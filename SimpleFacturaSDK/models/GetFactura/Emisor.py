@@ -25,22 +25,26 @@ class Emisor:
     IdAdicEmisor: str = ""
 
     # Privado
-    _razonSocial: Optional[str] = None
-    _razonSocialBoleta: Optional[str] = None
-    _giro: Optional[str] = None
-    _giroEmisor: Optional[str] = None
-    _telefono: List[str] = field(default_factory=list)
-    _codigoVendedor: str = ""
-    _idAdicionalEmisor: str = ""
+    __razonSocial: Optional[str] = field(default=None, metadata={"max_length": 70})
+    __razonSocialBoleta: Optional[str] = field(default=None, metadata={"max_length": 100})
+    __giro: Optional[str] = field(default=None, metadata={"max_length": 80})
+    __giroEmisor: Optional[str] = field(default=None, metadata={"max_length": 80})
+    __telefono: List[str] = field(default_factory=list)
+    __sucursal: str = field(default="", metadata={"max_length": 20})
+    __dirOrigen: str = field(default="", metadata={"max_length": 70})
+    __codigoVendedor: str = field(default="", metadata={"max_length": 60})
+    __idAdicionalEmisor: str = field(default="", metadata={"max_length": 20})
 
     def __post_init__(self):
-        self._razonSocial = self.RznSoc
-        self._razonSocialBoleta = self.RznSocEmisor
-        self._giro = self.GiroEmis
-        self._giroEmisor = self.GiroEmisor
-        self._telefono = self.Telefono
-        self._codigoVendedor = self.CdgVendedor
-        self._idAdicionalEmisor = self.IdAdicEmisor
+        self.__razonSocial = truncate(self.RznSoc, 70)
+        self.__razonSocialBoleta = truncate(self.RznSocEmisor, 100)
+        self.__giro = truncate(self.GiroEmis, 80)
+        self.__giroEmisor = truncate(self.GiroEmisor, 80)
+        self.__telefono = self.Telefono
+        self.__sucursal = truncate(self.Sucursal, 20)
+        self.__dirOrigen = truncate(self.DirOrigen, 70)
+        self.__codigoVendedor = truncate(self.CdgVendedor, 60)
+        self.__idAdicionalEmisor = truncate(self.IdAdicEmisor, 20)
 
     @classmethod
     def from_dict(cls, data: dict):

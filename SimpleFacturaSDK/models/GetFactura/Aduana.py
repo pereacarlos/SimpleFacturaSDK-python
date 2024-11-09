@@ -9,154 +9,89 @@ def truncate(value: str, length: int) -> str:
 class Aduana:
     CodModVenta: ModalidadVenta = ModalidadVenta.NotSet
     CodClauVenta: ClausulaCompraVenta = ClausulaCompraVenta.NotSet
+    TotClauVenta: float = 0.0
     CodViaTransp: ViasdeTransporte = ViasdeTransporte.NotSet
+    NombreTransp: str = ""
     RUTCiaTransp: str = ""
+    NomCiaTransp: str = ""
+    IdAdicTransp: str = ""
+    Booking: str = ""
+    Operador: str = ""
     CodPtoEmbarque: Puertos = Puertos.NotSet
+    IdAdicPtoEmb: str = ""
     CodPtoDesemb: Puertos = Puertos.NotSet
+    IdAdicPtoDesemb: str = ""
+    Tara: int = 0
     CodUnidMedTara: UnidadMedida = UnidadMedida.NotSet
+    PesoBruto: float = 0.0
     CodUnidPesoBruto: UnidadMedida = UnidadMedida.NotSet
+    PesoNeto: float = 0.0
     CodUnidPesoNeto: UnidadMedida = UnidadMedida.NotSet
-    CodPaisRecep: Paises = Paises.NotSet
-    CodPaisDestin: Paises = Paises.NotSet
     TotItems: int = 0
     TotBultos: int = 0
     TipoBultos: List[TipoBulto] = field(default_factory=list)
-
-    __totalClausulaVenta: float = field(default=0.0, init=False)
-    __nombreTransporte: str = field(default="", init=False)
-    __nombreCiaTransporte: str = field(default="", init=False)
+    MntFlete: float = 0.0
+    MntSeguro: float = 0.0
+    CodPaisRecep: Paises = Paises.NotSet
+    CodPaisDestin: Paises = Paises.NotSet
+   
+    __totalClausulaVenta: float = field(default=0.0, metadata={"decimals": 2})
+    __nombreTransporte: str = field(default="", metadata={"max_length": 40})
+    __nombreCiaTransporte: str = field(default="", metadata={"max_length": 40})
     __idAdicionalCiaTransporte: str = field(default="", init=False)
-    __booking: str = field(default="", init=False)
-    __codigoOperador: str = field(default="", init=False)
-    __idAdicionalPtoEmbarque: str = field(default="", init=False)
+    __booking: str = field(default="", metadata={"max_length": 20})
+    __codigoOperador: str = field(default="", metadata={"max_length": 20})
+    __idAdicionalPtoEmbarque: str = field(default="", metadata={"max_length": 20})
     __idAdicionalPtoDesembarque: str = field(default="", init=False)
-    __pesoBruto: float = field(default=0.0, init=False)
-    __pesoNeto: float = field(default=0.0, init=False)
-    __montoFlete: float = field(default=0.0, init=False)
-    __montoSeguro: float = field(default=0.0, init=False)
+    __pesoBruto: float = field(default=0.0, metadata={"decimals": 2})
+    __pesoNeto: float = field(default=0.0, metadata={"decimals": 2})
+    __montoFlete: float = field(default=0.0, metadata={"decimals": 4})
+    __montoSeguro: float = field(default=0.0, metadata={"decimals": 4})
 
-    @property
-    def TotClauVenta(self) -> float:
-        return round(self.__totalClausulaVenta, 2)
+    def __post_init__(self):
+        self.__totalClausulaVenta = round(self.TotClauVenta, 2)
+        self.__nombreTransporte = truncate(self.NombreTransp, 40)
+        self.__nombreCiaTransporte = truncate(self.NomCiaTransp, 40)
+        self.__idAdicionalCiaTransporte = truncate(self.IdAdicTransp, 20)
+        self.__booking = truncate(self.Booking, 20)
+        self.__codigoOperador = truncate(self.Operador, 20)
+        self.__idAdicionalPtoEmbarque = truncate(self.IdAdicPtoEmb, 20)
+        self.__idAdicionalPtoDesembarque = self.IdAdicPtoDesemb
+        self.__pesoBruto = round(self.PesoBruto, 2)
+        self.__pesoNeto =  round(self.PesoNeto, 2)
+        self.__montoFlete = round(self.MntFlete, 4)
+        self.__montoSeguro = round(self.MntSeguro, 4)
 
-    @TotClauVenta.setter
-    def TotClauVenta(self, value: float):
-        self.__totalClausulaVenta = value
+  
 
-    @property
-    def NombreTransp(self) -> str:
-        return self.__nombreTransporte
-
-    @NombreTransp.setter
-    def NombreTransp(self, value: str):
-        self.__nombreTransporte = truncate(value, 40)
-
-    @property
-    def NomCiaTransp(self) -> str:
-        return self.__nombreCiaTransporte
-
-    @NomCiaTransp.setter
-    def NomCiaTransp(self, value: str):
-        self.__nombreCiaTransporte = truncate(value, 40)
-
-    @property
-    def IdAdicTransp(self) -> str:
-        return self.__idAdicionalCiaTransporte
-
-    @IdAdicTransp.setter
-    def IdAdicTransp(self, value: str):
-        self.__idAdicionalCiaTransporte = truncate(value, 20)
-
-    @property
-    def Booking(self) -> str:
-        return self.__booking
-
-    @Booking.setter
-    def Booking(self, value: str):
-        self.__booking = truncate(value, 20)
-
-    @property
-    def Operador(self) -> str:
-        return self.__codigoOperador
-
-    @Operador.setter
-    def Operador(self, value: str):
-        self.__codigoOperador = truncate(value, 20)
-
-    @property
-    def IdAdicPtoEmb(self) -> str:
-        return self.__idAdicionalPtoEmbarque
-
-    @IdAdicPtoEmb.setter
-    def IdAdicPtoEmb(self, value: str):
-        self.__idAdicionalPtoEmbarque = truncate(value, 20)
-
-    @property
-    def IdAdicPtoDesemb(self) -> str:
-        return self.__idAdicionalPtoDesembarque
-
-    @IdAdicPtoDesemb.setter
-    def IdAdicPtoDesemb(self, value: str):
-        self.__idAdicionalPtoDesembarque = truncate(value, 20)
-
-    @property
-    def PesoBruto(self) -> float:
-        return round(self.__pesoBruto, 2)
-
-    @PesoBruto.setter
-    def PesoBruto(self, value: float):
-        self.__pesoBruto = value
-
-    @property
-    def PesoNeto(self) -> float:
-        return round(self.__pesoNeto, 2)
-
-    @PesoNeto.setter
-    def PesoNeto(self, value: float):
-        self.__pesoNeto = value
-
-    @property
-    def MntFlete(self) -> float:
-        return round(self.__montoFlete, 4)
-
-    @MntFlete.setter
-    def MntFlete(self, value: float):
-        self.__montoFlete = value
-
-    @property
-    def MntSeguro(self) -> float:
-        return round(self.__montoSeguro, 4)
-
-    @MntSeguro.setter
-    def MntSeguro(self, value: float):
-        self.__montoSeguro = value
-
-
-    def __init__(self):
-        self.CodModVenta = ModalidadVenta.NOT_SET
-        self.CodClauVenta = ClausulaCompraVenta.NOT_SET
-        self.TotClauVenta = 0.0
-        self.CodViaTransp = ViasdeTransporte.NOT_SET
-        self.NombreTransp = ''
-        self.RUTCiaTransp = ''
-        self.NomCiaTransp = ''
-        self.IdAdicTransp = ''
-        self.Booking = ''
-        self.Operador = ''
-        self.CodPtoEmbarque = Puertos.NOT_SET
-        self.IdAdicPtoEmb = ''
-        self.CodPtoDesemb = Puertos.NOT_SET
-        self.IdAdicPtoDesemb = ''
-        self.Tara = 0
-        self.CodUnidMedTara = UnidadMedida.NOT_SET
-        self.PesoBruto = 0.0
-        self.CodUnidPesoBruto = UnidadMedida.NOT_SET
-        self.PesoNeto = 0.0
-        self.CodUnidPesoNeto = UnidadMedida.NOT_SET
-        self.TotItems = 0
-        self.TotBultos = 0
-        self.TipoBultos = []
-        self.MntFlete = 0.0
-        self.MntSeguro = 0.0
-        self.CodPaisRecep = Paises.NOT_SET
-        self.CodPaisDestin = Paises.NOT_SET
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            CodModVenta=data.get('CodModVenta'),
+            CodClauVenta=data.get('CodClauVenta'),
+            TotClauVenta=data.get('TotClauVenta'),
+            CodViaTransp=data.get('CodViaTransp'),
+            NombreTransp=data.get('NombreTransp'),
+            RUTCiaTransp=data.get('RUTCiaTransp'),
+            NomCiaTransp=data.get('NomCiaTransp'),
+            IdAdicTransp=data.get('IdAdicTransp'),
+            Booking=data.get('Booking'),
+            Operador=data.get('Operador'),
+            CodPtoEmbarque=data.get('CodPtoEmbarque'),
+            IdAdicPtoEmb=data.get('IdAdicPtoEmb'),
+            CodPtoDesemb=data.get('CodPtoDesemb'),
+            IdAdicPtoDesemb=data.get('IdAdicPtoDesemb'),
+            Tara=data.get('Tara'),
+            CodUnidMedTara=data.get('CodUnidMedTara'),
+            PesoBruto=data.get('PesoBruto'),
+            CodUnidPesoBruto=data.get('CodUnidPesoBruto'),
+            PesoNeto=data.get('PesoNeto'),
+            CodUnidPesoNeto=data.get('CodUnidPesoNeto'),
+            TotItems=data.get('TotItems'),
+            TotBultos=data.get('TotBultos'),
+            TipoBultos=data.get('TipoBultos'),
+            MntFlete=data.get('MntFlete'),
+            MntSeguro=data.get('MntSeguro'),
+            CodPaisRecep=data.get('CodPaisRecep'),
+            CodPaisDestin=data.get('CodPaisDestin')
+        )
