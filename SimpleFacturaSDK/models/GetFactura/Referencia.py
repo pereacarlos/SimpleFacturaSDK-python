@@ -14,13 +14,14 @@ class Referencia:
     FolioRef: str = ''
     RUTOtr: str = ''
     FechaDocumentoReferenciaString: str = ''
-    FchRef = datetime.strptime(FechaDocumentoReferenciaString, '%Y-%m-%d')
+    FchRef = datetime.now()
     CodRef: TipoReferenciaEnum = TipoReferenciaEnum.NotSet
     RazonRef: str = ''
 
     _razonReferencia: str = field(default="", metadata={"max_length": 100})
 
     def __post_init__(self):
+        self.FchRef = datetime.strptime(self.FechaDocumentoReferenciaString, '%Y-%m-%d')
         self._razonReferencia = truncate(self.RazonRef, 90)
   
     @classmethod

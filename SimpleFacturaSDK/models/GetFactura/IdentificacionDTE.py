@@ -41,8 +41,14 @@ class IdentificacionDTE:
     PeriodoHastaString: Optional[str] = None
     MedioPago: Optional[MedioPagoEnum] = None
     TpoCtaPago: Optional[TipoCuentaPagoEnum] = None
+    NumCtaPago: str = ''
+    BcoPago: str = ''
+    TermPagoCdg: str = ''
+    TermPagoGlosa: str = ''
     TermPagoDias: int = 0
     FechaVencimientoString: Optional[str] = None
+    TipoTranCompra: Optional[TipoTransCompra] = None
+    TipoTransVenta: Optional[TipoTransVenta] = None
     IndMntNeto: Optional[int] = None
     FchEmis: Optional[datetime] = None
     FchVenc: Optional[datetime] = None
@@ -51,10 +57,10 @@ class IdentificacionDTE:
     PeriodoHasta: Optional[datetime] = None
 
     # Private fields for internal use
-    __cuentaPago: Optional[str] = field(init=False, default=None)
-    __bancoPago: Optional[str] = field(init=False, default=None)
-    __terminoPagoCodigo: Optional[str] = field(init=False, default=None)
-    __terminoPagoGlosa: Optional[str] = field(init=False, default=None)
+    __cuentaPago: Optional[str] = field(init=False, default=None, metadata={"max_length": 20})
+    __bancoPago: Optional[str] = field(init=False, default=None, metadata={"max_length": 40})
+    __terminoPagoCodigo: Optional[str] = field(init=False, default=None, metadata={"max_length": 4})
+    __terminoPagoGlosa: Optional[str] = field(init=False, default=None, metadata={"max_length": 100})
 
    
 
@@ -64,10 +70,10 @@ class IdentificacionDTE:
         self.FchCancel = datetime.strptime(self.FechaCancelacionString, '%Y-%m-%d') if self.FechaCancelacionString else None
         self.PeriodoDesde = datetime.strptime(self.PeriodoDesdeString, '%Y-%m-%d') if self.PeriodoDesdeString else None
         self.PeriodoHasta = datetime.strptime(self.PeriodoHastaString, '%Y-%m-%d') if self.PeriodoHastaString else None
-        self.__cuentaPago = self.NumCtaPago
-        self.__bancoPago = self.BcoPago
-        self.__terminoPagoCodigo = self.TermPagoCdg
-        self.__terminoPagoGlosa = self.TermPagoGlosa
+        self.__cuentaPago = truncate(self.NumCtaPago, 20)
+        self.__bancoPago = truncate(self.BcoPago, 40)
+        self.__terminoPagoCodigo = truncate(self.TermPagoCdg, 4)
+        self.__terminoPagoGlosa = truncate(self.TermPagoGlosa, 100)
    
 
     @classmethod

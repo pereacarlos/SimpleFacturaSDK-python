@@ -28,6 +28,7 @@ class Encabezado:
         self.Totales = Totales
         self.OtraMoneda = OtraMoneda
 
+    
 
 
     @classmethod
