@@ -1,11 +1,10 @@
 from enum import Enum
 import json
 
-class FormaPagoEnum(Enum):
-    NotSet = (0, "No Asignado")
-    Contado = (1, "Contado")
-    Credito = (2, "Crédito")
-    SinCosto = (3, "Sin Costo")
+class ResponseType(Enum):
+    Accepted = (3, "Aceptado")
+    AcceptedWithQualms = (4, "Contado")
+    Rejected = (5, "Crédito")
 
     @property
     def xml_enum(self):
