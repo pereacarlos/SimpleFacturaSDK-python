@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 
 class FormaPagoExportacionEnum(Enum):
     NotSet = (0, "No Asignado")
@@ -65,9 +66,7 @@ class Moneda(Enum):
     def xml_enum(self):
         return self.value[0]
 
-    @property
-    def description(self):
-        return self.value[1]
+
 
 class ModalidadVenta(Enum):
     NotSet = (0, "No Asignado")
@@ -844,7 +843,11 @@ class Puertos(Enum):
         return self.value[1]
 
 
-
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
+        return super().default(obj)
 
 
 

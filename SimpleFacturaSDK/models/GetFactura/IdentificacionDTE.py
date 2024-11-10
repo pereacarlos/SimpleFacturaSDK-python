@@ -22,45 +22,45 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class IdentificacionDTE:
-    TipoDTE: Optional[DTEType] = None
-    Folio: Optional[int] = None
-    FechaEmisionString: Optional[str] = None
+    TipoDTE: DTEType = None
+    Folio: int = None
+    FechaEmisionString: str = None
     IndNoRebaja: int = 0
-    TipoDespacho: Optional[TipoDespachoEnum] = None
-    IndTraslado: Optional[TipoTrasladoEnum] = None
-    TpoImpresion: Optional[TipoImpresionEnum] = None
-    IndServicio: Optional[IndicadorServicioEnum] = None
+    TipoDespacho: TipoDespachoEnum.NotSet = None
+    IndTraslado: TipoTrasladoEnum.NotSet = None
+    TpoImpresion: TipoImpresionEnum.N = None
+    IndServicio: IndicadorServicioEnum.NotSet = None
     MntBruto: int = 0
-    FmaPago: Optional[FormaPagoEnum] = None
-    FmaPagExp: Optional[FormaPagoExportacionEnum] = None
-    FechaCancelacionString: Optional[str] = None
+    FmaPago: FormaPagoEnum = None
+    FmaPagExp: FormaPagoExportacionEnum.NotSet= None
+    FechaCancelacionString: str = None
     MntCancel: int = 0
     SaldoInsol: int = 0
     MntPagos: List[MontoPagoItem] = field(default_factory=list)
-    PeriodoDesdeString: Optional[str] = None
-    PeriodoHastaString: Optional[str] = None
-    MedioPago: Optional[MedioPagoEnum] = None
-    TpoCtaPago: Optional[TipoCuentaPagoEnum] = None
+    PeriodoDesdeString: str = None
+    PeriodoHastaString: str = None
+    MedioPago: MedioPagoEnum.NotSet = None
+    TpoCtaPago: TipoCuentaPagoEnum.NotSet = None
     NumCtaPago: str = ''
     BcoPago: str = ''
     TermPagoCdg: str = ''
     TermPagoGlosa: str = ''
     TermPagoDias: int = 0
-    FechaVencimientoString: Optional[str] = None
-    TipoTranCompra: Optional[TipoTransCompra] = None
-    TipoTransVenta: Optional[TipoTransVenta] = None
-    IndMntNeto: Optional[int] = None
-    FchEmis: Optional[datetime] = None
-    FchVenc: Optional[datetime] = None
-    FchCancel: Optional[datetime] = None
-    PeriodoDesde: Optional[datetime] = None
-    PeriodoHasta: Optional[datetime] = None
+    FechaVencimientoString: str= None
+    TipoTranCompra: TipoTransCompra = None
+    TipoTransVenta: TipoTransVenta = None
+    IndMntNeto: int = None
+    FchEmis: datetime = None
+    FchVenc: datetime = None
+    FchCancel: datetime= None
+    PeriodoDesde:datetime = None
+    PeriodoHasta: datetime = None
 
     # Private fields for internal use
-    __cuentaPago: Optional[str] = field(init=False, default=None, metadata={"max_length": 20})
-    __bancoPago: Optional[str] = field(init=False, default=None, metadata={"max_length": 40})
-    __terminoPagoCodigo: Optional[str] = field(init=False, default=None, metadata={"max_length": 4})
-    __terminoPagoGlosa: Optional[str] = field(init=False, default=None, metadata={"max_length": 100})
+    __cuentaPago: str = field(init=False, default=None, metadata={"max_length": 20})
+    __bancoPago: str = field(init=False, default=None, metadata={"max_length": 40})
+    __terminoPagoCodigo: str = field(init=False, default=None, metadata={"max_length": 4})
+    __terminoPagoGlosa: str = field(init=False, default=None, metadata={"max_length": 100})
 
    
 
@@ -74,6 +74,7 @@ class IdentificacionDTE:
         self.__bancoPago = truncate(self.BcoPago, 40)
         self.__terminoPagoCodigo = truncate(self.TermPagoCdg, 4)
         self.__terminoPagoGlosa = truncate(self.TermPagoGlosa, 100)
+        self.TipoDespacho = TipoDespachoEnum(self.TipoDespacho) if self.TipoDespacho else None
    
 
     @classmethod

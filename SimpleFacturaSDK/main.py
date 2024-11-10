@@ -4,11 +4,6 @@ import json
 #from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 #from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 #from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
-#
-#import sys
-#import os
-#sys.path.append(os.path.abspath("c:/SimpleFacturaSDK-python/SimpleFacturaSDK"))
-
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento  
 from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
@@ -36,10 +31,10 @@ solicitud = RequestDTE(
     Documento=Documento(
         Encabezado=Encabezado(
             IdDoc=IdentificacionDTE(
-                TipoDTE=33,
-                FchEmis=datetime.now(),
+                TipoDTE= DTEType.FacturaElectronica,
+                FchEmis="2024-09-05",
                 FmaPago=1,
-                FchVenc=datetime.now() + relativedelta(months=6)
+                FchVenc="2024-09-05"
             ),
             Emisor=Emisor(
                 RUTEmisor="76269769-6",
@@ -92,7 +87,9 @@ try:
 
     solicitud_dict = solicitud.to_dict()
     Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
-    print("carlos")
+
+    # Imprimir el resultado de la factura
+    print(Factura.folio)
 
 
 except Exception as ex:

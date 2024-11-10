@@ -5,8 +5,8 @@ from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
 from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
-from SimpleFacturaSDK.enumeracion.TipoDTE import DOCType, DTEType, DTEFacturasType
-from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum, IndicadorServicioDetalleLibroEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType, CustomJSONEncoder
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 
 
 @dataclass
@@ -16,7 +16,9 @@ class RequestDTE:
     Observaciones: Optional[str] = None
     Cajero: Optional[str] = None
     TipoPago: Optional[str] = None
-    Propina: Optional[int] = None
+    Propina: Optional[int] = None   
+
+    
 
     @classmethod
     def from_dict(cls, data: dict):

@@ -1,4 +1,6 @@
 from enum import Enum
+import json
+
 
 class TipoReferenciaEnum(Enum):
     NotSet = (0, "No Asignado", "")
@@ -18,3 +20,9 @@ class TipoReferenciaEnum(Enum):
     @property
     def xml_enum(self):
         return self.value[2]
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
+        return super().default(obj)

@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 
 class TipoTransCompra(Enum):
     DelGiro = (1, "1")
@@ -30,3 +31,9 @@ class TipoTransVenta(Enum):
     @property
     def description(self):
         return self.value[0]
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
+        return super().default(obj)

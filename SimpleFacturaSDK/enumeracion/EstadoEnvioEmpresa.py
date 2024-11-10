@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 
 class EstadoEnvioEmpresaEnum(Enum):
     OK = (0, "Envío recibido conforme.")
@@ -36,3 +37,8 @@ class EstadoEnvioEmpresaEnum(Enum):
         else:
             raise ValueError("Invalid state.")
 
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
+        return super().default(obj)
