@@ -22,39 +22,39 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class IdentificacionDTE:
-    TipoDTE: DTEType = None
-    Folio: int = None
-    FechaEmisionString: str = None
-    IndNoRebaja: int = 0
-    TipoDespacho: TipoDespachoEnum.NotSet = None
-    IndTraslado: TipoTrasladoEnum.NotSet = None
-    TpoImpresion: TipoImpresionEnum.N = None
-    IndServicio: IndicadorServicioEnum.NotSet = None
-    MntBruto: int = 0
-    FmaPago: FormaPagoEnum = None
-    FmaPagExp: FormaPagoExportacionEnum.NotSet= None
-    FechaCancelacionString: str = None
-    MntCancel: int = 0
-    SaldoInsol: int = 0
-    MntPagos: List[MontoPagoItem] = field(default_factory=list)
-    PeriodoDesdeString: str = None
-    PeriodoHastaString: str = None
-    MedioPago: MedioPagoEnum.NotSet = None
-    TpoCtaPago: TipoCuentaPagoEnum.NotSet = None
-    NumCtaPago: str = ''
-    BcoPago: str = ''
-    TermPagoCdg: str = ''
-    TermPagoGlosa: str = ''
-    TermPagoDias: int = 0
-    FechaVencimientoString: str= None
-    TipoTranCompra: TipoTransCompra = None
-    TipoTransVenta: TipoTransVenta = None
-    IndMntNeto: int = None
-    FchEmis: datetime = None
-    FchVenc: datetime = None
-    FchCancel: datetime= None
-    PeriodoDesde:datetime = None
-    PeriodoHasta: datetime = None
+    TipoDTE: DTEType 
+    Folio: int
+    FechaEmisionString: str 
+    IndNoRebaja: int 
+    TipoDespacho: TipoDespachoEnum.NotSet 
+    IndTraslado: TipoTrasladoEnum.NotSet 
+    TpoImpresion: TipoImpresionEnum.N 
+    IndServicio: IndicadorServicioEnum.NotSet
+    MntBruto: int 
+    FmaPago: FormaPagoEnum 
+    FmaPagExp: FormaPagoExportacionEnum.NotSet
+    FechaCancelacionString: str 
+    MntCancel: int 
+    SaldoInsol: int 
+    MntPagos: List[MontoPagoItem] 
+    PeriodoDesdeString: str 
+    PeriodoHastaString: str
+    MedioPago: MedioPagoEnum.NotSet
+    TpoCtaPago: TipoCuentaPagoEnum.NotSet 
+    NumCtaPago: str
+    BcoPago: str
+    TermPagoCdg: str
+    TermPagoGlosa: str 
+    TermPagoDias: int
+    FechaVencimientoString: str
+    TipoTranCompra: TipoTransCompra
+    TipoTransVenta: TipoTransVenta 
+    IndMntNeto: int 
+    FchEmis: datetime 
+    FchVenc: datetime 
+    FchCancel: datetime
+    PeriodoDesde:datetime 
+    PeriodoHasta: datetime 
 
     # Private fields for internal use
     __cuentaPago: str = field(init=False, default=None, metadata={"max_length": 20})
@@ -94,7 +94,7 @@ class IdentificacionDTE:
             FechaCancelacionString=data.get('FechaCancelacionString'),
             MntCancel=data.get('MntCancel'),
             SaldoInsol=data.get('SaldoInsol'),
-            MntPagos=[MontoPagoItem.from_dict(d) for d in data.get('MntPagos', [])],
+            MntPagos=[MontoPagoItem],
             PeriodoDesdeString=data.get('PeriodoDesdeString'),
             PeriodoHastaString=data.get('PeriodoHastaString'),
             MedioPago=data.get('MedioPago'),

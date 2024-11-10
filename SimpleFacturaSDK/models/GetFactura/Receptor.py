@@ -11,27 +11,27 @@ class Receptor:
     Clase que representa al receptor del DTE (Documento Tributario Electrónico).
     """
     # Público
-    RUTRecep: str = ''
-    CdgIntRecep: str = ''
-    RznSocRecep: str = ''
-    Extranjero: Optional[Extranjero] = None
-    GiroRecep: str = ''
-    Contacto: Optional[str] = None
-    CorreoRecep: Optional[str] = None
-    DirRecep: Optional[str] = None
-    CmnaRecep: str = ''
-    CiudadRecep: str = ''
-    DirPostal: str = ''
-    CmnaPostal: str = ''
-    CiudadPostal: str = ''
+    RUTRecep: str
+    CdgIntRecep: str
+    RznSocRecep: str 
+    Extranjero: Optional[Extranjero] 
+    GiroRecep: str 
+    Contacto: Optional[str] 
+    CorreoRecep: Optional[str]
+    DirRecep: Optional[str]
+    CmnaRecep: str
+    CiudadRecep: str 
+    DirPostal: str 
+    CmnaPostal: str 
+    CiudadPostal: str 
 
     # Privado
-    __codigoInterno: str = field(default="", metadata={"max_length": 20})
-    __giro: str = field(default="", metadata={"max_length": 40})
-    __contacto: Optional[str] = field(default=None, metadata={"max_length": 80})
-    __direccion: Optional[str] = field(default=None, metadata={"max_length": 70})
-    __comuna: str = field(default="", metadata={"max_length": 20})
-    __dirPostal: str = field(default="", metadata={"max_length": 70})
+    __codigoInterno: str
+    __giro: str 
+    __contacto: Optional[str] 
+    __direccion: Optional[str] 
+    __comuna: str
+    __dirPostal: str
 
     def __post_init__(self):
         self.__codigoInterno = truncate(self.CdgIntRecep, 20)

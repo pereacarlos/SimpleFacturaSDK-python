@@ -5,20 +5,17 @@ from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 
 @dataclass
 class ReferenciaDte:
-    fecha: str = field(default="")
-    motivo: str = field(default="")
-    razon: str = field(default="")
-    glosa: str = field(default="")
-    folio: int = field(default=0)
-    tipo_doc: DTEType = field(default=DTEType.NotSet) 
+    fecha: str 
+    FchRef: datetime
+    motivo: str
+    razon: str
+    glosa: str 
+    folio: int 
+    tipo_doc: DTEType
 
-    @property
-    def fch_ref(self) -> datetime:
-        return datetime.strptime(self.fecha, "%Y-%m-%d") if self.fecha else None
+    def __post_init__(self):
+        self.FchRef = datetime.strptime(self.fecha, "%Y-%m-%d")
 
-    @fch_ref.setter
-    def fch_ref(self, value: datetime):
-        self.fecha = value.strftime("%Y-%m-%d")
 
     @classmethod
     def from_dict(cls, data: dict):

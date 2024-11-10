@@ -1,3 +1,4 @@
+
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import json
@@ -20,14 +21,11 @@ from dateutil.relativedelta import relativedelta
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.enumeracion.FormaPago import FormaPagoEnum
 
-
     # Datos de autenticación
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
-
 # Crear instancia del cliente API
 client_api = APIClient(username, password)
-
 solicitud = RequestDTE(
     Documento=Documento(
         Encabezado=Encabezado(
@@ -84,20 +82,13 @@ solicitud = RequestDTE(
     Observaciones="NOTA AL PIE DE PAGINA",
     TipoPago="30 dias"
 )
-
 try: 
-
-    solicitud_dict = asdict(solicitud)
-    solicitud_json = json.dumps(solicitud_dict, indent=4, ensure_ascii=False)
-    print(solicitud_json)
+    # Obtener la factura
+    solicitud_dict = solicitud.to_dict()
+    
     Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
-
     # Imprimir el resultado de la factura
     print(Factura.folio)
 
-
 except Exception as ex:
     print(f"Error: {str(ex)}")
-
-
-

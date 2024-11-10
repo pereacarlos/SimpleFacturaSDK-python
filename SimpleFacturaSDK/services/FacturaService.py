@@ -101,7 +101,17 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
     
-
+    def listadoDteEmitidos(self, solicitud) -> Dte:
+        url = f"{self.base_url}/documentIssued"
+        response = self.session.post(url, json=solicitud)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=Dte)
+            return resultado.data
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
 
 

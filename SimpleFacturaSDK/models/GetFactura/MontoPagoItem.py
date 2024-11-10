@@ -7,9 +7,9 @@ def truncate(value: str, length: int) -> str:
 @dataclass
 class MontoPagoItem:
     FchPago: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
-    MntPago: int = 0
-    Glosa: str = ""
-    __glosa: str = field(default="", init=False, metadata={"max_length": 40})
+    MntPago: int
+    Glosa: str
+    __glosa: str 
 
     def __post_init__(self):
         self.__glosa = truncate(self.Glosa, 40)

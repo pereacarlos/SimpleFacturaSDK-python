@@ -3,10 +3,9 @@ def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''
 @dataclass
 class SubCantidad:
-    SubQty: float = 0.0
-    SubCod: str = ''
-
-    __codigo: str = field(default="", metadata={"max_length": 35})
+    SubQty: float 
+    SubCod: str
+    codigo: str 
 
     def __post_init__(self):
         self.__codigo = truncate(self.SubCod, 35)

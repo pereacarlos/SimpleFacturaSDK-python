@@ -9,27 +9,27 @@ from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 
 @dataclass
 class Encabezado:
-    IdDoc: IdentificacionDTE = field(default_factory=IdentificacionDTE)
-    Emisor: Emisor = field(default_factory=Emisor)
-    RUTMandante: Optional[str] = field(default='')
-    Receptor: Receptor = field(default_factory=Receptor)
-    RUTSolicita: Optional[str] = field(default='')
-    Transporte: Optional[Transporte] = None
-    Totales: Totales = field(default_factory=Totales)
-    OtraMoneda: Optional[OtraMoneda] = None    
+    IdDoc: IdentificacionDTE
+    Emisor: Emisor
+    RUTMandante: Optional[str]
+    Receptor: Receptor
+    RUTSolicita: Optional[str]
+    Transporte: Optional[Transporte]
+    Totales: Totales
+    OtraMoneda: Optional[OtraMoneda]   
 
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            IdDoc=IdentificacionDTE.from_dict(data.get('IdDoc')),
-            Emisor=Emisor.from_dict(data.get('Emisor')),
-            RUTMandante=data.get('RUTMandante', ''),
-            Receptor=Receptor.from_dict(data.get('Receptor')),
-            RUTSolicita=data.get('RUTSolicita', ''),
-            Transporte=Transporte.from_dict(data.get('Transporte')) if data.get('Transporte') else None,
-            Totales=Totales.from_dict(data.get('Totales')),
-            OtraMoneda=OtraMoneda.from_dict(data.get('OtraMoneda')) if data.get('OtraMoneda') else None
+            IdDoc=IdentificacionDTE,
+            Emisor=Emisor,
+            RUTMandante=data.get('RUTMandante'),
+            Receptor=Receptor,
+            RUTSolicita=data.get('RUTSolicita'),
+            Transporte=Transporte,
+            Totales=Totales,
+            OtraMoneda=OtraMoneda
         )
         
 

@@ -2,18 +2,18 @@ from dataclasses import dataclass, field
 
 @dataclass
 class OtraMonedaDetalle:
-    PrcOtrMon: float = 0.0
-    Moneda: str = ''
-    FctConv: float = 0.0
-    DctoOtrMnda: float = 0.0
-    RecargoOtrMnda: float = 0.0
-    MontoItemOtrMnda: float = 0.0
+    PrcOtrMon: float 
+    Moneda: str 
+    FctConv: float 
+    DctoOtrMnda: float 
+    RecargoOtrMnda: float 
+    MontoItemOtrMnda: float
 
-    __precioUnitario: float = field(default=0.0, metadata={"decimals": 4})
-    __factorConversion: float = field(default=0.0, metadata={"decimals": 4})
-    __descuento: float = field(default=0.0, metadata={"decimals": 4})
-    __recargo: float = field(default=0.0, metadata={"decimals": 4})
-    __valor: float = field(default=0.0, metadata={"decimals": 4})
+    __precioUnitario: float 
+    __factorConversion: float 
+    __descuento: float 
+    __recargo: float 
+    __valor: float 
 
     def __post_init__(self):
         self.__precioUnitario = round(self.PrcOtrMon, 4)

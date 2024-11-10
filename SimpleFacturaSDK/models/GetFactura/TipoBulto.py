@@ -6,17 +6,17 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class TipoBulto:
-    CodTpoBultos: TipoBultoEnum = TipoBultoEnum.NotSet
-    CantBultos: int = 0
-    Marcas: str = ""
-    IdContainer: str = ""
-    Sello: str = ""
-    EmisorSello: str = ""
+    CodTpoBultos: TipoBultoEnum.NotSet
+    CantBultos: int
+    Marcas: str 
+    IdContainer: str 
+    Sello: str
+    EmisorSello: str 
 
-    __marcas: str = field(default="", init=False, metadata={"max_length": 255})
-    __idContainer: str = field(default="", init=False, metadata={"max_length": 25})
-    __sello: str = field(default="", init=False, metadata={"max_length": 20})
-    __emisorSello: str = field(default="", init=False, metadata={"max_length": 70})
+    __marcas: str 
+    __idContainer: str
+    __sello: str 
+    __emisorSello: str
 
     def __post_init__(self):
         self.__marcas = truncate(self.Marcas, 255)

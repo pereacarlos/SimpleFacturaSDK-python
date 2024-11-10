@@ -9,20 +9,20 @@ def truncate(value: str, length: int) -> str:
 class Emisor:
     RUTEmisor: str
     RznSoc: str
-    RznSocEmisor: Optional[str] = None
-    GiroEmis: Optional[str] = None
-    GiroEmisor: Optional[str] = None
-    Telefono: List[str] = field(default_factory=list)
-    CorreoEmisor: Optional[str] = None
-    Acteco: List[int] = field(default_factory=list)
-    GuiaExport: Optional['GuiaExportacion'] = None
-    Sucursal: str = ""
-    CdgSIISucur: int = 0
-    DirOrigen: str = ""
-    CmnaOrigen: str = ""
-    CiudadOrigen: str = ""
-    CdgVendedor: str = ""
-    IdAdicEmisor: str = ""
+    RznSocEmisor: Optional[str]
+    GiroEmis: Optional[str]
+    GiroEmisor: Optional[str]
+    Telefono: List[str]
+    CorreoEmisor: Optional[str]
+    Acteco: List[int]
+    GuiaExport: Optional[GuiaExportacion]
+    Sucursal: str 
+    CdgSIISucur: int
+    DirOrigen: str 
+    CmnaOrigen: str 
+    CiudadOrigen: str
+    CdgVendedor: str 
+    IdAdicEmisor: str
 
     # Privado
     __razonSocial: Optional[str] = field(default=None, metadata={"max_length": 70})
@@ -57,7 +57,7 @@ class Emisor:
             Telefono=data.get('Telefono'),
             CorreoEmisor=data.get('CorreoEmisor'),
             Acteco=data.get('Acteco'),
-            GuiaExport=GuiaExportacion.from_dict(data.get('GuiaExport')),
+            GuiaExport=GuiaExportacion,
             Sucursal=data.get('Sucursal'),
             CdgSIISucur=data.get('CdgSIISucur'),
             DirOrigen=data.get('DirOrigen'),

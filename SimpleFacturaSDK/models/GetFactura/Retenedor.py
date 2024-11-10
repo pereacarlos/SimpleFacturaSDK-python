@@ -2,13 +2,16 @@ from dataclasses import dataclass
 
 @dataclass
 class Retenedor:
-    IndAgente: str = ''
-    MntBaseFaena: int = 0
-    MntMargComer: int = 0
-    PrcConsFinal: int = 0
+    IndAgente: str 
+    MntBaseFaena: int 
+    MntMargComer: int 
+    PrcConsFinal: int 
 
-    def __init__(self):
-        self.IndAgente = ''
-        self.MntBaseFaena = 0
-        self.MntMargComer = 0
-        self.PrcConsFinal = 0
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            IndAgente=data.get('IndAgente'),
+            MntBaseFaena=data.get('MntBaseFaena'),
+            MntMargComer=data.get('MntMargComer'),
+            PrcConsFinal=data.get('PrcConsFinal')
+        )

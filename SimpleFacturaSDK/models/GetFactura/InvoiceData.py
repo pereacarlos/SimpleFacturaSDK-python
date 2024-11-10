@@ -19,3 +19,5 @@ class InvoiceData:
             fecha_emision=data.get('fecha_emision'),
             total=data.get('total')
         )
+
+    

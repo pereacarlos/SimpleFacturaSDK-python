@@ -6,23 +6,23 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class SubTotal:
-    NroSTI: int = 0
-    GlosaSTI: str = ''
-    OrdenSTI: int = 0
-    SubTotNetoSTI: float = 0.0
-    SubTotIVASTI: float = 0.0
-    SubTotAdicSTI: float = 0.0
-    SubTotExeSTI: float = 0.0
-    ValSubtotSTI: float = 0.0
+    NroSTI: int 
+    GlosaSTI: str 
+    OrdenSTI: int 
+    SubTotNetoSTI: float 
+    SubTotIVASTI: float 
+    SubTotAdicSTI: float 
+    SubTotExeSTI: float 
+    ValSubtotSTI: float 
     
     
-    __glosa: str = field(default="", metadata={"max_length": 40})
-    __neto: float = field(default=0.0, metadata={"decimals": 2})
-    __iva: float = field(default=0.0, metadata={"decimals": 2})
-    __impuestoAdicional: float = field(default=0.0, metadata={"decimals": 2})
-    __montoExento: float = field(default=0.0, metadata={"decimals": 2})
-    __total: float = field(default=0.0, metadata={"decimals": 2})
-    LineasDeta: List[int] = field(default_factory=list)
+    __glosa: str 
+    __neto: float 
+    __iva: float 
+    __impuestoAdicional: float 
+    __montoExento: float 
+    __total: float
+    LineasDeta: List[int] 
 
     def __post_init__(self):
         self.__glosa = truncate(self.GlosaSTI, 40)

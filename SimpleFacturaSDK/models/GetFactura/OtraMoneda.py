@@ -6,26 +6,26 @@ from SimpleFacturaSDK.models.GetFactura.ImpuestosRetencionesOtraMoneda import Im
 
 @dataclass
 class OtraMoneda:
-    TpoCambio: float = 0.0
-    MntNetoOtrMnda: float = 0.0
-    MntExeOtrMnda: float = 0.0
-    MntFaeCarneOtrMnda: float = 0.0
-    MntMargComOtrMnda: float = 0.0
-    IVAOtrMnda: float = 0.0
-    IVANoRetOtrMnda: float = 0.0
-    MntTotOtrMnda: float = 0.0
-    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]] = field(default_factory=list)
+    TpoCambio: float
+    MntNetoOtrMnda: float
+    MntExeOtrMnda: float
+    MntFaeCarneOtrMnda: float 
+    MntMargComOtrMnda: float
+    IVAOtrMnda: float 
+    IVANoRetOtrMnda: float
+    MntTotOtrMnda: float 
+    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]]
 
     TpoMoneda: Moneda = Moneda.NotSet
 
-    __tipoCambio: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __montoNeto: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __montoExento: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __montoBaseFaenamientoCarne: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __montoBaseMargenComercial: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __iva: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __ivaNoRetenido: float = field(default=0.0, init=False, metadata={"decimals": 4})
-    __montoTotal: float = field(default=0.0, init=False, metadata={"decimals": 4})
+    __tipoCambio: float
+    __montoNeto: float
+    __montoExento: float
+    __montoBaseFaenamientoCarne: float
+    __montoBaseMargenComercial: float
+    __iva: float
+    __ivaNoRetenido: float
+    __montoTotal: float 
 
     def __post_init__(self):
         self.__tipoCambio = round(self.TpoCambio, 4)
@@ -49,5 +49,5 @@ class OtraMoneda:
             IVANoRetOtrMnda=data.get('IVANoRetOtrMnda'),
             MntTotOtrMnda=data.get('MntTotOtrMnda'),
             TpoMoneda=Moneda(data.get('TpoMoneda')),
-            ImpRetOtrMnda=[ImpuestosRetencionesOtraMoneda.from_dict(i) for i in data.get('ImpRetOtrMnda', [])]
+            ImpRetOtrMnda=[ImpuestosRetencionesOtraMoneda]
         )

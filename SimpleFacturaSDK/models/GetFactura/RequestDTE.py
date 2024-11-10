@@ -11,20 +11,20 @@ from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 
 @dataclass
 class RequestDTE:
-    Documento: Optional[Documento] = field(default_factory=Documento)
-    Exportaciones: Optional[Exportaciones] = None
-    Observaciones: Optional[str] = None
-    Cajero: Optional[str] = None
-    TipoPago: Optional[str] = None
-    Propina: Optional[int] = None   
+    Documento: Optional[Documento] 
+    Exportaciones: Optional[Exportaciones] 
+    Observaciones: Optional[str]
+    Cajero: Optional[str] 
+    TipoPago: Optional[str] 
+    Propina: Optional[int]   
 
     
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            Documento=Documento.from_dict(data.get('Documento')) if data.get('Documento') else None,
-            Exportaciones=Exportaciones.from_dict(data.get('Exportaciones')) if data.get('Exportaciones') else None,
+            Documento=Documento,
+            Exportaciones=Exportaciones,
             Observaciones=data.get('Observaciones'),
             Cajero=data.get('Cajero'),
             TipoPago=data.get('TipoPago'),

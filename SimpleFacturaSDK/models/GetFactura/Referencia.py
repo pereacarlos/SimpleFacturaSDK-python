@@ -8,17 +8,17 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class Referencia:
-    NroLinRef: int = 0
-    TpoDocRef: str = ''
-    IndGlobal: int = 0
-    FolioRef: str = ''
-    RUTOtr: str = ''
-    FechaDocumentoReferenciaString: str = ''
-    FchRef = datetime.now()
-    CodRef: TipoReferenciaEnum = TipoReferenciaEnum.NotSet
-    RazonRef: str = ''
+    NroLinRef: int 
+    TpoDocRef: str 
+    IndGlobal: int 
+    FolioRef: str
+    RUTOtr: str 
+    FechaDocumentoReferenciaString: str 
+    FchRef = datetime
+    CodRef: TipoReferenciaEnum.NotSet
+    RazonRef: str 
 
-    _razonReferencia: str = field(default="", metadata={"max_length": 100})
+    _razonReferencia: str
 
     def __post_init__(self):
         self.FchRef = datetime.strptime(self.FechaDocumentoReferenciaString, '%Y-%m-%d')

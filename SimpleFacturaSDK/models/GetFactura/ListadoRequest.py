@@ -1,29 +1,34 @@
 from datetime import datetime
 from typing import Optional
+from dataclasses import dataclass, field, asdict
 from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
 from SimpleFacturaSDK.models.GetFactura.CredencialExterna import CredencialExternaEnt
+from SimpleFacturaSDK.enumeracion.TipoSalida import TipoSalidaEnum
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 
+@dataclass
 class ListaDteRequestEnt:
     Credenciales: CredencialExternaEnt
-    Ambiente: AmbienteEnum.Certificacion
-    Folio: Optional[float]
-    CodigoTipoDte: Optional[DTEType.NotSet]
-    Desde: Optional[datetime]
-    Hasta: Optional[datetime]
-    Salida: TipoSalidaEnum.NotSet
-    RutEmisor: Optional[str]
+    ambiente: AmbienteEnum.Certificacion
+    folio: Optional[float]
+    codigoTipoDte: Optional[DTEType.NotSet]
+    desde: Optional[datetime]
+    hasta: Optional[datetime]
+    salida: TipoSalidaEnum.Base64
+    rutEmisor: Optional[str]
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
             Credenciales=CredencialExternaEnt.from_dict(data.get('Credenciales')),
-            Ambiente=AmbienteEnum(data.get('ambiente')),
-            Folio=data.get('folio'),
-            CodigoTipoDte=DTEType(data.get('codigoTipoDte')),
-            Desde=data.get('desde'),
-            Hasta=data.get('hasta'),
-            Salida=TipoSalidaEnum(data.get('Salida')),
-            RutEmisor=data.get('RutEmisor')
+            ambiente=AmbienteEnum(data.get('ambiente')),
+            folio=data.get('folio'),
+            codigoTipoDte=DTEType(data.get('codigoTipoDte')),
+            desde=data.get('desde'),
+            hasta=data.get('hasta'),
+            salida=TipoSalidaEnum(data.get('salida')),
+            rutEmisor=data.get('rutEmisor')
         )
 
+    def to_dict(self):
+        return asdict(self)

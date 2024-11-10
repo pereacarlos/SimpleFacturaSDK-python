@@ -2,9 +2,9 @@ from dataclasses import dataclass, field
 from SimpleFacturaSDK.enumeracion.TipoDescuento import ExpresionDineroEnum
 @dataclass
 class SubRecargo:
-    TipoRecargo: ExpresionDineroEnum = ExpresionDineroEnum.NotSet
-    ValorRecargo: float = 0.0
-    __valorRecargo: float = field(default=0.0, metadata={"decimals": 2})
+    TipoRecargo: ExpresionDineroEnum.NotSet
+    ValorRecargo: float 
+    __valorRecargo: float
 
     def __post_init__(self):
         self.__valorRecargo = round(self.ValorRecargo, 2)

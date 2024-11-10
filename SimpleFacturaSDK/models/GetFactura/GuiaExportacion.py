@@ -4,9 +4,9 @@ from SimpleFacturaSDK.enumeracion.CodigoTraslado import CodigoTrasladoEnum
 
 @dataclass
 class GuiaExportacion:
-    CdgTraslado: CodigoTrasladoEnum = CodigoTrasladoEnum.NotSet
-    FolioAut: int = 0
-    FechaAutorizacionString: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
+    CdgTraslado:CodigoTrasladoEnum.NotSet
+    FolioAut: int 
+    FechaAutorizacionString: str
 
     @property
     def FchAut(self) -> datetime:

@@ -8,25 +8,25 @@ from SimpleFacturaSDK.models.GetFactura.Comisiones import Comisiones
 
 @dataclass
 class Totales:
-    TpoMoneda: Moneda = Moneda.NotSet
-    MntNeto: float = 0.0
-    MntExe: float = 0.0
-    MntBase: int = 0
-    MntMargenCom: int = 0
-    TasaIVA: float = 0.0
-    IVA: int = 0
-    IVAProp: int = 0
-    IVATerc: int = 0
-    ImptoReten: Optional[List[ImpuestosRetenciones]] = field(default_factory=list)
-    IVANoRet: int = 0
-    CredEC: int = 0
-    GrntDep: int = 0
-    Comisiones: Optional[List[Comisiones]] = field(default_factory=list)
-    MntTotal: float = 0.0
-    MontoNF: int = 0
-    MontoPeriodo: int = 0
-    SaldoAnterior: int = 0
-    VlrPagar: int = 0
+    TpoMoneda: Moneda.NotSet
+    MntNeto: float
+    MntExe: float
+    MntBase: int
+    MntMargenCom: int 
+    TasaIVA: float 
+    IVA: int 
+    IVAProp: int 
+    IVATerc: int 
+    ImptoReten: Optional[List[ImpuestosRetenciones]] 
+    IVANoRet: int 
+    CredEC: int 
+    GrntDep: int 
+    Comisiones: Optional[List[Comisiones]]
+    MntTotal: float
+    MontoNF: int
+    MontoPeriodo: int 
+    SaldoAnterior: int
+    VlrPagar: int 
 
     def __post_init__(self):
         self.TpoMoneda = Moneda.NotSet
@@ -62,11 +62,11 @@ class Totales:
             IVA=data.get('IVA'),
             IVAProp=data.get('IVAProp'),
             IVATerc=data.get('IVATerc'),
-            ImptoReten=[ImpuestosRetenciones.from_dict(d) for d in data.get('ImptoReten')],
+            ImptoReten=[ImpuestosRetenciones],
             IVANoRet=data.get('IVANoRet'),
             CredEC=data.get('CredEC'),
             GrntDep=data.get('GrntDep'),
-            Comisiones=[Comisiones.from_dict(d) for d in data.get('Comisiones')],
+            Comisiones=[Comisiones],
             MntTotal=data.get('MntTotal'),
             MontoNF=data.get('MontoNF'),
             MontoPeriodo=data.get('MontoPeriodo'),
