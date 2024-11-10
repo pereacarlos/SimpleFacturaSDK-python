@@ -37,11 +37,14 @@ solicitud = SolicitudPdfDte(
     )
 )
 try: 
-    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
-    ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
-    with open(ruta, "wb") as f:
-        f.write(sobre_xml_bytes)
-    print("El sobre XML se ha descargado correctamente.")
+    solicitud_dict = solicitud.to_dict() 
+    # Obtener DTE
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud_dict)
+    ruta = "dte.json"
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(dte_bytes, f, default=lambda o: o.__dict__, ensure_ascii=False)
+    
+    print("El DTE se ha descargado correctamente.", dte_bytes.folio)
 
 
 

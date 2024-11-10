@@ -33,7 +33,6 @@ class Dte:
     formaPago: Optional[str]
     total: float
     detalles: List[DetalleDte]
-    descuentosRecargos: List[DescuentosRecargos]
     referencias: List[dict]
     impuestos: List[dict]
 
@@ -71,7 +70,6 @@ class Dte:
             formaPago=data.get('formaPago'),
             total=data.get('total'),
             detalles=detalles,
-            descuentosRecargos=DescuentosRecargos,
             referencias=data.get('referencias', []),
             impuestos=data.get('impuestos', []),
             
