@@ -5,10 +5,10 @@ def truncate(value: str, length: int) -> str:
 
 @dataclass
 class Chofer:
-    RUTChofer: str = ''
-    NombreChofer: str = ''
+    RUTChofer: str 
+    NombreChofer: str 
 
-    __nombre: str = field(default="", metadata={"max_length": 30})
+    __nombre: str
 
     def __post_init__(self):
         self.__nombre = truncate(self.NombreChofer, 30)

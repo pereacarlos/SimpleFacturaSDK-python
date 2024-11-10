@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
+from SimpleFacturaSDK.models.GetFactura.Chofer import Chofer
+from SimpleFacturaSDK.models.GetFactura.Aduana import Aduana
 
 def truncate(value: str, length: int) -> str:
     return value[:length] if value else ''

@@ -14,9 +14,9 @@ class OtraMoneda:
     IVAOtrMnda: float 
     IVANoRetOtrMnda: float
     MntTotOtrMnda: float 
-    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]]
 
-    TpoMoneda: Moneda = Moneda.NotSet
+    TpoMoneda: Moneda.NotSet
+    ImpRetOtrMnda: Optional[List[ImpuestosRetencionesOtraMoneda]]
 
     __tipoCambio: float
     __montoNeto: float

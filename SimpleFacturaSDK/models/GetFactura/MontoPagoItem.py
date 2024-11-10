@@ -1,23 +1,31 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
-def truncate(value: str, length: int) -> str:
-    return value[:length] if value else ''
-
 @dataclass
 class MontoPagoItem:
-    FchPago: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
     MntPago: int
     Glosa: str
-    __glosa: str 
+    FchPago: str = field(default_factory=lambda: datetime.min.strftime("%Y-%m-%d"))
+    __glosa: str = field(init=False)
 
     def __post_init__(self):
-        self.__glosa = truncate(self.Glosa, 40)
+        self.__glosa = self.truncate(self.Glosa, 40)
+
+    @staticmethod
+    def truncate(value: str, max_length: int) -> str:
+        return value if len(value) <= max_length else value[:max_length]
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            FchPago=data.get('FchPago'),
+            FchPago=data.get('FchPago', datetime.min.strftime("%Y-%m-%d")),
             MntPago=data.get('MntPago'),
             Glosa=data.get('Glosa')
         )
+
+    def to_dict(self):
+        return {
+            'FchPago': self.FchPago,
+            'MntPago': self.MntPago,
+            'Glosa': self.Glosa
+        }

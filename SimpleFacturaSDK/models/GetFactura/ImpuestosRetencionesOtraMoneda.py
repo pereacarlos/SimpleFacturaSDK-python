@@ -3,9 +3,9 @@ from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
 
 @dataclass
 class ImpuestosRetencionesOtraMoneda:
-    TipoImpOtrMnda: TipoImpuestoEnum = TipoImpuestoEnum.NotSet
     TasaImpOtrMnda: float 
     VlrImpOtrMnda: float
+    TipoImpOtrMnda: TipoImpuestoEnum.NotSet
 
     __tasaImpuesto: float 
     __montoImpuesto: float

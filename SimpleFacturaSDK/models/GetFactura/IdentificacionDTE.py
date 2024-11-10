@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.enumeracion.TipoDespacho import TipoDespachoEnum
 from SimpleFacturaSDK.enumeracion.TipoTraslado import TipoTrasladoEnum
@@ -12,96 +12,106 @@ from SimpleFacturaSDK.enumeracion.MedioPago import MedioPagoEnum
 from SimpleFacturaSDK.enumeracion.TipoCuentaPago import TipoCuentaPagoEnum
 from SimpleFacturaSDK.models.GetFactura.MontoPagoItem import MontoPagoItem
 from SimpleFacturaSDK.enumeracion.TipoTransCompra import TipoTransCompra, TipoTransVenta
-from dataclasses import dataclass, field
-from typing import List, Optional
-from datetime import datetime
-
-def truncate(value: str, length: int) -> str:
-    return value[:length] if value else ''
-
 
 @dataclass
 class IdentificacionDTE:
     TipoDTE: DTEType 
     Folio: int
-    FechaEmisionString: str 
-    IndNoRebaja: int 
-    TipoDespacho: TipoDespachoEnum.NotSet 
-    IndTraslado: TipoTrasladoEnum.NotSet 
-    TpoImpresion: TipoImpresionEnum.N 
-    IndServicio: IndicadorServicioEnum.NotSet
-    MntBruto: int 
-    FmaPago: FormaPagoEnum 
-    FmaPagExp: FormaPagoExportacionEnum.NotSet
-    FechaCancelacionString: str 
-    MntCancel: int 
-    SaldoInsol: int 
-    MntPagos: List[MontoPagoItem] 
-    PeriodoDesdeString: str 
-    PeriodoHastaString: str
-    MedioPago: MedioPagoEnum.NotSet
-    TpoCtaPago: TipoCuentaPagoEnum.NotSet 
-    NumCtaPago: str
-    BcoPago: str
-    TermPagoCdg: str
-    TermPagoGlosa: str 
-    TermPagoDias: int
-    FechaVencimientoString: str
-    TipoTranCompra: TipoTransCompra
-    TipoTransVenta: TipoTransVenta 
-    IndMntNeto: int 
-    FchEmis: datetime 
-    FchVenc: datetime 
-    FchCancel: datetime
-    PeriodoDesde:datetime 
-    PeriodoHasta: datetime 
-
-    # Private fields for internal use
-    __cuentaPago: str = field(init=False, default=None, metadata={"max_length": 20})
-    __bancoPago: str = field(init=False, default=None, metadata={"max_length": 40})
-    __terminoPagoCodigo: str = field(init=False, default=None, metadata={"max_length": 4})
-    __terminoPagoGlosa: str = field(init=False, default=None, metadata={"max_length": 100})
-
-   
-
-    def __post_init__(self):
-        self.FchEmis = datetime.strptime(self.FechaEmisionString, '%Y-%m-%d') if self.FechaEmisionString else None
-        self.FchVenc = datetime.strptime(self.FechaVencimientoString, '%Y-%m-%d') if self.FechaVencimientoString else None
-        self.FchCancel = datetime.strptime(self.FechaCancelacionString, '%Y-%m-%d') if self.FechaCancelacionString else None
-        self.PeriodoDesde = datetime.strptime(self.PeriodoDesdeString, '%Y-%m-%d') if self.PeriodoDesdeString else None
-        self.PeriodoHasta = datetime.strptime(self.PeriodoHastaString, '%Y-%m-%d') if self.PeriodoHastaString else None
-        self.__cuentaPago = truncate(self.NumCtaPago, 20)
-        self.__bancoPago = truncate(self.BcoPago, 40)
-        self.__terminoPagoCodigo = truncate(self.TermPagoCdg, 4)
-        self.__terminoPagoGlosa = truncate(self.TermPagoGlosa, 100)
-        self.TipoDespacho = TipoDespachoEnum(self.TipoDespacho) if self.TipoDespacho else None
-   
+    FchEmis: str
+    IndNoRebaja: Optional[int] = None
+    TipoDespacho: Optional[TipoDespachoEnum] = None
+    IndTraslado: Optional[TipoTrasladoEnum] = None
+    TpoImpresion: Optional[TipoImpresionEnum] = None
+    IndServicio: Optional[IndicadorServicioEnum] = None
+    MntBruto: Optional[int] = None
+    FmaPago: Optional[FormaPagoEnum] = None
+    FechaCancelacionString: Optional[str] = None
+    MntCancel: Optional[float] = None
+    SaldoInsol: Optional[float] = None
+    MntPagos: Optional[float] = None
+    PeriodoDesdeString: Optional[str] = None
+    PeriodoHastaString: Optional[str] = None
+    MedioPago: Optional[MedioPagoEnum] = None
+    TpoCtaPago: Optional[TipoCuentaPagoEnum] = None
+    NumCtaPago: Optional[str] = None
+    BcoPago: Optional[str] = None
+    TermPagoCdg: Optional[str] = None
+    TermPagoGlosa: Optional[str] = None
+    TermPagoDias: Optional[int] = None
+    FchVenc: Optional[str] = None
+    TipoTranCompra: Optional[TipoTransCompra] = None
+    TipoTransVenta: Optional[TipoTransVenta] = None
+    IndMntNeto: Optional[int] = None
+    FchCancel: Optional[datetime] = None
+    PeriodoDesde: Optional[datetime] = None
+    PeriodoHasta: Optional[datetime] = None
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            TipoDTE=data.get('TipoDTE'),
+            TipoDTE=DTEType(data.get('TipoDTE')) if data.get('TipoDTE') else None,
             Folio=data.get('Folio'),
-            FechaEmisionString=data.get('FchEmis'),
+            FchEmis=data.get('FchEmis'),
             IndNoRebaja=data.get('IndNoRebaja'),
-            TipoDespacho=data.get('TipoDespacho'),
-            IndTraslado=data.get('IndTraslado'),
-            TpoImpresion=data.get('TpoImpresion'),
-            IndServicio=data.get('IndServicio'),
+            TipoDespacho=TipoDespachoEnum(data.get('TipoDespacho')) if data.get('TipoDespacho') else None,
+            IndTraslado=TipoTrasladoEnum(data.get('IndTraslado')) if data.get('IndTraslado') else None,
+            TpoImpresion=TipoImpresionEnum(data.get('TpoImpresion')) if data.get('TpoImpresion') else None,
+            IndServicio=IndicadorServicioEnum(data.get('IndServicio')) if data.get('IndServicio') else None,
             MntBruto=data.get('MntBruto'),
-            FmaPago=data.get('FmaPago'),
-            FmaPagExp=data.get('FmaPagExp'),
+            FmaPago=FormaPagoEnum(data.get('FmaPago')) if data.get('FmaPago') else None,
             FechaCancelacionString=data.get('FechaCancelacionString'),
             MntCancel=data.get('MntCancel'),
             SaldoInsol=data.get('SaldoInsol'),
-            MntPagos=[MontoPagoItem],
+            MntPagos=data.get('MntPagos'),
             PeriodoDesdeString=data.get('PeriodoDesdeString'),
             PeriodoHastaString=data.get('PeriodoHastaString'),
-            MedioPago=data.get('MedioPago'),
-            TpoCtaPago=data.get('TpoCtaPago'),
+            MedioPago=MedioPagoEnum(data.get('MedioPago')) if data.get('MedioPago') else None,
+            TpoCtaPago=TipoCuentaPagoEnum(data.get('TpoCtaPago')) if data.get('TpoCtaPago') else None,
+            NumCtaPago=data.get('NumCtaPago'),
+            BcoPago=data.get('BcoPago'),
+            TermPagoCdg=data.get('TermPagoCdg'),
+            TermPagoGlosa=data.get('TermPagoGlosa'),
             TermPagoDias=data.get('TermPagoDias'),
-            FechaVencimientoString=data.get('FchVenc'),
-            IndMntNeto=data.get('IndMntNeto')
+            FchVenc=data.get('FchVenc'),
+            TipoTranCompra=TipoTransCompra(data.get('TipoTranCompra')) if data.get('TipoTranCompra') else None,
+            TipoTransVenta=TipoTransVenta(data.get('TipoTransVenta')) if data.get('TipoTransVenta') else None,
+            IndMntNeto=data.get('IndMntNeto'),
+            FchCancel=data.get('FchCancel'),
+            PeriodoDesde=data.get('PeriodoDesde'),
+            PeriodoHasta=data.get('PeriodoHasta')
         )
-    
- 
+
+    def to_dict(self):
+        return {
+            'TipoDTE': self.TipoDTE.value if self.TipoDTE else None,
+            'Folio': self.Folio,
+            'FechaEmisionString': self.FechaEmisionString,
+            'IndNoRebaja': self.IndNoRebaja,
+            'TipoDespacho': self.TipoDespacho.value if self.TipoDespacho else None,
+            'IndTraslado': self.IndTraslado.value if self.IndTraslado else None,
+            'TpoImpresion': self.TpoImpresion.value if self.TpoImpresion else None,
+            'IndServicio': self.IndServicio.value if self.IndServicio else None,
+            'MntBruto': self.MntBruto,
+            'FmaPagExp': self.FmaPagExp.value if self.FmaPagExp else None,
+            'FechaCancelacionString': self.FechaCancelacionString,
+            'MntCancel': self.MntCancel,
+            'SaldoInsol': self.SaldoInsol,
+            'MntPagos': self.MntPagos,
+            'PeriodoDesdeString': self.PeriodoDesdeString,
+            'PeriodoHastaString': self.PeriodoHastaString,
+            'MedioPago': self.MedioPago.value if self.MedioPago else None,
+            'TpoCtaPago': self.TpoCtaPago.value if self.TpoCtaPago else None,
+            'NumCtaPago': self.NumCtaPago,
+            'BcoPago': self.BcoPago,
+            'TermPagoCdg': self.TermPagoCdg,
+            'TermPagoGlosa': self.TermPagoGlosa,
+            'TermPagoDias': self.TermPagoDias,
+            'FechaVencimientoString': self.FechaVencimientoString,
+            'TipoTranCompra': self.TipoTranCompra.value if self.TipoTranCompra else None,
+            'TipoTransVenta': self.TipoTransVenta.value if self.TipoTransVenta else None,
+            'IndMntNeto': self.IndMntNeto,
+            'FchCancel': self.FchCancel,
+            'PeriodoDesde': self.PeriodoDesde,
+            'PeriodoHasta': self.PeriodoHasta
+        }
+

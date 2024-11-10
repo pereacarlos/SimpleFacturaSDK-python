@@ -3,10 +3,10 @@ from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
 
 @dataclass
 class ImpuestosRetenciones:
-    TipoImp: TipoImpuestoEnum = TipoImpuestoEnum.NotSet
     TasaImp: float
     MontoImp: int 
     _tasaImpuesto: float
+    TipoImp:TipoImpuestoEnum.NotSet
 
     def __post_init__(self):
         self._tasaImpuesto = round(self.TasaImp, 2)
