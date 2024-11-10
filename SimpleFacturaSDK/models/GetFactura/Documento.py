@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List, Optional
 from datetime import datetime
 from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
@@ -26,14 +26,6 @@ class Documento:
    
     Comisiones: Optional[List[ComisionRecargo]] = field(default_factory=list)
 
-    def __init__(self, Id: str = '', Encabezado: Encabezado = None, Detalle: List[Detalle] = None, SubTotInfo: List[SubTotal] = None, DscRcgGlobal: List[DescuentosRecargos] = None, Referencia: List[Referencia] = None, Comisiones: List[ComisionRecargo] = None):
-        self.Id = Id
-        self.Encabezado = Encabezado
-        self.Detalle = Detalle
-        self.SubTotInfo = SubTotInfo
-        self.DscRcgGlobal = DscRcgGlobal
-        self.Referencia = Referencia
-        self.Comisiones = Comisiones
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -46,5 +38,8 @@ class Documento:
             Referencia=[Referencia.from_dict(r) for r in data.get('Referencia', [])] if data.get('Referencia') else [],
             Comisiones=[ComisionRecargo.from_dict(c) for c in data.get('Comisiones', [])] if data.get('Comisiones') else []
         )
+
+    def to_dict(self):
+        return asdict(self)
 
         

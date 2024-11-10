@@ -92,4 +92,5 @@ class Detalle:
             CodigoImpuestoAdicional=[TipoImpuestoEnum(codigoImpuestoAdicional) for codigoImpuestoAdicional in data.get('CodigoImpuestoAdicional')] if data.get('CodigoImpuestoAdicional') else None,
             MontoItem=data.get('MontoItem')
         )
-    
+    def to_dict(self):
+        return asdict(self)

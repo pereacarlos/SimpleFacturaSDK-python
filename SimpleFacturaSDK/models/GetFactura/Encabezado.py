@@ -16,19 +16,7 @@ class Encabezado:
     RUTSolicita: Optional[str] = field(default='')
     Transporte: Optional[Transporte] = None
     Totales: Totales = field(default_factory=Totales)
-    OtraMoneda: Optional[OtraMoneda] = None
-
-    def __init__(self, IdDoc: IdentificacionDTE = None, Emisor: Emisor = None, RUTMandante: str = '', Receptor: Receptor = None, RUTSolicita: str = '', Transporte: Transporte = None, Totales: Totales = None, OtraMoneda: OtraMoneda = None):
-        self.IdDoc = IdDoc
-        self.Emisor = Emisor
-        self.RUTMandante = RUTMandante
-        self.Receptor = Receptor
-        self.RUTSolicita = RUTSolicita
-        self.Transporte = Transporte
-        self.Totales = Totales
-        self.OtraMoneda = OtraMoneda
-
-    
+    OtraMoneda: Optional[OtraMoneda] = None    
 
 
     @classmethod
@@ -44,3 +32,6 @@ class Encabezado:
             OtraMoneda=OtraMoneda.from_dict(data.get('OtraMoneda')) if data.get('OtraMoneda') else None
         )
         
+
+    def to_dict(self):
+        return asdict(self)

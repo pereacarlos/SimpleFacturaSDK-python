@@ -46,3 +46,6 @@ class SubTotal:
             ValSubtotSTI=data.get('ValSubtotSTI'),
             LineasDeta=data.get('LineasDeta')
         )
+
+    def to_dict(self):
+        return asdict(self)

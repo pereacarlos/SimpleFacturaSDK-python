@@ -1,6 +1,7 @@
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import json
+from dataclasses import asdict
 #from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 #from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 #from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
@@ -31,7 +32,7 @@ solicitud = RequestDTE(
     Documento=Documento(
         Encabezado=Encabezado(
             IdDoc=IdentificacionDTE(
-                TipoDTE= DTEType.FacturaElectronica,
+                TipoDTE=33,
                 FchEmis="2024-09-05",
                 FmaPago=1,
                 FchVenc="2024-09-05"
@@ -57,10 +58,10 @@ solicitud = RequestDTE(
                 CiudadRecep="Santiago"
             ),
             Totales=Totales(
-                MntNeto=832,
-                TasaIVA=19,
-                IVA=158,
-                MntTotal=990
+                MntNeto=832.0,
+                TasaIVA=19.0,
+                IVA=158.0,
+                MntTotal=990.0
             )
         ),
         Detalle=[
@@ -83,9 +84,12 @@ solicitud = RequestDTE(
     Observaciones="NOTA AL PIE DE PAGINA",
     TipoPago="30 dias"
 )
+
 try: 
 
-    solicitud_dict = solicitud.to_dict()
+    solicitud_dict = asdict(solicitud)
+    solicitud_json = json.dumps(solicitud_dict, indent=4, ensure_ascii=False)
+    print(solicitud_json)
     Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
 
     # Imprimir el resultado de la factura

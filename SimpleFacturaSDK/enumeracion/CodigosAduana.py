@@ -1,6 +1,7 @@
 from enum import Enum
 import json
 
+
 class FormaPagoExportacionEnum(Enum):
     NotSet = (0, "No Asignado")
     COB1 = (1, "COB 1")
