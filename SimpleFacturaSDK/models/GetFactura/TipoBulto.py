@@ -3,9 +3,6 @@ from typing import Optional
 from SimpleFacturaSDK.enumeracion.CodigosAduana import TipoBultoEnum
 
 
-def truncate(value: str, length: int) -> str:
-    return value[:length] if value else ''
-
 @dataclass
 class TipoBulto:
     CodTpoBultos: TipoBultoEnum

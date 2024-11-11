@@ -1,10 +1,14 @@
+import os
 import json
+from requests_toolbelt import MultipartEncoder
+import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 
 class FacturacionService:
     def __init__(self, session, base_url):
@@ -135,6 +139,28 @@ class FacturacionService:
             response.raise_for_status()
    
 
+    def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
+        url = f"{self.base_url}/massiveInvoice"
+        if not os.path.isfile(path_csv):
+            raise ValueError(f"El archivo '{path_csv}' no existe.")
+        m = MultipartEncoder(
+            fields={
+                'data': json.dumps(credenciales.to_dict()),
+                'input': ('archivo.csv', open(path_csv, 'rb'), 'text/csv')
+            }
+        )
+        headers = {
+            'Content-Type': m.content_type
+        }
+        response = self.session.post(url, headers=headers, data=m)
+        contenido_respuesta = response.text
+        print("Respuesta completa:", contenido_respuesta)
+
+        if response.status_code == 200:
+            response_json = response.json()
+            return response_json
+        else:
+            raise Exception(f"Error en la petición: {contenido_respuesta}")
     def listadoDteEmitidos(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
         response = self.session.post(url, json=solicitud)
@@ -153,37 +179,3 @@ class FacturacionService:
 
 
 
-
-
-'''
-
-    def facturacion_individualV2_Dte(self, solicitud):
-        url = "https://api.simplefactura.cl/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
-        
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-    
-    def facturacion_individualV2_Boletas(self, solicitud):
-        url = "https://api.simplefactura.cl/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
-        
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-    
-    def facturacion_individualV2_Exportacion(self, solicitud):
-        url = f"{self.base_url}/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
-        
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-'''

@@ -7,7 +7,7 @@ class Credenciales:
 
     def to_dict(self):
         return {
-            "RutEmisor": self.rut_emisor,
+            "rutEmisor": self.rut_emisor,
             "nombreSucursal": self.nombre_sucursal,
             "emailUsuario": self.email_usuario,
             "rutContribuyente": self.rut_contribuyente
