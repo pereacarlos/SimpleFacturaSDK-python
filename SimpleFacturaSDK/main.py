@@ -12,6 +12,7 @@ from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
 
@@ -77,8 +78,10 @@ solicitud = RequestDTE(
 )
 
 try:
-    
-    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud, "Casa_Matriz")
+    solicitud_dict = dataclass_to_dict(solicitud)
+    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
+    solicitud_json = json.dumps(solicitud_dict, ensure_ascii=False, indent=4)
+    print("Solicitud:", solicitud_json)
     print(Factura)
     ruta = "Factura.json"
     with open(ruta, 'w') as file:
