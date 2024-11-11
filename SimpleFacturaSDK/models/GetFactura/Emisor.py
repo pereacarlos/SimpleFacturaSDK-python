@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List,Optional
 @dataclass
 class Emisor:
     RUTEmisor: str
@@ -11,5 +11,5 @@ class Emisor:
     DirOrigen: str
     CmnaOrigen: str
     CiudadOrigen: str
-    RznSocEmisor: str
-    GiroEmisor: str
+    RznSocEmisor: Optional[str] = None
+    GiroEmisor: Optional[str] = None

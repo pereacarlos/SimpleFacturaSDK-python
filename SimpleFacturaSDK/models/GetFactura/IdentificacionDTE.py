@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 from datetime import datetime
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
@@ -6,6 +7,8 @@ from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 class IdDoc:
     TipoDTE: DTEType  
     FchEmis: str
-    FmaPago: int
     FchVenc: str
-    IndServicio: IndicadorServicioEnum
+    FmaPago: Optional[int] = None
+    IndServicio: Optional[IndicadorServicioEnum] = None
+
+ 

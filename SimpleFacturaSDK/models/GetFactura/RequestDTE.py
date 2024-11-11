@@ -1,11 +1,14 @@
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 
 
 @dataclass
 class RequestDTE:
-    Documento: Documento
-    Observaciones: str
-    TipoPago: str
+    Documento: Optional[Documento] = None
+    Exportaciones: Optional[Exportaciones] = None 
+    Observaciones: Optional[str] = None
+    TipoPago: Optional[str] = None
+    Cajero: Optional[str] = None

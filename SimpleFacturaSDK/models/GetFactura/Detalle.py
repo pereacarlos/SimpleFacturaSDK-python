@@ -1,13 +1,16 @@
 from dataclasses import dataclass, asdict
 from typing import List, Optional
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
 
 @dataclass
 class Detalle:
-    NroLinDet: str
+    NroLinDet: int
     NmbItem: str
     CdgItem: List[CdgItem]
-    QtyItem: str
+    QtyItem: float
     UnmdItem: str
-    PrcItem: str
-    MontoItem: str
+    PrcItem: float
+    MontoItem: int
+    IndExe: IndicadorFacturacionExencionEnum
+    DscItem: Optional[str] = None

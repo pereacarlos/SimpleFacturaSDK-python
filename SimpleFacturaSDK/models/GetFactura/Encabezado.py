@@ -13,5 +13,6 @@ class Encabezado:
     Emisor: Emisor
     Receptor: Receptor
     Totales: Totales
+    Transporte: Optional[Transporte] = None
     OtraMoneda: Optional[OtraMoneda] = None
    

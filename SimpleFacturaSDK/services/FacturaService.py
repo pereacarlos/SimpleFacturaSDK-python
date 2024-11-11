@@ -95,6 +95,46 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
     
+
+    def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
+        # Validar que la sucursal sea un string
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+        url = f"{self.base_url}/invoiceV2/{sucursal}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
+    
+    def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> InvoiceData:
+        # Validar que la sucursal sea un string
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+        url = f"{self.base_url}/dte/exportacion/{sucursal}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
+   
+
     def listadoDteEmitidos(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
         response = self.session.post(url, json=solicitud)

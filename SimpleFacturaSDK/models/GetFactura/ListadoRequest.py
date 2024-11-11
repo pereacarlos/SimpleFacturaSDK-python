@@ -10,25 +10,9 @@ from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 class ListaDteRequestEnt:
     Credenciales: CredencialExternaEnt
     ambiente: AmbienteEnum.Certificacion
-    folio: Optional[float]
-    codigoTipoDte: Optional[DTEType.NotSet]
-    desde: Optional[datetime]
-    hasta: Optional[datetime]
-    salida: TipoSalidaEnum.Base64
-    rutEmisor: Optional[str]
-
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(
-            Credenciales=CredencialExternaEnt.from_dict(data.get('Credenciales')),
-            ambiente=AmbienteEnum(data.get('ambiente')),
-            folio=data.get('folio'),
-            codigoTipoDte=DTEType(data.get('codigoTipoDte')),
-            desde=data.get('desde'),
-            hasta=data.get('hasta'),
-            salida=TipoSalidaEnum(data.get('salida')),
-            rutEmisor=data.get('rutEmisor')
-        )
-
-    def to_dict(self):
-        return asdict(self)
+    salida: TipoSalidaEnum
+    folio: Optional[float] = None
+    codigoTipoDte: Optional[DTEType] = None
+    desde: Optional[datetime] = None
+    hasta: Optional[datetime] = None
+    rutEmisor: Optional[str] = None

@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from typing import Optional
+from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
 
 @dataclass
 class Receptor:
@@ -9,3 +11,4 @@ class Receptor:
     DirRecep: str
     CmnaRecep: str
     CiudadRecep: str
+    Extranjero: Optional[Extranjero] = None

@@ -393,8 +393,6 @@ class TipoBultoEnum(Enum):
         }
         return description.get(self.value, "")
   
-
-
 class Paises(Enum):
     NotSet = 0
     SENEGAL = 101
@@ -411,12 +409,12 @@ class Paises(Enum):
     BOTSWANA = 113
     LESOTHO = 114
     MALAWI = 115
-    MOZAMBIQUE = 116
+    ZIMBABWE = 116
     ZAMBIA = 117
     COMORAS = 118
     MAURICIO = 119
     MADAGASCAR = 120
-    #MOZAMBIQUE = 121
+    MOZAMBIQUE = 121
     SWAZILANDIA = 122
     SUDAN = 123
     EGIPTO = 124
@@ -437,11 +435,460 @@ class Paises(Enum):
     ANGOLA = 140
     BURUNDI = 141
     RWANDA = 142
-    REP_DEM__CONGO = 143
+    REP_DEM_CONGO = 143
     CONGO = 144
     GABON = 145
     S_TOM_PRINCIPE = 146
-    GUINEA_ECUATORL = 147
+    GUINEA_ECUATRL = 147
+    REP_CENT_AFRIC = 148
+    CAMERUN = 149
+    BENIN = 150
+    TERR_BRIT_EN_AF = 151
+    TER_ESPAN_EN_AF = 152
+    TERR_FRAN_EN_AF = 153
+    DJIBOUTI = 155
+    SEYCHELLES = 156
+    NAMIBIA = 159
+    SUDAN_DEL_SUR = 160
+    BURKINA_FASO = 161
+    ERITREA = 163
+    ISLAS_MARSHALL = 164
+    SAHARAUI = 165
+    VENEZUELA = 201
+    COLOMBIA = 202
+    TRINID_Y_TOBAGO = 203
+    BARBADOS = 204
+    JAMAICA = 205
+    REP_DOMINICANA = 206
+    BAHAMAS = 207
+    HAITI = 208
+    CUBA = 209
+    PANAMA = 210
+    COSTA_RICA = 211
+    NICARAGUA = 212
+    EL_SALVADOR = 213
+    HONDURAS = 214
+    GUATEMALA = 215
+    MEXICO = 216
+    GUYANA = 217
+    ECUADOR = 218
+    PERU = 219
+    BRASIL = 220
+    BOLIVIA = 221
+    PARAGUAY = 222
+    URUGUAY = 223
+    ARGENTINA = 224
+    U_S_A = 225
+    CANADA = 226
+    TERR_BRIT_EN_AM = 227
+    TERR_FRAN_EN_AM = 228
+    TER_HOLAN_EN_AM = 229
+    TERR_D_DINAMARC = 230
+    DOMINICA = 231
+    GRANADA = 232
+    SANTA_LUCIA = 233
+    S_VTE_Y_GRANAD = 234
+    SURINAM = 235
+    BELICE = 236
+    ANTIGUA_Y_BBUDA = 240
+    SNT_KIT_AND_NEVIS = 241
+    ANGUILA = 242
+    ARUBA = 243
+    BERMUDAS = 244
+    ISLAS_VIRG_BRIT = 245
+    ISLAS_CAYMAN = 246
+    ANTILLAS_NEERLA = 247
+    TURCAS_Y_CAICOS = 248
+    ISLAS_VIRG_EUA = 249
+    MARTINICA = 250
+    PUERTO_RICO = 251
+    MONSERRAT = 252
+    GROENLANDIA = 253
+    JORDANIA = 301
+    ARABIA_SAUDITA = 302
+    KUWAIT = 303
+    OMAN = 304
+    CHIPRE = 305
+    ISRAEL = 306
+    IRAK = 307
+    AFGHANISTAN = 308
+    IRAN = 309
+    SIRIA = 310
+    LIBANO = 311
+    QATAR = 312
+    BAHREIN = 313
+    SRI_LANKA = 314
+    CAMBODIA = 315
+    LAOS = 316
+    INDIA = 317
+    BUTAN = 318
+    THAILANDIA = 319
+    NEPAL = 320
+    BANGLADESH = 321
+    PALESTINA = 322
+    PAKISTAN = 324
+    VIETNAM = 325
+    MYANMAR_EX_BIR = 326
+    ISLAS_MALDIVAS = 327
+    INDONESIA = 328
+    MALASIA = 329
+    TAIWAN_FORMOSA = 330
+    JAPON = 331
+    SINGAPUR = 332
+    COREA_DEL_SUR = 333
+    RPD_COREA_DEL_N = 334
+    FILIPINAS = 335
+    CHINA = 336
+    MONGOLIA = 337
+    EMIR_ARAB_UNID = 341
+    HONG_KONG = 342
+    TER_PORTUG_EAS = 343
+    BRUNEI = 344
+    MACAO = 345
+    REPUBLICA_DE_YE = 346
+    FIJI = 401
+    NAURU = 402
+    ISLAS_TONGA = 403
+    SAMOA_OCC = 404
+    NUEVA_ZELANDIA = 405
+    AUSTRALIA = 406
+    TERR_BRIT_EN_OP = 407
+    TERR_FRAN_EN_OP = 408
+    T_NORTEAM_EN_OP = 409
+    PPUA_NVA_GUINEA = 412
+    VANUATU = 415
+    KIRIBATI = 416
+    MICRONESIA = 417
+    ISLAS_SALOMON = 418
+    TUVALU = 419
+    BELAU = 420
+    NIUE = 421
+    POLINESIA_FRAN = 422
+    NUEVA_CALEDONIA = 423
+    ISLAS_MARIANAS = 424
+    GUAM = 425
+    TIMOR_ORIENTAL = 426
+    ISLAS_COOK = 427
+    PORTUGAL = 501
+    ITALIA = 504
+    FRANCIA = 505
+    IRLANDA = 506
+    DINAMARCA = 507
+    SUIZA = 508
+    AUSTRIA = 509
+    REINO_UNIDO = 510
+    SUECIA = 511
+    FINLANDIA = 512
+    NORUEGA = 513
+    BELGICA = 514
+    HOLANDA = 515
+    ISLANDIA = 516
+    ESPANA = 517
+    ALBANIA = 518
+    RUMANIA = 519
+    GRECIA = 520
+    U_R_S_S = 521
+    TURQUIA = 522
+    MALTA = 523
+    SANTA_SEDE = 524
+    ANDORRA = 525
+    BULGARIA = 527
+    POLONIA = 528
+    HUNGRIA = 530
+    LUXEMBURGO = 532
+    LIECHTENSTEIN = 534
+    MONACO = 535
+    SAN_MARINO = 536
+    ARMENIA = 540
+    AZERBAIJAN = 541
+    BELARUS = 542
+    BOSNIA_HEZGVINA = 543
+    REPUBLICA_CHECA = 544
+    REP_ESLOVACA = 545
+    REPUBLICA_DE_SE = 546
+    CROACIA = 547
+    ESLOVENIA = 548
+    ESTONIA = 549
+    GEORGIA = 550
+    KASAJSTAN = 551
+    KIRGISTAN = 552
+    LETONIA = 553
+    LITUANIA = 554
+    MACEDONIA = 555
+    MOLDOVA = 556
+    TADJIKISTAN = 557
+    TURKMENISTAN = 558
+    UCRANIA = 559
+    UZBEKISTAN = 560
+    MONTENEGRO = 561
+    RUSIA = 562
+    ALEMANIA = 563
+    GIBRALTAR = 565
+    GUERNSEY = 566
+    ISLAS_DE_MAN = 567
+    JERSEY = 568
+    LOS_DEMAS = 888
+    COMB_Y_LUBRIC = 901
+    RANCHO_DE_NAVES = 902
+    PESCA_EXTRA = 903
+    ORIG_O_DEST_NO = 904
+    ZF_IQUIQUE = 905
+    DEPOSITO_FRANCO = 906
+    ZF_PARENAS = 907
+    ZF_ARICA_ZF_IND = 910
+    CHILE = 997
+    NAC_REPUTADA = 998
+    OTROS = 999
+
+    def descripcion(self):
+        descriptions = {
+            0: "",
+            101: "101",
+            102: "102",
+            103: "103",
+            104: "104",
+            105: "105",
+            106: "106",
+            107: "107",
+            108: "108",
+            109: "109",
+            111: "111",
+            112: "112",
+            113: "113",
+            114: "114",
+            115: "115",
+            116: "116",
+            117: "117",
+            118: "118",
+            119: "119",
+            120: "120",
+            121: "121",
+            122: "122",
+            123: "123",
+            124: "124",
+            125: "125",
+            126: "126",
+            127: "127",
+            128: "128",
+            129: "129",
+            130: "130",
+            131: "131",
+            133: "133",
+            134: "134",
+            135: "135",
+            136: "136",
+            137: "137",
+            138: "138",
+            139: "139",
+            140: "140",
+            141: "141",
+            142: "142",
+            143: "143",
+            144: "144",
+            145: "145",
+            146: "146",
+            147: "147",
+            148: "148",
+            149: "149",
+            150: "150",
+            151: "151",
+            152: "152",
+            153: "153",
+            155: "155",
+            156: "156",
+            159: "159",
+            160: "160",
+            161: "161",
+            163: "163",
+            164: "164",
+            165: "165",
+            201: "201",
+            202: "202",
+            203: "203",
+            204: "204",
+            205: "205",
+            206: "206",
+            207: "207",
+            208: "208",
+            209: "209",
+            210: "210",
+            211: "211",
+            212: "212",
+            213: "213",
+            214: "214",
+            215: "215",
+            216: "216",
+            217: "217",
+            218: "218",
+            219: "219",
+            220: "220",
+            221: "221",
+            222: "222",
+            223: "223",
+            224: "224",
+            225: "225",
+            226: "226",
+            227: "227",
+            228: "228",
+            229: "229",
+            230: "230",
+            231: "231",
+            232: "232",
+            233: "233",
+            234: "234",
+            235: "235",
+            236: "236",
+            240: "240",
+            241: "241",
+            242: "242",
+            243: "243",
+            244: "244",
+            245: "245",
+            246: "246",
+            247: "247",
+            248: "248",
+            249: "249",
+            250: "250",
+            251: "251",
+            252: "252",
+            253: "253",
+            301: "301",
+            302: "302",
+            303: "303",
+            304: "304",
+            305: "305",
+            306: "306",
+            307: "307",
+            308: "308",
+            309: "309",
+            310: "310",
+            311: "311",
+            312: "312",
+            313: "313",
+            314: "314",
+            315: "315",
+            316: "316",
+            317: "317",
+            318: "318",
+            319: "319",
+            320: "320",
+            321: "321",
+            322: "322",
+            324: "324",
+            325: "325",
+            326: "326",
+            327: "327",
+            328: "328",
+            329: "329",
+            330: "330",
+            331: "331",
+            332: "332",
+            333: "333",
+            334: "334",
+            335: "335",
+            336: "336",
+            337: "337",
+            341: "341",
+            342: "342",
+            343: "343",
+            344: "344",
+            345: "345",
+            346: "346",
+            401: "401",
+            402: "402",
+            403: "403",
+            404: "404",
+            405: "405",
+            406: "406",
+            407: "407",
+            408: "408",
+            409: "409",
+            412: "412",
+            415: "415",
+            416: "416",
+            417: "417",
+            418: "418",
+            419: "419",
+            420: "420",
+            421: "421",
+            422: "422",
+            423: "423",
+            424: "424",
+            425: "425",
+            426: "426",
+            427: "427",
+            501: "501",
+            504: "504",
+            505: "505",
+            506: "506",
+            507: "507",
+            508: "508",
+            509: "509",
+            510: "510",
+            511: "511",
+            512: "512",
+            513: "513",
+            514: "514",
+            515: "515",
+            516: "516",
+            517: "517",
+            518: "518",
+            519: "519",
+            520: "520",
+            521: "521",
+            522: "522",
+            523: "523",
+            524: "524",
+            525: "525",
+            527: "527",
+            528: "528",
+            530: "530",
+            532: "532",
+            534: "534",
+            535: "535",
+            536: "536",
+            540: "540",
+            541: "541",
+            542: "542",
+            543: "543",
+            544: "544",
+            545: "545",
+            546: "546",
+            547: "547",
+            548: "548",
+            549: "549",
+            550: "550",
+            551: "551",
+            552: "552",
+            553: "553",
+            554: "554",
+            555: "555",
+            556: "556",
+            557: "557",
+            558: "558",
+            559: "559",
+            560: "560",
+            561: "561",
+            562: "562",
+            563: "563",
+            565: "565",
+            566: "566",
+            567: "567",
+            568: "568",
+            888: "888",
+            901: "901",
+            902: "902",
+            903: "903",
+            904: "904",
+            905: "905",
+            906: "906",
+            907: "907",
+            910: "910",
+            997: "997",
+            998: "998",
+            999: "999"
+        }
+        return descriptions.get(self.value, "")
 
 
 class Puertos(Enum):

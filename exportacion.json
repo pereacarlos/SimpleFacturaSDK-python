@@ -1,0 +1,96 @@
+{
+    "Exportaciones": {
+        "Encabezado": {
+            "IdDoc": {
+                "TipoDTE": 110,
+                "FchEmis": "2024-08-17",
+                "FchVenc": "2024-08-17",
+                "FmaPago": 1
+            },
+            "Emisor": {
+                "RUTEmisor": "76269769-6",
+                "RznSoc": "Chilesystems",
+                "GiroEmis": "Desarrollo de software",
+                "Telefono": [
+                    "912345678"
+                ],
+                "CorreoEmisor": "mvega@chilesystems.com",
+                "Acteco": [
+                    620200
+                ],
+                "DirOrigen": "Calle 7 numero 3",
+                "CmnaOrigen": "Santiago",
+                "CiudadOrigen": "Santiago"
+            },
+            "Receptor": {
+                "RUTRecep": "55555555-5",
+                "RznSocRecep": "CLIENTE INTERNACIONAL EXP IMP",
+                "GiroRecep": "Giro de Cliente",
+                "CorreoRecep": "amamani@chilesystems.com",
+                "DirRecep": "Direcci\u00f3n de Cliente",
+                "CmnaRecep": "Comuna de Cliente",
+                "CiudadRecep": "Ciudad de Cliente",
+                "Extranjero": {
+                    "NumId": "331-555555",
+                    "Nacionalidad": 331
+                }
+            },
+            "Totales": {
+                "TpoMoneda": 13,
+                "MntTotal": 1000,
+                "MntExe": 1000
+            },
+            "Transporte": {
+                "Aduana": {
+                    "CodModVenta": 1,
+                    "CodClauVenta": 5,
+                    "TotClauVenta": 1984.65,
+                    "CodViaTransp": 4,
+                    "Tara": 1,
+                    "CodUnidMedTara": 10,
+                    "MntSeguro": 10.25,
+                    "MntFlete": 965.1,
+                    "CodPtoEmbarque": 901,
+                    "PesoBruto": 10.65,
+                    "CodUnidPesoBruto": 6,
+                    "PesoNeto": 9.56,
+                    "CodUnidPesoNeto": 6,
+                    "TotBultos": 30,
+                    "CodPtoDesemb": 262,
+                    "CodPaisDestin": 224,
+                    "CodPaisRecep": 224,
+                    "TipoBultos": {
+                        "CodTpoBultos": 75,
+                        "CantBultos": 30,
+                        "IdContainer": "1-2",
+                        "Sello": "1-3",
+                        "EmisorSello": "CONTENEDOR"
+                    }
+                }
+            },
+            "OtraMoneda": {
+                "TpoCambio": 800.36,
+                "MntNetoOtrMnda": 45454.36,
+                "MntExeOtrMnda": 45454.36,
+                "TpoMoneda": 200
+            }
+        },
+        "Detalle": [
+            {
+                "NroLinDet": 1,
+                "NmbItem": "CHATARRA DE ALUMINIO",
+                "CdgItem": {
+                    "TpoCodigo": "INT1",
+                    "VlrCodigo": "39"
+                },
+                "QtyItem": 1,
+                "UnmdItem": "U",
+                "PrcItem": 100,
+                "MontoItem": 100,
+                "IndExe": 1,
+                "DscItem": "OPCIONAL"
+            }
+        ]
+    },
+    "Observaciones": "NOTA AL PIE DE PAGINA"
+}

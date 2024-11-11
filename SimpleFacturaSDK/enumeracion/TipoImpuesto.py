@@ -2,66 +2,95 @@ from enum import Enum
 import json
 
 class TipoImpuestoEnum(Enum):
-    NotSet = (0, "No asignado")
-    IVAMargenComercializacion = (14, "IVA Margen Comercialización")
-    IVARetenidoTotal = (15, "IVA Retenido Total")
-    IVARetenidoParcial = (16, "IVA Retenido Parcial")
-    IVAAnticipadoFaenamientoCarne = (17, "IVA Anticipado Faenamiento Carne")
-    IVAAnticipadoCarne = (18, "IVA Anticipado Carne")
-    IVAAnticipadoHarina = (19, "IVA Anticipado Harina")
-    ImpuestoAdicionalArticulo37_LetrasABC = (23, "Oro, Platino, Joyas y Pieles Finas")
-    Licores = (24, "Licores y Destilados")
-    Vinos = (25, "Vinos")
-    Cervezas = (26, "Cervezas y Bebidas Alcohólicas")
-    BebidasAnalcoholicasYMinerales = (27, "Bebidas Analcohólicas Y Minerales")
-    BebidasAnalcoholicasYMineralesAltaAzucar = (271, "Bebidas Azucaradas")
-    ImpuestoEspecificoDiesel = (28, "Impuesto Específico Diesel")
-    IVARetenidoLegumbres = (30, "IVA retenido Legumbres")
-    IVARetenidoSilvestres = (31, "IVA Retenido Silvestres")
-    IVARetenidoGanado = (32, "IVA Retenido Ganado")
-    IVARetenidoMadera = (33, "IVA Retenido Madera")
-    IVARetenidoMaderaTotal = (331, "IVA Retenido Madera Total")
-    IVARetenidoTrigo = (34, "IVA Retenido Trigo")
-    ImpuestoEspecificoGasolina = (35, "IVA Específico Gasolina")
-    IVARetenidoArroz = (36, "IVA Retenido Arroz")
-    IVARetenidoHidrobiologicas = (37, "IVA Retenido Hidrobiologicas")
-    IVARetenidoChatarra = (38, "IVA Retenido Chatarra")
-    IVARetenidoPPA = (39, "IVA Retenido PPA")
-    IVARetenidoConstruccion = (41, "IVA Retenido Construcción")
-    ImpuestoAdicionalArticulo37_LetrasEHIL = (44, "Alfombras, Casas Rodantes, Caviar y Armas de Aire o Gas")
-    ImpuestoAdicionalArticulo37_LetrasJ = (45, "Pirotecnia")
-    IVARetenidoOro = (46, "IVA Retenido Oro")
-    IVARetenidoCartones = (47, "IVA Retenido Cartones")
-    IVARetenidoFrambuesas = (48, "IVA Retenido Frambuesas")
-    FacturaCompraSinRetencion = (49, "Factura Compra Sin Retención")
-    IVAMargenComercializacionInstrumentosPrepago = (50, "IVA Margen Comercialización Instrumentos Prepago")
-    ImpuestoGasNaturalComprimido = (51, "Impuesto Gas Natural Comprimido")
-    ImpuestoGasLicuado = (52, "Impuesto Gas Licuado")
-    ImpuestoRetenidoSumplementeros = (53, "Impuesto Retenido Sumplementeros")
+    NotSet = 0
+    IVAMargenComercializacion = 14
+    IVARetenidoTotal = 15
+    IVARetenidoParcial = 16
+    IVAAnticipadoFaenamientoCarne = 17
+    IVAAnticipadoCarne = 18
+    IVAAnticipadoHarina = 19
+    ImpuestoAdicionalArticulo37_LetrasABC = 23
+    Licores = 24
+    Vinos = 25
+    Cervezas = 26
+    BebidasAnalcoholicasYMinerales = 27
+    BebidasAnalcoholicasYMineralesAltaAzucar = 271
+    ImpuestoEspecificoDiesel = 28
+    IVARetenidoLegumbres = 30
+    IVARetenidoSilvestres = 31
+    IVARetenidoGanado = 32
+    IVARetenidoMadera = 33
+    IVARetenidoMaderaTotal = 331
+    IVARetenidoTrigo = 34
+    ImpuestoEspecificoGasolina = 35
+    IVARetenidoArroz = 36
+    IVARetenidoHidrobiologicas = 37
+    IVARetenidoChatarra = 38
+    IVARetenidoPPA = 39
+    IVARetenidoConstruccion = 41
+    ImpuestoAdicionalArticulo37_LetrasEHIL = 44
+    ImpuestoAdicionalArticulo37_LetrasJ = 45
+    IVARetenidoOro = 46
+    IVARetenidoCartones = 47
+    IVARetenidoFrambuesas = 48
+    FacturaCompraSinRetencion = 49
+    IVAMargenComercializacionInstrumentosPrepago = 50
+    ImpuestoGasNaturalComprimido = 51
+    ImpuestoGasLicuado = 52
+    ImpuestoRetenidoSumplementeros = 53
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            14: "14",
+            15: "15",
+            16: "16",
+            17: "17",
+            18: "18",
+            19: "19",
+            23: "23",
+            24: "24",
+            25: "25",
+            26: "26",
+            27: "27",
+            271: "271",
+            28: "28",
+            30: "30",
+            31: "31",
+            32: "32",
+            33: "33",
+            331: "331",
+            34: "34",
+            35: "35",
+            36: "36",
+            37: "37",
+            38: "38",
+            39: "39",
+            41: "41",
+            44: "44",
+            45: "45",
+            46: "46",
+            47: "47",
+            48: "48",
+            49: "49",
+            50: "50",
+            51: "51",
+            52: "52",
+            53: "53"
+
+        }
+        return description.get(self.value, "")
+   
 
 class TipoImpuestoResumido(Enum):
-    NotSet = (0, "No asignado")
-    Iva = (1, "IVA")
-    Ley18211 = (2, "Ley 18.211")
+    NotSet = 0
+    Iva = 1
+    Ley18211 = 2
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+        descriptions = {
+            0: "",
+            1: "1",
+            2: "2"
+        }
+        return descriptions.get(self.value, "")
