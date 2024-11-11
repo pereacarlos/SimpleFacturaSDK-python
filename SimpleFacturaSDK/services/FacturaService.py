@@ -4,7 +4,7 @@ from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 class FacturacionService:
     def __init__(self, session, base_url):
@@ -64,16 +64,15 @@ class FacturacionService:
 
     def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
-        response = self.session.post(url, json=solicitud)
+        solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
+        response = self.session.post(url, json=solicitud_dict)
+        
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
+        print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=Dte)
-             #print("Status:", resultado.status)
-             #print("Message:", resultado.message)
-             #print("DTE Data:", resultado.data) 
-            return resultado.data
+            deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
+            return deserialized_response.data
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
@@ -82,16 +81,16 @@ class FacturacionService:
         if not isinstance(sucursal, str):
             raise ValueError("El parámetro 'sucursal' debe ser un string.")
         url = f"{self.base_url}/invoiceV2/{sucursal}"
-        solicitud_diccionario = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_diccionario)
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         
         contenidoRespuesta = response.text        
         print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=InvoiceData)
-            return resultado.data
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx

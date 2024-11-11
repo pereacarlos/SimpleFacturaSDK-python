@@ -45,7 +45,8 @@
 
 
 -----------   # Obtener sobre XML----------
-    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud)
+    # Obtener DTE
+    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
     ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
     with open(ruta, "wb") as f:
         f.write(sobre_xml_bytes)
@@ -54,11 +55,17 @@
 
 ----------  # Facturación individual-----------
     
-    response = client_api.Facturacion.facturacion_individualV2_Dte(solicitud)
-    ruta = "factura.json"  # Ruta donde se guardará la factura
-    with open(ruta, "wb") as f:
-        f.write(response)
-    print("La factura se ha descargado correctamente.")
+    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Factura.status}")
+    print(f"Message: {Factura.message}")
+    print(f"TipoDTE: {Factura.data.tipoDTE}")
+    print(f"RUT Emisor: {Factura.data.rutEmisor}")
+    print(f"RUT Receptor: {Factura.data.rutReceptor}")
+    print(f"Folio: {Factura.data.folio}")
+    print(f"Fecha Emision: {Factura.data.fechaEmision}")
+    print(f"Total: {Factura.data.total}")
+    print(Factura.data)
 
 ------  # Facturación individual boletas--------
     response = client_api.Facturacion.facturacion_individualV2_Boletas(solicitud)

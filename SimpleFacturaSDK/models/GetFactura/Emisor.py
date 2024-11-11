@@ -11,3 +11,5 @@ class Emisor:
     DirOrigen: str
     CmnaOrigen: str
     CiudadOrigen: str
+    RznSocEmisor: str
+    GiroEmisor: str

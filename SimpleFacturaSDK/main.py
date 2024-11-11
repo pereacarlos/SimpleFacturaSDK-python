@@ -2,6 +2,11 @@
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import json
+#from requests.auth import HTTPBasicAuth
+#from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+#from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+#from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
 from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
@@ -11,6 +16,7 @@ from SimpleFacturaSDK.models.GetFactura.Totales import Totales
 from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import requests
@@ -20,40 +26,35 @@ from SimpleFacturaSDK.models.ResponseDTE import Response
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
+
 solicitud = RequestDTE(
     Documento=Documento(
         Encabezado=Encabezado(
             IdDoc=IdDoc(
-                TipoDTE=DTEType.FacturaElectronica,
-                FchEmis="2024-09-05",
-                FmaPago=1,
-                FchVenc="2024-09-05"
+                TipoDTE=DTEType.BoletaElectronica,
+                FchEmis="2024-09-03",
+                IndServicio=IndicadorServicioEnum.BoletaVentasYServicios,
+                FchVenc="2024-09-03"
             ),
             Emisor=Emisor(
                 RUTEmisor="76269769-6",
-                RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
-                GiroEmis="Desarrollo de software",
-                Telefono=["912345678"],
-                CorreoEmisor="mvega@chilesystems.com",
-                Acteco=[620200],
+                RznSocEmisro="Chilesystems",
+                GiroEmisor="Desarrollo de software",
                 DirOrigen="Calle 7 numero 3",
-                CmnaOrigen="Santiago",
-                CiudadOrigen="Santiago"
+                CmnaOrigen="Santiago"
             ),
             Receptor=Receptor(
                 RUTRecep="17096073-4",
-                RznSocRecep="Hotel Iquique",
-                GiroRecep="test",
-                CorreoRecep="mvega@chilesystems.com",
+                RznSocRecep="Proveedor Test",
                 DirRecep="calle 12",
                 CmnaRecep="Paine",
-                CiudadRecep="Santiago"
+                CiudadRecep="Santiago",
+                CorreoRecep="mvega@chilesystems.com"
             ),
             Totales=Totales(
-                MntNeto="832",
-                TasaIVA="19",
-                IVA="158",
-                MntTotal="990"
+                MntNeto="8320",
+                IVA="1580",
+                MntTotal="9900"
             )
         ),
         Detalle=[
@@ -74,21 +75,17 @@ solicitud = RequestDTE(
         ]
     ),
     Observaciones="NOTA AL PIE DE PAGINA",
-    TipoPago="30 dias"
+    Cajero="CAJERO",
+    TipoPago="CONTADO"
 )
 
 try:
-    solicitud_dict = dataclass_to_dict(solicitud)
-    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud_dict, "Casa_Matriz")
-    solicitud_json = json.dumps(solicitud_dict, ensure_ascii=False, indent=4)
-    print("Solicitud:", solicitud_json)
-    print(Factura)
-    ruta = "Factura.json"
-    with open(ruta, 'w') as file:
-        json.dump(Factura, file)
-    print("Factura guardada en:",ruta)
-
-
+    
+    
+    # Obtener DTE
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
+    print(dte_bytes)
+    print("El DTE se ha descargado correctamente.", dte_bytes.folio)
 
 except requests.exceptions.HTTPError as http_err:
     print(f"HTTP error occurred: {http_err}")
