@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdentificacionDTE
 from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
@@ -11,14 +11,14 @@ from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 class Encabezado:
     IdDoc: IdentificacionDTE
     Emisor: Emisor
-    RUTMandante: Optional[str]
+    RUTMandante: Optional[str]= None
     Receptor: Receptor
-    RUTSolicita: Optional[str]
-    Transporte: Optional[Transporte]
+    RUTSolicita: Optional[str] = None
+    Transporte: Optional[Transporte] = None
     Totales: Totales
-    OtraMoneda: Optional[OtraMoneda]   
+    OtraMoneda: Optional[OtraMoneda] = None
 
-
+'''
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
@@ -34,4 +34,4 @@ class Encabezado:
         
 
     def to_dict(self):
-        return asdict(self)
+        return asdict(self)'''

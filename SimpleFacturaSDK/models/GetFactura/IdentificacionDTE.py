@@ -18,34 +18,35 @@ class IdentificacionDTE:
     TipoDTE: DTEType 
     Folio: int
     FchEmis: str
-    IndNoRebaja: Optional[int] = None
-    TipoDespacho: Optional[TipoDespachoEnum] = None
-    IndTraslado: Optional[TipoTrasladoEnum] = None
-    TpoImpresion: Optional[TipoImpresionEnum] = None
-    IndServicio: Optional[IndicadorServicioEnum] = None
-    MntBruto: Optional[int] = None
-    FmaPago: Optional[FormaPagoEnum] = None
-    FechaCancelacionString: Optional[str] = None
-    MntCancel: Optional[float] = None
-    SaldoInsol: Optional[float] = None
-    MntPagos: Optional[float] = None
-    PeriodoDesdeString: Optional[str] = None
-    PeriodoHastaString: Optional[str] = None
-    MedioPago: Optional[MedioPagoEnum] = None
-    TpoCtaPago: Optional[TipoCuentaPagoEnum] = None
-    NumCtaPago: Optional[str] = None
-    BcoPago: Optional[str] = None
-    TermPagoCdg: Optional[str] = None
-    TermPagoGlosa: Optional[str] = None
-    TermPagoDias: Optional[int] = None
-    FchVenc: Optional[str] = None
-    TipoTranCompra: Optional[TipoTransCompra] = None
-    TipoTransVenta: Optional[TipoTransVenta] = None
-    IndMntNeto: Optional[int] = None
-    FchCancel: Optional[datetime] = None
-    PeriodoDesde: Optional[datetime] = None
-    PeriodoHasta: Optional[datetime] = None
+    IndNoRebaja: int
+    TipoDespacho: TipoDespachoEnum
+    IndTraslado: TipoTrasladoEnum
+    TpoImpresion: TipoImpresionEnum
+    IndServicio: IndicadorServicioEnum
+    MntBruto: int
+    FmaPago: FormaPagoEnum
+    FechaCancelacionString: str
+    MntCancel: float
+    SaldoInsol: float
+    MntPagos: float
+    PeriodoDesdeString: str
+    PeriodoHastaString: str
+    MedioPago: MedioPagoEnum
+    TpoCtaPago: TipoCuentaPagoEnum
+    NumCtaPago: str
+    BcoPago: str
+    TermPagoCdg: str
+    TermPagoGlosa: str
+    TermPagoDias: int
+    FchVenc: str
+    TipoTranCompra: TipoTransCompra
+    TipoTransVenta: TipoTransVenta
+    IndMntNeto: int
+    FchCancel: datetime
+    PeriodoDesde: datetime
+    PeriodoHasta: datetime
 
+'''
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
@@ -115,3 +116,4 @@ class IdentificacionDTE:
             'PeriodoHasta': self.PeriodoHasta
         }
 
+'''

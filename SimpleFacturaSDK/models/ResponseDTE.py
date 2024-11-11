@@ -1,14 +1,13 @@
-from dataclasses import dataclass, asdict
-from typing import Generic, List, Optional, TypeVar
+from pydantic import BaseModel
+from typing import Generic, TypeVar, Optional, Any
 
 T = TypeVar("T")
 
-@dataclass
-class Response(Generic[T]):
+class Response(BaseModel, Generic[T]):
     status: int
     message: str
     data: Optional[T] = None
-    errors: Optional[object] = None
+    errors: Optional[Any] = None
 
     @classmethod
     def from_dict(cls, dict_data, data_type: Optional[type] = None):
@@ -22,10 +21,4 @@ class Response(Generic[T]):
             errors=dict_data.get('errors')
         )
 
-    def to_dict(self):
-        return {
-            "status": self.status,
-            "message": self.message,
-            "data": self.data.to_dict() if hasattr(self.data, 'to_dict') else self.data,
-            "errors": self.errors
-        }
+ 
