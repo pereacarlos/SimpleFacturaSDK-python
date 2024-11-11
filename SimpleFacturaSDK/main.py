@@ -1,13 +1,21 @@
 from dataclasses import asdict,is_dataclass,fields
 import json
-from SimpleFacturaSDK.models.GetFactura import RequestDTE, Documento,Encabezado,IdentificacionDTE,Emisor,Receptor,Totales,Detalle,CdgItem
-from enumerados.DTEType import DTEType
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 import requests
 from requests.auth import HTTPBasicAuth
 from enum import Enum
-from typing import Any
 from typing import Type, TypeVar, Any, Optional
-from Response import ResponseModel,InvoiceDataModel
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
 T = TypeVar('T')
 
 def dataclass_to_dict(obj: Any) -> Any:
@@ -117,6 +125,9 @@ try:
     response_content = response.text
     print("Respuesta JSON:")
     print(response_content)
+    ruta = "Factura.json"
+    with open(ruta, "w") as archivo:
+        archivo.write(response_content)
 
     # Deserializar la respuesta usando Pydantic
     deserialized_response = ResponseModel[InvoiceDataModel].parse_raw(response_content)

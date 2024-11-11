@@ -1,501 +1,447 @@
 from enum import Enum
-import json
+
 
 
 class FormaPagoExportacionEnum(Enum):
-    NotSet = (0, "No Asignado")
-    COB1 = (1, "COB 1")
-    ACRED = (11, "ACRED")
-    CBOF = (12, "CBOF")
-    COBRANZA = (2, "Cobranza")
-    SINPAGO = (21, "Sin Pago")
-    ANTICIPO = (32, "Anticipo")
-    ANT_COB = (50, "Anticipo Cobranza")
-    ANT_CRED = (60, "Anticipo Crédito")
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    NotSet = 0
+    COB1 = 1
+    ACRED = 11
+    CBOF = 12
+    COBRANZA =2 
+    SINPAGO = 21
+    ANTICIPO = 32
+   
+    def descripcion(self):
+        description = {
+            0: "",
+            1: "1",
+            11: "11",
+            12: "12",
+            2: "2",
+            21: "21",
+            32: "32",
+            
+        }
+        return description.get(self.value, "")
 
 class Moneda(Enum):
-    NotSet = (0, "No Asignado")
-    PESO = (1, "Peso")
-    PESO_CHILENO = (200, "Peso Chileno")
-    DOLAR_ESTADOUNIDENSE = (13, "Dolar Estadounidense")
-    BOLIVAR = (134, "Bolivar")
-    BOLIVIANO = (4, "Boliviano")
-    CHELIN = (37, "Chelin")
-    CORONA_DINAMARCA = (51, "Corona Din")
-    CRUZEIRO_REAL = (5, "Cruzeiro Real")
-    DIRHAM = (139, "Dirham")
-    DOLAR_AUSTRALIANO = (36, "Dolar Australiano")
-    DOLAR_CANADIENSE = (6, "Dolar Canadiense")
-    EURO = (142, "Euro")
-    FRANCO_BEL = (40, "Franco Belga")
-    FRANCO_FR = (58, "Franco Francés")
-    FRANCO_SZ = (82, "Franco Suizo")
-    GUARANI = (23, "Guarani")
-    LIBRA_EST = (102, "Libra Esterlina")
-    LIRA = (71, "Lira")
-    MARCO_AL = (30, "Marco Alemán")
-    MARCO_FIN = (57, "Marco Finlandés")
-    NUEVO_SOL = (24, "Nuevo Sol")
-    OTRAS_MONEDAS = (900, "Otras Monedas")
-    PESETA = (53, "Peseta")
-    PESO_COL = (129, "Peso Colombiano")
-    PESO_MEX = (132, "Peso Mexicano")
-    PESO_URUG = (26, "Peso Uruguayo")
-    RAND = (128, "Rand")
-    RENMINBI = (48, "Renminbi")
-    RUPIA = (137, "Rupia")
-    SUCRE = (130, "Sucre")
-    YEN = (72, "Yen")
-    FLORIN = (64, "Florin")
-    CORONA_NOR = (96, "Corona Noruega")
-    DOLAR_NZ = (97, "Dólar Neozeolandés")
-    CORONA_SC = (113, "Corona Sueca")
-    DOLAR_HK = (127, "Dolar Hong Kong")
-    DRACMA = (131, "Dracma")
-    ESCUDO = (133, "Escudo")
-    DOLAR_SIN = (136, "Dólar Singapur")
-    DOLAR_TAI = (138, "Dólar Tailandés")
+    NotSet = 0
+    PESO = 1
+    PESO_CHILENO = 200
+    DOLAR_ESTADOUNIDENSE = 13
+    BOLIVAR = 134
+    BOLIVIANO = 4
+    CHELIN = 37
+    CORONA_DINAMARCA = 51
+    CRUZEIRO_REAL = 5
+    DIRHAM = 139
+    DOLAR_AUSTRALIANO = 36
+    DOLAR_CANADIENSE = 6
+    EURO = 142
+    FRANCO_BEL = 40
+    FRANCO_FR = 58
+    FRANCO_SZ = 82
+    GUARANI = 23
+    LIBRA_EST = 102
+    LIRA = 71
+    MARCO_AL = 30
+    MARCO_FIN = 57
+    NUEVO_SOL =24
+    OTRAS_MONEDAS = 900
+    PESETA = 53
+    PESO_COL = 129
+    PESO_MEX = 132
+    PESO_URUG = 26
+    RAND = 128
+    RENMINBI = 48
+    RUPIA = 137
+    SUCRE = 130
+    YEN = 72
+    FLORIN = 64
+    CORONA_NOR = 96
+    DOLAR_NZ = 97
+    CORONA_SC = 113
+    DOLAR_HK = 127
+    DRACMA = 131
+    ESCUDO = 133
+    DOLAR_SIN = 136
+    DOLAR_TAI = 138
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-
+    def descripcion(self):
+        description = {
+            0: "No Asignado",
+            1: "Peso",
+            200: "Peso Chileno",
+            13: "Dolar Estadounidense",
+            134: "Bolivar",
+            4: "Boliviano",
+            37: "Chelin",
+            51: "Corona Din",
+            5: "Cruzeiro Real",
+            139: "Dirham",
+            36: "Dolar Australiano",
+            6: "Dolar Canadiense",
+            142: "Euro",
+            40: "Franco Belga",
+            58: "Franco Francés",
+            82: "Franco Suizo",
+            23: "Guarani",
+            102: "Libra Esterlina",
+            71: "Lira",
+            30: "Marco Alemán",
+            57: "Marco Finlandés",
+            24: "Nuevo Sol",
+            900: "Otras Monedas",
+            53: "Peseta",
+            129: "Peso Colombiano",
+            132: "Peso Mexicano",
+            26: "Peso Uruguayo",
+            128: "Rand",
+            48: "Renminbi",
+            137: "Rupia",
+            130: "Sucre",
+            72: "Yen",
+            64: "Florin",
+            96: "Corona Noruega",
+            97: "Dólar Neozeolandés",
+            113: "Corona Sueca",
+            127: "Dolar Hong Kong",
+            131: "Dracma",
+            133: "Escudo",
+            136: "Dólar Singapur",
+            138: "Dólar Tailandés"
+        }
+        return description.get(self.value, "")
 
 class ModalidadVenta(Enum):
-    NotSet = (0, "No Asignado")
-    A_FIRME = (1, "A Firme")
-    BAJO_CONDICION = (2, "Bajo Condición")
-    CONSIGNACION_LIBRE = (3, "Consignación Libre")
-    CONSIGNACION_MINIMO_FIRME = (4, "Consignación Mínimo Firme")
-    SIN_PAGO = (9, "Sin pago")
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    NotSet = 0
+    A_FIRME = 1
+    BAJO_CONDICION = 2
+    CONSIGNACION_LIBRE = 3
+    CONSIGNACION_MINIMO_FIRME = 4
+    SIN_PAGO = 9
+   
+    def descripcion(self):
+        description = {
+            0: "",
+            1: "1",
+            2: "2",
+            3: "3",
+            4: "4",
+            9: "9"
+        }
+        return description.get(self.value, "")
 
 class ClausulaCompraVenta(Enum):
-    NotSet = (0, "No Asignado")
-    CIF = (1, "CIF")
-    CFR = (2, "CFR")
-    EXW = (3, "EXW")
-    FAS = (4, "FAS")
-    FOB = (5, "FOB")
-    S_CLAUSULA = (6, "S Clausula")
-    DDP = (9, "DDP")
-    FCA = (7, "FCA")
-    CPT = (11, "CPT")
-    CIP = (12, "CIP")
-    DAT = (17, "DAT")
-    DAP = (18, "DAP")
-    OTROS = (8, "Otros")
+    NotSet = 0
+    CIF = 1
+    CFR = 2
+    EXW = 3
+    FAS = 4
+    FOB = 5
+    S_CLAUSULA = 6
+    DDP = 9
+    FCA = 10
+    CPT = 11
+    CIP = 12
+    DAT = 17
+    DAP = 18
+    OTROS = 8
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    def descripcion(self):
+        description = {
+            0: "",
+            1: "1",
+            2: "2",
+            3: "3",
+            4: "4",
+            5: "5",
+            6: "6",
+            9: "9",
+            7: "10",
+            11: "11",
+            12: "12",
+            17: "17",
+            18: "18",
+            8: "8"
+        }
+        return description.get(self.value, "")
 
 class ViasdeTransporte(Enum):
-    NotSet = (0, "No Asignado")
-    MARITIMA_FLUVIAL_Y_LACUSTRE = (1, "Maritima, Fluvial y Lacustre")
-    AEREO = (4, "Aéreo")
-    POSTAL = (5, "Postal")
-    FERROVIARIO = (6, "Ferroviario")
-    CARRETERO_O_TERRESTRE = (7, "Carretero o Terrestre")
-    ELEODUCTOS_GASODUCTOS = (8, "Eleoductos y Gasoductos")
-    TENDIDO_ELECTRICO = (9, "Tendido Eléctrico")
-    OTRA = (10, "Otra")
-    COURIER_AEREO = (11, "Courier Aéreo")
+    NotSet = 0
+    MARITIMA_FLUVIAL_Y_LACUSTRE = 1
+    AEREO = 4
+    POSTAL = 5
+    FERROVIARIO = 6
+    CARRETERO_O_TERRESTRE = 7
+    ELEODUCTOS_GASODUCTOS = 8
+    TENDIDO_ELECTRICO = 9
+    OTRA = 10
+    COURIER_AEREO = 11
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    def descripcion(self):
+        description = {
+            0: "",
+            1: "1",
+            4: "4",
+            5: "15",
+            6: "6",
+            7: "7",
+            8: "8",
+            9: "9",
+            10: "10",
+            11: "11"
+        }
+        return description.get(self.value, "")
 
 class UnidadMedida(Enum):
-    NotSet = (0, "No Asignado")
-    SUM = (0, "SUM")
-    TMB = (1, "TMB")
-    U = (10, "U")
-    DOC = (11, "DOC")
-    U_JGO = (12, "U JGO")
-    MU = (13, "MU")
-    MT = (14, "MT")
-    MT2 = (15, "MT2")
-    MCUB = (16, "MCUB")
-    PAR = (17, "Par")
-    KNFC = (18, "KNFC")
-    CARTON = (19, "Cartón")
-    QMB = (2, "QMB")
-    KWH = (20, "KWH")
-    BAR = (23, "BAR")
-    M2_1MM = (24, "M2 1MM")
-    MKWH = (3, "MKWH")
-    TMN = (4, "TMN")
-    KLT = (5, "KLT")
-    KN = (6, "KN")
-    GN = (7, "GN")
-    HL = (8, "HL")
-    LT = (9, "LT")
+    NotSet = 0
+    SUM = 0
+    TMB = 1
+    U = 10
+    DOC = 11
+    U_JGO = 12
+    MU = 13
+    MT = 14
+    MT2 = 15
+    MCUB = 16
+    PAR = 17
+    KNFC = 18
+    CARTON = 19
+    QMB = 2
+    KWH = 20
+    BAR = 23
+    M2_1MM = 24
+    MKWH = 3
+    TMN = 4
+    KLT = 5
+    KN = 6
+    GN = 7
+    HL = 8
+    LT = 9
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    def descripcion(self):
+        description = {
+            0: "",
+            0: "0",
+            1: "1",
+            10: "10",
+            11: "11",
+            12: "12",
+            13: "13",
+            14: "14",
+            15: "15",
+            16: "16",
+            17: "17",
+            18: "18",
+            19: "19",
+            2: "2",
+            20: "20",
+            23: "23",
+            24: "24",
+            3: "3",
+            4: "4",
+            5: "5",
+            6: "6",
+            7: "7",
+            8: "8",
+            9: "9"
+        }
+        return description.get(self.value, "")
 
 
 class TipoBultoEnum(Enum):
-    NotSet = (0, "No Asignado")
-    POLVO = (1, "Polvo")
-    PIEZA = (10, "Pieza")
-    TUBO = (11, "Tubo")
-    CILINDRO = (12, "Cilindro")
-    ROLLO = (13, "Rollo")
-    BARRA = (16, "Barra")
-    LINGOTE = (17, "Lingote")
-    TRONCO = (18, "Tronco")
-    BLOQUE = (19, "Bloque")
-    GRANOS = (2, "Granos")
-    ROLLIZO = (20, "Rollizo")
-    CAJON = (21, "Cajón")
-    CAJA_DE_CARTON = (22, "Caja de Cartón")
-    FARDO = (23, "Fardo")
-    BAUL = (24, "Baúl")
-    COFRE = (25, "Cofre")
-    ARMAZON = (26, "Armazón")
-    BANDEJA = (27, "Bandeja")
-    CAJAMADERA = (28, "Caja Madera")
-    CAJALATA = (29, "Caja Lata")
-    NODULOS = (3, "Nodulos")
-    BOTELLAGAS = (31, "Botella a Gas")
-    BOTELLA = (32, "Botella")
-    JAULA = (33, "Jaula")
-    BIDON = (34, "Bidón")
-    JABA = (35, "Jaba")
-    CESTA = (36, "Cesta")
-    BARRILETE = (37, "Barrilete")
-    TONEL = (38, "Tonel")
-    PIPA = (39, "Pipa")
-    LIQUIDO = (4, "Líquido")
-    CAJANOESP = (40, "Caja No Esp")
-    JARRO = (41, "Jarro")
-    FRASCO = (42, "Frasco")
-    DAMAJUANA = (43, "Damajuana")
-    BARRIL = (44, "Barril")
-    TAMBOR = (45, "Tambor")
-    CUNETE = (46, "Cunete")
-    TARRO = (47, "Tarro")
-    GAS = (5, "Gas")
-    CUBO = (51, "Cubo")
-    PAQUETE = (61, "Paquete")
-    SACO = (62, "Saco")
-    MALETA = (63, "Maleta")
-    BOLSA = (64, "Bolsa")
-    BALA = (65, "Bala")
-    RED = (66, "Red")
-    SOBRE = (67, "Sobre")
-    CONT20 = (73, "Cont20")
-    CONT40 = (74, "Cont40")
-    CONTENEDOR_REFRIGERADO = (75, "Contenedor Refrigerado")
-    REEFER40 = (76, "Reefer40")
-    ESTANQUE = (77, "Estanque")
-    CONTNOESP = (78, "Cont No Esp")
-    PALLET = (80, "Pallet")
-    TABLERO = (81, "Tablero")
-    LAMINA = (82, "Lámina")
-    CARRETE = (83, "Carrete")
-    AUTOMOTOR = (85, "Automotor")
-    ATAUD = (86, "Ataúd")
-    MAQUINARIA = (88, "Máquinaria")
-    PLANCHA = (89, "Plancha")
-    ATADO = (90, "Atado")
-    BOBINA = (91, "Bobina")
-    BULTONOESP = (93, "Bultoesp")
-    SIN_BULTO = (98, "Sin Bulto")
-    SIN_EMBALAR = (99, "Sin Embalar")
+    NotSet = 0
+    POLVO = 1
+    PIEZA = 10
+    TUBO = 11
+    CILINDRO = 12
+    ROLLO = 13
+    BARRA = 16
+    LINGOTE = 17
+    TRONCO = 18
+    BLOQUE = 19
+    GRANOS = 2
+    ROLLIZO = 20
+    CAJON = 21
+    CAJA_DE_CARTON = 22
+    FARDO = 23
+    BAUL = 24
+    COFRE = 25
+    ARMAZON = 26
+    BANDEJA = 27
+    CAJAMADERA = 28
+    CAJALATA = 29
+    NODULOS = 3
+    BOTELLAGAS = 31
+    BOTELLA = 32
+    JAULA = 33
+    BIDON = 34
+    JABA = 35
+    CESTA = 36
+    BARRILETE = 37
+    TONEL = 38
+    PIPA = 39
+    LIQUIDO = 4
+    CAJANOESP = 40
+    JARRO = 41
+    FRASCO = 42
+    DAMAJUANA = 43
+    BARRIL = 44
+    TAMBOR = 45
+    CUNETE = 46
+    TARRO = 47
+    GAS = 5
+    CUBO = 51
+    PAQUETE = 61
+    SACO = 62
+    MALETA = 63
+    BOLSA = 64
+    BALA = 65
+    RED = 66
+    SOBRE = 67
+    CONT20 = 73
+    CONT40 = 74
+    CONTENEDOR_REFRIGERADO = 75
+    REEFER40 = 76
+    ESTANQUE = 77
+    CONTNOESP = 78
+    PALLET = 80
+    TABLERO = 81
+    LAMINA = 82
+    CARRETE = 83
+    AUTOMOTOR = 85
+    ATAUD = 86
+    MAQUINARIA = 88
+    PLANCHA = 89
+    ATADO = 90
+    BOBINA = 91
+    BULTONOESP = 93
+    SIN_BULTO = 98
+    SIN_EMBALAR = 99
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    def descripcion(self):
+        description = {
+            0: "0",
+            1: "1",
+            10: "10",
+            11: "11",
+            12: "12",
+            13: "13",
+            16: "16",
+            17: "17",
+            18: "18",
+            19: "19",
+            2: "2",
+            20: "20",
+            21: "21",
+            22: "22",
+            23: "23",
+            24: "24",
+            25: "25",
+            26: "26",
+            27: "27",
+            28: "28",
+            29: "29",
+            3: "3",
+            31: "31",
+            32: "32",
+            33: "33",
+            34: "34",
+            35: "35",
+            36: "36",
+            37: "37",
+            38: "38",
+            39: "39",
+            4: "4",
+            40: "40",
+            41: "41",
+            42: "42",
+            43: "43",
+            44: "44",
+            45: "45",
+            46: "46",
+            47: "47",
+            5: "5",
+            51: "51",
+            61: "61",
+            62: "62",
+            63: "63",
+            64: "64",
+            65: "65",
+            66: "66",
+            67: "67",
+            73: "73",
+            74: "74",
+            75: "75",
+            76: "76",
+            77: "77",
+            78: "78",
+            80: "80",
+            81: "81",
+            82: "82",
+            83: "83",
+            85: "85",
+            86: "86",
+            88: "88",
+            89: "89",
+            90: "90",
+            91: "91",
+            93: "93",
+            98: "98",
+            99: "99"
+        }
+        return description.get(self.value, "")
+  
 
 
 class Paises(Enum):
-    NotSet = (0, "No Asignado")
-    SENEGAL = (101, "Senegal")
-    GAMBIA = (102, "Gambia")
-    GUINEA_BISSAU = (103, "Guinea Bissau")
-    GUINEA = (104, "Guinea")
-    SIERRA_LEONA = (105, "Sierra Leona")
-    LIBERIA = (106, "Liberia")
-    COSTA_DE_MARFIL = (107, "Costa de Marfil")
-    GHANA = (108, "Ghana")
-    TOGO = (109, "Togo")
-    NIGERIA = (111, "Nigeria")
-    SUDAFRICA = (112, "Sudáfrica")
-    BOTSWANA = (113, "Botswana")
-    LESOTHO = (114, "Lesotho")
-    MALAWI = (115, "Malawi")
-    ZIMBABWE = (116, "Zimbabwe")
-    ZAMBIA = (117, "Zambia")
-    COMORAS = (118, "Comoras")
-    MAURICIO = (119, "Mauricio")
-    MADAGASCAR = (120, "Madagascar")
-    MOZAMBIQUE = (121, "Mozambique")
-    SWAZILANDIA = (122, "Swazilandia")
-    SUDAN = (123, "Sudán")
-    EGIPTO = (124, "Egipto")
-    LIBIA = (125, "Libia")
-    TUNEZ = (126, "Túnez")
-    ARGELIA = (127, "Argelia")
-    MARRUECOS = (128, "Marruecos")
-    CABO_VERDE = (129, "Cabo Verde")
-    CHAD = (130, "Chad")
-    NIGER = (131, "Niger")
-    MALI = (133, "Malí")
-    MAURITANIA = (134, "Mauritania")
-    TANZANIA = (135, "Tanzania")
-    UGANDA = (136, "Uganda")
-    KENIA = (137, "Kenia")
-    SOMALIA = (138, "Somalia")
-    ETIOPIA = (139, "Etiopía")
-    ANGOLA = (140, "Angola")
-    BURUNDI = (141, "Burundi")
-    RWANDA = (142, "Rwanda")
-    REP_DEM_CONGO = (143, "República Democrática del Congo")
-    CONGO = (144, "Congo")
-    GABON = (145, "Gabón")
-    SANTO_TOME_PRINCIPE = (146, "Santo Tomé y Príncipe")
-    GUINEA_ECUATORIAL = (147, "Guinea Ecuatorial")
-    REP_CENTROAFRICANA = (148, "República Centroafricana")
-    CAMERUN = (149, "Camerún")
-    BENIN = (150, "Benín")
-    TERR_BRIT_EN_AF = (151, "Territorio Británico en África")
-    TERR_ESPAN_EN_AF = (152, "Territorio Español en África")
-    TERR_FRAN_EN_AF = (153, "Territorio Francés en África")
-    DJIBOUTI = (155, "Djibouti")
-    SEYCHELLES = (156, "Seychelles")
-    NAMIBIA = (159, "Namibia")
-    SUDAN_DEL_SUR = (160, "Sudán del Sur")
-    BURKINA_FASO = (161, "Burkina Faso")
-    ERITREA = (163, "Eritrea")
-    ISLAS_MARSHALL = (164, "Islas Marshall")
-    SAHARAUI = (165, "Saharaui")
-    VENEZUELA = (201, "Venezuela")
-    COLOMBIA = (202, "Colombia")
-    TRINIDAD_TOBAGO = (203, "Trinidad y Tobago")
-    BARBADOS = (204, "Barbados")
-    JAMAICA = (205, "Jamaica")
-    REP_DOMINICANA = (206, "República Dominicana")
-    BAHAMAS = (207, "Bahamas")
-    HAITI = (208, "Haití")
-    CUBA = (209, "Cuba")
-    PANAMA = (210, "Panamá")
-    COSTA_RICA = (211, "Costa Rica")
-    NICARAGUA = (212, "Nicaragua")
-    EL_SALVADOR = (213, "El Salvador")
-    HONDURAS = (214, "Honduras")
-    GUATEMALA = (215, "Guatemala")
-    MEXICO = (216, "México")
-    GUYANA = (217, "Guyana")
-    ECUADOR = (218, "Ecuador")
-    PERU = (219, "Perú")
-    BRASIL = (220, "Brasil")
-    BOLIVIA = (221, "Bolivia")
-    PARAGUAY = (222, "Paraguay")
-    URUGUAY = (223, "Uruguay")
-    ARGENTINA = (224, "Argentina")
-    U_S_A = (225, "Estados Unidos")
-    CANADA = (226, "Canadá")
-    TERR_BRIT_EN_AM = (227, "Territorio Británico en América")
-    TERR_FRAN_EN_AM = (228, "Territorio Francés en América")
-    TER_HOLAN_EN_AM = (229, "Territorio Holandés en América")
-    TERR_D_DINAMARC = (230, "Territorio de Dinamarca")
-    DOMINICA = (231, "Dominica")
-    GRANADA = (232, "Granada")
-    SANTA_LUCIA = (233, "Santa Lucía")
-    S_VTE_Y_GRANAD = (234, "San Vicente y las Granadinas")
-    SURINAM = (235, "Surinam")
-    BELICE = (236, "Belice")
-    ANTIGUA_Y_BBUDA = (240, "Antigua Y Barbuda")
-    SNT_KIT_AND_NEVIS = (241, "Isla de San Cristóbal y Nieves")
-    ANGUILA = (242, "Anguila")
-    ARUBA = (243, "Aruba")
-    BERMUDAS = (244, "Bermudas")
-    ISLAS_VIRG_BRIT = (245, "Islas Vírgenes Británicas")
-    ISLAS_CAYMAN = (246, "Islas Caimán")
-    ANTILLAS_NEERLA = (247, "Antillas Neerlandesas")
-    TURCAS_Y_CAICOS = (248, "Islas Turcas y Caicos")
-    ISLAS_VIRG_EUA = (249, "Islas Vírgenes de los Estados Unidos")
-    MARTINICA = (250, "Martinica")
-    PUERTO_RICO = (251, "Puerto Rico")
-    MONSERRAT = (252, "Montserrat")
-    GROENLADIA = (253, "Groenlandia")
-    JORDANIA = (301, "Jordania")
-    ARABIA_SAUDITA = (302, "Arabia Saudita")
-    KUWAIT = (303, "Kuwait")
-    OMAN = (304, "Omán")
-    CHIPRE = (305, "Chipre")
-    ISRAEL = (306, "Israel")
-    IRAK = (307, "Irak")
-    AFGHANISTAN = (308, "Afganistán")
-    IRAN = (309, "Irán")
-    SIRIA = (310, "Siria")
-    LIBANO = (311, "Líbano")
-    QATAR = (312, "Qatar")
-    BAHREIN = (313, "Bahréin")
-    SRI_LANKA = (314, "Sri Lanka")
-    CAMBODIA = (315, "Camboya")
-    LAOS = (316, "Laos")
-    INDIA = (317, "India")
-    BUTAN = (318, "Bután")
-    THAILANDIA = (319, "Tailandia")
-    NEPAL = (320, "Nepal")
-    BANGLADESH = (321, "Bangladesh")
-    PALESTINA = (322, "Palestina")
-    PAKISTAN = (324, "Pakistán")
-    VIETNAM = (325, "Vietnam")
-    MYANMAR_EX_BIR = (326, "Myanmar (Birmania)")
-    ISLAS_MALDIVAS = (327, "Islas Maldivas")
-    INDONESIA = (328, "Indonesia")
-    MALASIA = (329, "Malasia")
-    TAIWAN_FORMOSA = (330, "Isla de Taiwán")
-    JAPON = (331, "Japón")
-    SINGAPUR = (332, "Singapur")
-    COREA_DEL_SUR = (333, "Corea del Sur")
-    RPD_COREA_DEL_N = (334, "Corea del Norte")
-    FILIPINAS = (335, "Filipinas")
-    CHINA = (336, "China")
-    MONGOLIA = (337, "Mongolia")
-    EMIR_ARAB_UNID = (341, "Emiratos Árabes Unidos")
-    HONG_KONG = (342, "Hong Kong")
-    TER_PORTUG_EAS = (343, "Territorio Portugués en Asia")
-    BRUNEI = (344, "Brunéi")
-    MACAO = (345, "Macao")
-    REPUBLICA_DE_YE = (346, "Yemen")
-    FIJI = (401, "Fiji")
-    NAURU = (402, "Nauru")
-    ISLAS_TONGA = (403, "Islas Tonga")
-    SAMOA_OCC = (404, "Samoa")
-    NUEVA_ZELANDIA = (405, "Nueva Zelanda")
-    AUSTRALIA = (406, "Australia")
-    TERR_BRIT_EN_OP = (407, "Territorio Británico en Oceanía")
-    TERR_FRAN_EN_OP = (408, "Territorio Francés en Oceanía")
-    T_NORTEAM_EN_OP = (409, "Territorio Norteamericano en Oceanía")
-    PPUA_NVA_GUINEA = (412, "Papúa Nueva Guinea")
-    VANUATU = (415, "Vanuatu")
-    KIRIBATI = (416, "Kiribati")
-    MICRONESIA = (417, "Estados Federados de Micronesia")
-    ISLAS_SALOMON = (418, "Islas Salomón")
-    TUVALU = (419, "Tuvalu")
-    BELAU = (420, "Belau")
-    NIUE = (421, "Niue")
-    POLINESIA_FRAN = (422, "Polinesia Francesa")
-    NUEVA_CALEDONIA = (423, "Nueva Caledonia")
-    ISLAS_MARIANAS = (424, "Islas Marianas")
-    GUAM = (425, "Guam")
-    TIMOR_ORIENTAL = (426, "Timor Oriental")
-    ISLAS_COOK = (427, "Islas Cook")
-    PORTUGAL = (501, "Portugal")
-    ITALIA = (504, "Italia")
-    FRANCIA = (505, "Francia")
-    IRLANDA = (506, "Irlanda")
-    DINAMARCA = (507, "Dinamarca")
-    SUIZA = (508, "Suiza")
-    AUSTRIA = (509, "Austria")
-    REINO_UNIDO = (510, "Reino Unido")
-    SUECIA = (511, "Suecia")
-    FINLANDIA = (512, "Finlandia")
-    NORUEGA = (513, "Noruega")
-    BELGICA = (514, "Bélgica")
-    HOLANDA = (515, "Holanda")
-    ISLANDIA = (516, "Islandia")
-    ESPANA = (517, "España")
-    ALBANIA = (518, "Albania")
-    RUMANIA = (519, "Rumanía")
-    GRECIA = (520, "Grecia")
-    U_R_S_S = (521, "Unión Soviética")
-    TURQUIA = (522, "Turquía")
-    MALTA = (523, "Malta")
-    SANTA_SEDE = (524, "Ciudad del Vaticano")
-    ANDORRA = (525, "Andorra")
-    BULGARIA = (527, "Bulgaria")
-    POLONIA = (528, "Polonia")
-    HUNGRIA = (530, "Hungría")
-    LUXEMBURGO = (532, "Luxemburgo")
-    LIECHTENSTEIN = (534, "Liechtenstein")
-    MONACO = (535, "Mónaco")
-    SAN_MARINO = (536, "San Marino")
-    ARMENIA = (540, "Armenia")
-    AZERBAIJAN = (541, "Azerbaiyán")
-    BELARUS = (542, "Bielorrusia")
-    BOSNIA_HEZGVINA = (543, "Bosnia y Herzegovina")
-    REPUBLICA_CHECA = (544, "República Checa")
-    REP_ESLOVACA = (545, "República Eslovaca")
-    REPUBLICA_DE_SE = (546, "Serbia")
-    CROACIA = (547, "Croacia")
-    ESLOVENIA = (548, "Eslovenia")
-    ESTONIA = (549, "Estonia")
-    GEORGIA = (550, "Georgia")
-    KASAJSTAN = (551, "Kazajistán")
-    KIRGISTAN = (552, "Kirguistán")
-    LETONIA = (553, "Letonia")
-    LITUANIA = (554, "Lituania")
-    MACEDONIA = (555, "Macedonia")
-    MOLDOVA = (556, "Moldavia")
-    TADJIKISTAN = (557, "Tayikistán")
-    TURKMENISTAN = (558, "Turkmenistán")
-    UCRANIA = (559, "Ucrania")
-    UZBEKISTAN = (560, "Uzbekistán")
-    MONTENEGRO = (561, "Montenegro")
-    RUSIA = (562, "Rusia")
-    ALEMANIA = (563, "Alemania")
-    GIBRALTAR = (565, "Gibraltar")
-    GUERNSEY = (566, "Guernsey")
-    ISLAS_DE_MAN = (567, "Isla de Man")
-    JERSEY = (568, "Jersey")
-    LOS_DEMAS = (888, "Los Demas")
-    COMB_Y_LUBRIC = (901, "Comb y Lubric")
-    RANCHO_DE_NAVES = (902, "Rancho de Naves")
-    PESCA_EXTRA = (903, "Pesca Extra")
-    ORIG_O_DEST_NO = (904, "Origen o Destino No")
-    ZF_IQUIQUE = (905, "ZF Iquique")
-    DEPOSITO_FRANCO = (906, "Depósito Franco")
-    ZF_PARENAS = (907, "ZF Punta Arenas")
-    ZF_ARICA_ZF_IND = (910, "ZF Arica Az Ind")
-    CHILE = (997, "Chile")
-    NAC_REPUTADA = (998, "Nac Reputada")
-    OTROS = (999, "Otros")
-
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
-    def description(self):
-        return self.value[1]
+    NotSet = 0
+    SENEGAL = 101
+    GAMBIA = 102
+    GUINEA_BISSAU = 103
+    GUINEA = 104
+    SIERRA_LEONA = 105
+    LIBERIA = 106
+    COSTA_DE_MARFIL = 107
+    GHANA = 108
+    TOGO = 109
+    NIGERIA = 111
+    SUDAFRICA = 112
+    BOTSWANA = 113
+    LESOTHO = 114
+    MALAWI = 115
+    MOZAMBIQUE = 116
+    ZAMBIA = 117
+    COMORAS = 118
+    MAURICIO = 119
+    MADAGASCAR = 120
+    #MOZAMBIQUE = 121
+    SWAZILANDIA = 122
+    SUDAN = 123
+    EGIPTO = 124
+    LIBIA = 125
+    TUNEZ = 126
+    ARGELIA = 127
+    MARRUECOS = 128
+    CABO_VERDE = 129
+    CHAD = 130
+    NIGER = 131
+    MALI = 133
+    MAURITANIA = 134
+    TANZANIA = 135
+    UGANDA = 136
+    KENIA = 137
+    SOMALIA = 138
+    ETIOPIA = 139
+    ANGOLA = 140
+    BURUNDI = 141
+    RWANDA = 142
+    REP_DEM__CONGO = 143
+    CONGO = 144
+    GABON = 145
+    S_TOM_PRINCIPE = 146
+    GUINEA_ECUATORL = 147
 
 
 class Puertos(Enum):
@@ -843,12 +789,6 @@ class Puertos(Enum):
     def description(self):
         return self.value[1]
 
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
 
 
 
