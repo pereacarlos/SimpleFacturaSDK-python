@@ -3,8 +3,8 @@ from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
-from SimpleFacturaSDK.enumeracion.CodigosAduana import CustomJSONEncoder
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict
 
 class FacturacionService:
     def __init__(self, session, base_url):
@@ -81,17 +81,11 @@ class FacturacionService:
         # Validar que la sucursal sea un string
         if not isinstance(sucursal, str):
             raise ValueError("El parámetro 'sucursal' debe ser un string.")
-        
-        solicitud_json = json.dumps(solicitud, cls=CustomJSONEncoder)
         url = f"{self.base_url}/invoiceV2/{sucursal}"
-        response = self.session.post(url, json=json.loads(solicitud_json))
+        solicitud_diccionario = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_diccionario)
         
-        contenidoRespuesta = response.text
-        print(f"Respuesta completa: {solicitud_json}")
-        ruta = "jsonsolicitud.json"
-        with open(ruta, "w") as archivo:
-            archivo.write(solicitud_json)
-            
+        contenidoRespuesta = response.text        
         print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
@@ -100,6 +94,7 @@ class FacturacionService:
             return resultado.data
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
     
     def listadoDteEmitidos(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
