@@ -1,6 +1,7 @@
 from typing import List
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
@@ -43,5 +44,23 @@ class ProveedorService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
+        url = f"{self.base_url}/documentsReceived/consolidate/{mes}/{anio}"
+        # deben de ser tipo número
+        if not isinstance(mes, int):
+            raise ValueError("El parámetro 'mes' debe ser un número entero.")
+        if not isinstance(anio, int):
+            raise ValueError("El parámetro 'anio' debe ser un número entero.")
+        
+        solicitud_dict = solicitud.to_dict()
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=str)
+            return resultado
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")

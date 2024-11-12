@@ -18,22 +18,15 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud=ListaDteRequestEnt(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        rut_contribuyente="76269769-6"
-    ),
-    ambiente=AmbienteEnum.Certificacion,
-    folio= 2232,
-    codigoTipoDte=DTEType.FacturaElectronica
-)
+solicitud=Credenciales(rut_emisor="76269769-6")
+
 try:
 
-    Obtener_pdf = client_api.Proveedores.obtener_pdf(solicitud)
-    ruta = "Factura.pdf"
-    with open(ruta, "wb") as file:
-        file.write(Obtener_pdf)
-    print(f"XML guardado en {ruta}")
+    Obtener_pdf = client_api.Proveedores.ConciliarRecibidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Obtener_pdf.status}")
+    print(f"Message: {Obtener_pdf.message}")
+    print(f"Data: {Obtener_pdf.data}")
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
