@@ -2,21 +2,19 @@
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import json
-from requests.auth import HTTPBasicAuth
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+#from requests.auth import HTTPBasicAuth
+#from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+#from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+#from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
-from SimpleFacturaSDK.enumeracion.ReasonTypeEnum import ReasonTypeEnum
-from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Aduana import Aduana
 from SimpleFacturaSDK.models.GetFactura.Transporte import Transporte
 from SimpleFacturaSDK.models.GetFactura.Chofer import Chofer
 from SimpleFacturaSDK.models.GetFactura.TipoBulto import TipoBulto
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
 from SimpleFacturaSDK.enumeracion.CodigosAduana import Paises,Moneda, ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, TipoBultoEnum
 from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
 from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
@@ -30,32 +28,83 @@ from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from datetime import datetime
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
-fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d").date().isoformat()
-fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d").date().isoformat()
+
 
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-solicitud = SolicitudPdfDte(
-    credenciales=Credenciales(
-        rut_emisor="76269769-6"
+
+solicitud = RequestDTE(
+    Documento=Documento(
+        Encabezado=Encabezado(
+            IdDoc=IdDoc(
+                TipoDTE=DTEType.FacturaElectronica,
+                FchEmis="2024-09-05",
+                FmaPago=1,
+                FchVenc="2024-09-05"
+            ),
+            Emisor=Emisor(
+                RUTEmisor="76269769-6",
+                RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                GiroEmis="Desarrollo de software",
+                Telefono=["912345678"],
+                CorreoEmisor="mvega@chilesystems.com",
+                Acteco=[620200],
+                DirOrigen="Calle 7 numero 3",
+                CmnaOrigen="Santiago",
+                CiudadOrigen="Santiago"
+            ),
+            Receptor=Receptor(
+                RUTRecep="17096073-4",
+                RznSocRecep="Hotel Iquique",
+                GiroRecep="test",
+                CorreoRecep="mvega@chilesystems.com",
+                DirRecep="calle 12",
+                CmnaRecep="Paine",
+                CiudadRecep="Santiago"
+            ),
+            Totales=Totales(
+                MntNeto="832",
+                TasaIVA="19",
+                IVA="158",
+                MntTotal="990"
+            )
+        ),
+        Detalle=[
+            Detalle(
+                NroLinDet="1",
+                NmbItem="Alfajor",
+                CdgItem=[
+                    CdgItem(
+                        TpoCodigo="ALFA",
+                        VlrCodigo="123"
+                    )
+                ],
+                QtyItem="1",
+                UnmdItem="un",
+                PrcItem="831.932773",
+                MontoItem="832"
+            )
+        ]
     ),
-    dte_referenciado_externo=DteReferenciadoExterno(
-        folio=12553,
-        codigo_tipo_dte=39,
-        ambiente=0
-    )
+    Observaciones="NOTA AL PIE DE PAGINA",
+    TipoPago="30 dias"
 )
 
-
 try:
-    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
-    print("DTE obtenido correctamente",dte_bytes.folio)
-
+    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Factura.status}")
+    print(f"Message: {Factura.message}")
+    print(f"TipoDTE: {Factura.data.tipoDTE}")
+    print(f"RUT Emisor: {Factura.data.rutEmisor}")
+    print(f"RUT Receptor: {Factura.data.rutReceptor}")
+    print(f"Folio: {Factura.data.folio}")
+    print(f"Fecha Emision: {Factura.data.fechaEmision}")
+    print(f"Total: {Factura.data.total}")
+    print(Factura.data)
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
