@@ -184,7 +184,6 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-
     def listadoDteEmitidos(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentsIssued"
         solicitud_dict = solicitud.to_dict()
