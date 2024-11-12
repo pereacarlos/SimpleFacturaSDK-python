@@ -12,3 +12,5 @@ class Credenciales:
             "emailUsuario": self.email_usuario,
             "rutContribuyente": self.rut_contribuyente
         }
+
+        

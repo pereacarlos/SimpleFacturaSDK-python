@@ -17,5 +17,6 @@ class ListaDteRequestEnt:
     hasta: Optional[datetime] = None
     rutEmisor: Optional[str] = None
 
+
     def to_dict(self):
         return asdict(self)

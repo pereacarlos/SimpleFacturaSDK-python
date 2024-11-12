@@ -68,8 +68,8 @@ class FacturacionService:
 
     def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
-        solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
-        response = self.session.post(url, json=solicitud_dict)
+        #solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
+        response = self.session.post(url, json=solicitud)
         
         contenidoRespuesta = response.text
         print("Respuesta completa:", contenidoRespuesta)
@@ -184,15 +184,15 @@ class FacturacionService:
 
     def listadoDteEmitidos(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentsIssued"
-        solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text
-        print("Respuesta completa:", contenidoRespuesta)
+        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            
-            return deserialized_response.data
+            resultado = Response.from_dict(response_json, data_type=Dte)
+            return resultado
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 

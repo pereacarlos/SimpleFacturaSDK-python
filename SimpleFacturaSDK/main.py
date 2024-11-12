@@ -2,12 +2,11 @@
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import json
-#from requests.auth import HTTPBasicAuth
-#from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-#from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-#from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
-
-#from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from requests.auth import HTTPBasicAuth
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
@@ -41,32 +40,22 @@ fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d").date().isoformat()
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-solicitud = ListaDteRequestEnt(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        rut_contribuyente="10422710-4",
-        nombre_sucursal="Casa Matriz"
+solicitud = SolicitudPdfDte(
+    credenciales=Credenciales(
+        rut_emisor="76269769-6"
     ),
-    ambiente=AmbienteEnum.Certificacion,
-    folio=0,
-    codigoTipoDte=DTEType.NotSet,
-    desde=fecha_desde,
-    hasta=fecha_hasta
+    dte_referenciado_externo=DteReferenciadoExterno(
+        folio=12553,
+        codigo_tipo_dte=39,
+        ambiente=0
+    )
 )
 
 
 try:
-    Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
-    print("\nDatos de la Respuesta:")
-    print(f"Status: {Listado.status}")
-    print(f"Message: {Listado.message}")
-    print(f"TipoDTE: {Listado.data.tipoDTE}")
-    print(f"RUT Emisor: {Listado.data.rutEmisor}")
-    print(f"RUT Receptor: {Listado.data.rutReceptor}")
-    print(f"Folio: {Listado.data.folio}")
-    print(f"Fecha Emision: {Listado.data.fechaEmision}")
-    print(f"Total: {Listado.data.total}")
-    print(Listado.data)
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
+    print("DTE obtenido correctamente",dte_bytes.folio)
+
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")

@@ -4,7 +4,7 @@ from datetime import datetime
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
 from SimpleFacturaSDK.models.GetFactura.Retenedor import Retenedor
-from SimpleFacturaSDK.models.GetFactura.SubCantidad import SubCantidad
+from SimpleFacturaSDK.models.GetFactura.Subcantidad import SubCantidad
 from SimpleFacturaSDK.models.GetFactura.OtraMonedaDetalle import OtraMonedaDetalle
 from SimpleFacturaSDK.models.GetFactura.SubDescuento import SubDescuento
 from SimpleFacturaSDK.models.GetFactura.SubRecargo import SubRecargo
