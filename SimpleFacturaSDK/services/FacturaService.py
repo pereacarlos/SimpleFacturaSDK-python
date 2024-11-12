@@ -83,7 +83,6 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-
     def facturacion_individualV2_Dte(self, solicitud, sucursal) -> InvoiceData:
         # Validar que la sucursal sea un string
         if not isinstance(sucursal, str):
@@ -199,8 +198,17 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-
-
+    def enviarCorreo(self, solicitud) -> bool:
+        url = f"{self.base_url}/dte/enviar/mail"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            response_json = response.json()
+            return Response.from_dict(response_json, data_type=bool)  # Ajusta el tipo de datos según sea necesario
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
 
 

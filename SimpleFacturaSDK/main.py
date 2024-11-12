@@ -31,46 +31,41 @@ from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import requests
+from SimpleFacturaSDK.models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from datetime import datetime
 
-fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
-fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
 
-solicitud = ListaDteRequestEnt(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        rut_contribuyente="10422710-4",
-        nombre_sucursal="Casa Matriz"
+solicitud = EnvioMailRequest(
+    RutEmpresa="76269769-6",
+    Dte=DteClass(
+        folio=2149,
+        tipoDTE=33
     ),
-    ambiente=AmbienteEnum.Certificacion,
-    folio=0,
-    codigoTipoDte=DTEType.NotSet,
-    desde=fecha_desde,
-    hasta=fecha_hasta
+    Mail=MailClass(
+        to = [ "contacto@chilesystems.com"],
+        ccos = ["correo@gmail.com"],
+        ccs = ["correo2@gmail.com"]
+    ),
+    Xml=True,
+    Pdf=True,
+    Comments="ESTO ES UN COMENTARIO"
 )
 
 
 try:
     
-    Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
+    EnviarMail = client_api.Facturacion.enviarCorreo(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {Listado.status}")
-    print(f"Message: {Listado.message}")
+    print(f"Status: {EnviarMail.status}")
+    print(f"Message: {EnviarMail.message}")
+    print(f"Data: {EnviarMail.data}")
 
-    for dte in Listado.data:
-        print(f"ambiente: {dte.ambiente}")
-        print(f"tipoDTE: {dte.tipoDte}")
-        print(f"folioReutilizado: {dte.folioReutilizado}")
-        print(f"fechaCreacion: {dte.fechaCreacion}")
-        print(f"Folio: {dte.folio}")
-        print(f"razonSocialReceptor: {dte.razonSocialReceptor}")
-        print(f"Total: {dte.total}")
-        print(dte)
+   
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)
