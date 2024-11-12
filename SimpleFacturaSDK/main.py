@@ -5,6 +5,7 @@ import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
 from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 import json
 #from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -19,27 +20,20 @@ client_api = APIClient(username, password)
 
 solicitud=ListaDteRequestEnt(
     Credenciales=Credenciales(
-        rut_emisor="76269769-6"
+        rut_emisor="76269769-6",
+        rut_contribuyente="96689310-9"
     ),
     ambiente=AmbienteEnum.Produccion,
-    folio= None,
-    codigoTipoDte=None,
-    desde=fecha_desde,
-    hasta=fecha_hasta,
+    folio= 7366834,
+    codigoTipoDte=DTEType.NotaCreditoElectronica
 )
 try:
 
-    ListProveedores = client_api.Proveedores.listarDteRecibidos(solicitud)
-    print("\nDatos de la Respuesta:")
-    print(f"Status: {ListProveedores.status}")
-    print(f"Message: {ListProveedores.message}")
-    for lista in ListProveedores.data:
-        print(f"Ambiente: {lista.ambiente}")
-        print(f"codigoSii: {lista.codigoSii}")
-        print(f"Tipo DTE: {lista.tipoDte}")
-        print(f"estadoSII: {lista.estadoSII}")
-        print(f"estado: {lista.estado}")
-        print(f"folio: {lista.folio}")
+    Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
+    ruta = "xml.xml"
+    with open(ruta, "wb") as file:
+        file.write(Obtenerxml)
+    print(f"XML guardado en {ruta}")
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")

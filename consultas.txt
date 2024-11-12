@@ -193,3 +193,11 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
         print(f"estadoSII: {lista.estadoSII}")
         print(f"estado: {lista.estado}")
         print(f"folio: {lista.folio}")
+
+
+------------Proveedores obtener xml------------------
+Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
+    ruta = "xml.xml"
+    with open(ruta, "wb") as file:
+        file.write(Obtenerxml)
+    print(f"XML guardado en {ruta}")

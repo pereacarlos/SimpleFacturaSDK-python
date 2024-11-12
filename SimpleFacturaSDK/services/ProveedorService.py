@@ -23,3 +23,16 @@ class ProveedorService:
             return resultado
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+
+    def obtenerXml(self, solicitud) -> Response[bytes]:
+        url = f"{self.base_url}/documentReceived/xml"
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
+        
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
