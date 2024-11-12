@@ -36,3 +36,12 @@ class ProveedorService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    def obtener_pdf(self, solicitud):
+        url = f"{self.base_url}/documentReceived/getPdf"
+        response = self.session.post(url, json=solicitud.to_dict())
+        contenidoRespuesta = response.text
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")

@@ -21,18 +21,18 @@ client_api = APIClient(username, password)
 solicitud=ListaDteRequestEnt(
     Credenciales=Credenciales(
         rut_emisor="76269769-6",
-        rut_contribuyente="96689310-9"
+        rut_contribuyente="76269769-6"
     ),
-    ambiente=AmbienteEnum.Produccion,
-    folio= 7366834,
-    codigoTipoDte=DTEType.NotaCreditoElectronica
+    ambiente=AmbienteEnum.Certificacion,
+    folio= 2232,
+    codigoTipoDte=DTEType.FacturaElectronica
 )
 try:
 
-    Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
-    ruta = "xml.xml"
+    Obtener_pdf = client_api.Proveedores.obtener_pdf(solicitud)
+    ruta = "Factura.pdf"
     with open(ruta, "wb") as file:
-        file.write(Obtenerxml)
+        file.write(Obtener_pdf)
     print(f"XML guardado en {ruta}")
 
 except requests.exceptions.HTTPError as http_err:
