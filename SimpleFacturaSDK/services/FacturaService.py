@@ -225,3 +225,25 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
+    #pendiente
+    def ConciliarEmitidos(self, solicitud, mes, anio) -> Credenciales:
+        url = f"{self.base_url}/documentsIssued/consolidate/{mes}/{anio}"
+        # deben de ser tipo número
+        if not isinstance(mes, int):
+            raise ValueError("El parámetro 'mes' debe ser un número entero.")
+        if not isinstance(anio, int):
+            raise ValueError("El parámetro 'anio' debe ser un número entero.")
+        
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=Credenciales)
+            return resultado
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")

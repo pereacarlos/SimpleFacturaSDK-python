@@ -34,39 +34,22 @@ import requests
 from SimpleFacturaSDK.models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from datetime import datetime
-
-fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
-fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
 
-solicitud = ListaDteRequestEnt(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6"
-    ),
-    ambiente=AmbienteEnum.Certificacion,
-    desde=fecha_desde,
-    hasta=fecha_hasta
-)
-
 
 try:
     
-    Consolidado = client_api.Facturacion.consolidadoVentas(solicitud)
+    '''
+    solicitud =Credenciales(rut_emisor="76269769-6")
+    ConsolidarEmit = client_api.Facturacion.ConciliarEmitidos(solicitud,5,2024)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {Consolidado.status}")
-    print(f"Message: {Consolidado.message}")
-    for item in Consolidado.data:
-        print(f"fecha: {item.fecha}")
-        print(f"tipoDTE: {item.tiposDTE}")
-        print(f"Emitidos: {item.emitidos}")
-        print(f"anulados: {item.anulados}")
-        print(f"total: {item.total}")
-        print(f"totalNeto: {item.totalNeto}")
-        print(f"totalIva: {item.totalIva}")
-        print(item)
+    print(f"Status: {ConsolidarEmit.status}")
+    print(f"Message: {ConsolidarEmit.message}")
+    print(f"Data: {ConsolidarEmit.data}")'''
+
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)
