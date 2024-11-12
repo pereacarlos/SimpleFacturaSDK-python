@@ -201,3 +201,30 @@ Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
     with open(ruta, "wb") as file:
         file.write(Obtenerxml)
     print(f"XML guardado en {ruta}")
+
+
+
+------AddCliente-----
+
+    AddClient = client_api.Clientes.CrearClientes(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {AddClient.status}")
+    print(f"Message: {AddClient.message}")
+    
+    for cliente in AddClient.data:
+        print(f"ReceptorId: {cliente.receptorId}")
+        print(f"EmisorId: {cliente.emisorId}")
+        print(f"RUT: {cliente.rut}")
+        print(f"Dv: {cliente.dv}")
+        print(f"RutFormateado: {cliente.rutFormateado}")
+        print(f"RazonSocial: {cliente.razonSocial}")
+        print(f"NombreFantasia: {cliente.nombreFantasia}")
+        print(f"Giro: {cliente.giro}")
+        print(f"DirPart: {cliente.dirPart}")
+        print(f"DirFact: {cliente.dirFact}")
+        print(f"CorreoPar: {cliente.correoPar}")
+        print(f"CorreoFact: {cliente.correoFact}")
+        print(f"Ciudad: {cliente.ciudad}")
+        print(f"Comuna: {cliente.comuna}")
+        print(f"Activo: {cliente.activo}")
+        print("\n")

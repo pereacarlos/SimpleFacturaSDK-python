@@ -2,6 +2,7 @@
 from SimpleFacturaSDK.services.FacturaService import FacturacionService
 from SimpleFacturaSDK.services.ProductoService import ProductoService
 from SimpleFacturaSDK.services.ProveedorService import ProveedorService
+from SimpleFacturaSDK.services.ClientesService import ClientesService
 import requests
 import base64
 
@@ -28,3 +29,4 @@ class APIClient:
         self.Facturacion = FacturacionService(self.session, self.base_url)
         self.Productos = ProductoService(self.session, self.base_url)
         self.Proveedores = ProveedorService(self.session, self.base_url)
+        self.Clientes = ClientesService(self.session, self.base_url)
