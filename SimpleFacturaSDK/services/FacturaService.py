@@ -1,5 +1,6 @@
 import os
 import json
+from typing import List
 from requests_toolbelt import MultipartEncoder
 import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte

@@ -34,8 +34,8 @@ import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from datetime import datetime
 
-fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d").date().isoformat()
-fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d").date().isoformat()
+fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
+fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
@@ -58,11 +58,19 @@ solicitud = ListaDteRequestEnt(
 try:
     
     Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
-    print(Listado)
-    print("Listado de DTEs emitidos")
-    print(Listado)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Listado.status}")
+    print(f"Message: {Listado.message}")
 
-
+    for dte in Listado.data:
+        print(f"ambiente: {dte.ambiente}")
+        print(f"tipoDTE: {dte.tipoDte}")
+        print(f"folioReutilizado: {dte.folioReutilizado}")
+        print(f"fechaCreacion: {dte.fechaCreacion}")
+        print(f"Folio: {dte.folio}")
+        print(f"razonSocialReceptor: {dte.razonSocialReceptor}")
+        print(f"Total: {dte.total}")
+        print(dte)
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)

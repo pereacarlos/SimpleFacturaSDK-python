@@ -9,9 +9,19 @@ class Response(BaseModel, Generic[T]):
     data: T
     errors: Optional[Any] = None
 
+   
+    
     @classmethod
-    def from_dict(cls, data: dict, data_type: T) -> "Response":
-        data = data.copy()
-        data["data"] = data_type.from_dict(data["data"])
-        return cls(**data)
-
+    def from_dict(cls, d: dict, data_type: Any) -> "Response":
+        data = d["data"]
+        if isinstance(data, list):
+            data = [data_type.from_dict(item) for item in data]
+        else:
+            data = data_type.from_dict(data)
+        
+        return cls(
+            status=d["status"],
+            message=d["message"],
+            data=data,
+            errors=d.get("errors")
+        )

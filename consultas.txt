@@ -110,5 +110,22 @@
     print(Emision.data)
 
 
+--------ListadoDteEmitidos--------------
+Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Listado.status}")
+    print(f"Message: {Listado.message}")
+
+    for dte in Listado.data:
+        print(f"ambiente: {dte.ambiente}")
+        print(f"tipoDTE: {dte.tipoDte}")
+        print(f"folioReutilizado: {dte.folioReutilizado}")
+        print(f"fechaCreacion: {dte.fechaCreacion}")
+        print(f"Folio: {dte.folio}")
+        print(f"razonSocialReceptor: {dte.razonSocialReceptor}")
+        print(f"Total: {dte.total}")
+        print(dte)
+
+
     
     
