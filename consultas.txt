@@ -162,4 +162,21 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
         print(f"Stock: {productos.Stock}")
         print("\n")
    
+
+----------List producto------
+
+    ListProduct = client_api.Productos.listarProductos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListProduct.status}")
+    print(f"Message: {ListProduct.message}")
+    for i in ListProduct.data:
+        print(f"productoId: {i.productoId}")
+        print(f"nombre: {i.nombre}")
+        print(f"precio: {i.precio}")
+        print(f"exento: {i.exento}")
+        for imp in i.impuestos:
+            print(f"codigoSii: {imp.codigoSii}")
+            print(f"nombreImp: {imp.nombreImp}")
+            print(f"tasa: {imp.tasa}")
+ 
     

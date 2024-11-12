@@ -15,56 +15,28 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= DatoExternoRequest(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        nombre_sucursal="Casa Matriz"
-    ),
-    Productos=[
-        NuevoProductoExternoRequest(
-            nombre="Goma 808",
-            codigoBarra="Goma 808",
-            unidadMedida="un",
-            precio=50,
-            exento=False,
-            tieneImpuestos=False,
-            impuestos=[ ]
-        ),
-        NuevoProductoExternoRequest(
-            nombre="Goma 8009",
-            codigoBarra="Goma 8009",
-            unidadMedida="un",
-            precio=50,
-            exento=False,
-            tieneImpuestos=True,
-            impuestos=[ 271,23]
-         
-        )
-    ]
-
+solicitud= Credenciales(
+    rut_emisor="76269769-6",
+    nombre_sucursal="Casa Matriz"
 )
 
 try:
 
-    addProducts = client_api.Productos.CrearProducto(solicitud)
+    ListProduct = client_api.Productos.listarProductos(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {addProducts.status}")
-    print(f"Message: {addProducts.message}")
-    for productos in addProducts.data:
-        print(f"ProductoId: {productos.productoId}")
-        print(f"Nombre: {productos.nombre}")
-        print(f"Precio: {productos.precio}")
-        print(f"Exento: {productos.exento}")
-        print(f"Activo: {productos.activo}")
-        print(f"EmisorId: {productos.emisorId}")
-        print(f"SucursalId: {productos.sucursalId}")
-        print(f"Impuestos: {productos.impuestos}")
-        print(f"CodigoBarra: {productos.codigoBarra}")
-        print(f"UnidadMedida: {productos.unidadMedida}")
-        print(f"NombreCategoria: {productos.NombreCategoria}")
-        print(f"NombreMarca: {productos.NombreMarca}")
-        print(f"Stock: {productos.Stock}")
-        print("\n")
+    print(f"Status: {ListProduct.status}")
+    print(f"Message: {ListProduct.message}")
+    for i in ListProduct.data:
+        print(f"productoId: {i.productoId}")
+        print(f"nombre: {i.nombre}")
+        print(f"precio: {i.precio}")
+        print(f"exento: {i.exento}")
+        for imp in i.impuestos:
+            print(f"codigoSii: {imp.codigoSii}")
+            print(f"nombreImp: {imp.nombreImp}")
+            print(f"tasa: {imp.tasa}")
+ 
+    
 
 
 
