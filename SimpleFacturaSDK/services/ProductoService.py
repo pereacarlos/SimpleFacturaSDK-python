@@ -29,7 +29,6 @@ class ProductoService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()  # La
 
-
     def listarProductos(self, solicitud) -> ProductoExternoEnt:
         url = f"{self.base_url}/products"
         solicitud_dict = solicitud.to_dict()
