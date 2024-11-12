@@ -9,3 +9,9 @@ class Response(BaseModel, Generic[T]):
     data: T
     errors: Optional[Any] = None
 
+    @classmethod
+    def from_dict(cls, data: dict, data_type: T) -> "Response":
+        data = data.copy()
+        data["data"] = data_type.from_dict(data["data"])
+        return cls(**data)
+

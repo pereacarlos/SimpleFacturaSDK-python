@@ -68,17 +68,20 @@ class FacturacionService:
 
     def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
-        #solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
-        response = self.session.post(url, json=solicitud)
-        
+        solicitud_dict =  solicitud.to_dict()
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        print("Respuesta completa:", contenidoRespuesta)
+        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
-            return deserialized_response.data
+            resultado = Response.from_dict(response_json, data_type=Dte)
+             #print("Status:", resultado.status)
+             #print("Message:", resultado.message)
+             #print("DTE Data:", resultado.data) 
+            return resultado.data
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
 
     def facturacion_individualV2_Dte(self, solicitud, sucursal) -> InvoiceData:
         # Validar que la sucursal sea un string
