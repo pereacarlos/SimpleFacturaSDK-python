@@ -15,6 +15,7 @@ class ProductoService:
     def CrearProducto(self, solicitud) -> ProductoEnt:
         url = f"{self.base_url}/addProducts"
         solicitud_dict = solicitud.to_dict()
+        print("Solicitud dict:", solicitud_dict)
         response = self.session.post(url, json=solicitud_dict)
         
         contenidoRespuesta = response.text        

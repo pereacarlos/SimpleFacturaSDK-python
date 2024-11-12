@@ -128,4 +128,38 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ----------------ADddProducto-----
+     addProducts = client_api.Productos.CrearProducto(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {addProducts.status}")
+    print(f"Message: {addProducts.message}")
+    for productos in addProducts.data:
+        print(f"ProductoId: {productos.productoId}")
+        print(f"Nombre: {productos.nombre}")
+        print(f"Precio: {productos.precio}")
+        print(f"Exento: {productos.exento}")
+        print(f"Activo: {productos.activo}")
+        print(f"EmisorId: {productos.emisorId}")
+        print(f"SucursalId: {productos.sucursalId}")
+        print(f"Impuestos: {productos.impuestos}")
+        print(f"CodigoBarra: {productos.codigoBarra}")
+        print(f"UnidadMedida: {productos.unidadMedida}")
+        print(f"NombreCategoria: {productos.NombreCategoria}")
+        print(f"NombreMarca: {productos.NombreMarca}")
+        print(f"Stock: {productos.Stock}")
+        print("\n")
+   
     

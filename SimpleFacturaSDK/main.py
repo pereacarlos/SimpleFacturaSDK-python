@@ -22,22 +22,23 @@ solicitud= DatoExternoRequest(
     ),
     Productos=[
         NuevoProductoExternoRequest(
-            nombre="Goma 998",
-            codigoBarra="Goma 998",
+            nombre="Goma 808",
+            codigoBarra="Goma 808",
             unidadMedida="un",
             precio=50,
             exento=False,
             tieneImpuestos=False,
-            impuestos=[ 271,23]
+            impuestos=[ ]
         ),
         NuevoProductoExternoRequest(
-            nombre="Goma 999",
-            codigoBarra="Goma 999",
+            nombre="Goma 8009",
+            codigoBarra="Goma 8009",
             unidadMedida="un",
             precio=50,
             exento=False,
             tieneImpuestos=True,
-            impuestos=[0]
+            impuestos=[ 271,23]
+         
         )
     ]
 
@@ -46,6 +47,27 @@ solicitud= DatoExternoRequest(
 try:
 
     addProducts = client_api.Productos.CrearProducto(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {addProducts.status}")
+    print(f"Message: {addProducts.message}")
+    for productos in addProducts.data:
+        print(f"ProductoId: {productos.productoId}")
+        print(f"Nombre: {productos.nombre}")
+        print(f"Precio: {productos.precio}")
+        print(f"Exento: {productos.exento}")
+        print(f"Activo: {productos.activo}")
+        print(f"EmisorId: {productos.emisorId}")
+        print(f"SucursalId: {productos.sucursalId}")
+        print(f"Impuestos: {productos.impuestos}")
+        print(f"CodigoBarra: {productos.codigoBarra}")
+        print(f"UnidadMedida: {productos.unidadMedida}")
+        print(f"NombreCategoria: {productos.NombreCategoria}")
+        print(f"NombreMarca: {productos.NombreMarca}")
+        print(f"Stock: {productos.Stock}")
+        print("\n")
+
+
+
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")

@@ -13,6 +13,6 @@ class DatoExternoRequest:
     def to_dict(self):
         return {
             "credenciales": self.Credenciales.to_dict(),
-            'Productos': [p.to_dict() for p in self.Productos],
-            'Clientes': [c.to_dict() for c in self.Clientes]
+            "Productos": [p.to_dict() for p in self.Productos] if self.Productos else [],
+            "Clientes": [c.to_dict() for c in self.Clientes] if self.Clientes else []
         }
