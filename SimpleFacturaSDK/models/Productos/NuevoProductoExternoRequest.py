@@ -38,33 +38,34 @@ class ProductoExternoEnt:
 
 @dataclass
 class NuevoProductoExternoRequest:
-    Nombre: str
-    CodigoBarra: str
-    UnidadMedida: str
-    Precio: float
-    Exento: bool
-    TieneImpuestos: bool
-    Impuestos: List[int]
+    nombre: str
+    codigoBarra: str
+    unidadMedida: str
+    precio: float
+    exento: bool
+    tieneImpuestos: bool
+    impuestos: List[int]
+
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            Nombre=data.get('Nombre'),
-            CodigoBarra=data.get('CodigoBarra'),
-            UnidadMedida=data.get('UnidadMedida'),
-            Precio=data.get('Precio'),
-            Exento=data.get('Exento'),
-            TieneImpuestos=data.get('TieneImpuestos'),
-            Impuestos=data.get('Impuestos')
+            nombre=data.get('nombre'),
+            codigoBarra=data.get('codigoBarra'),
+            unidadMedida=data.get('unidadMedida'),
+            precio=data.get('precio'),
+            exento=data.get('exento'),
+            tieneImpuestos=data.get('tieneImpuestos'),
+            impuestos=data.get('impuestos')
         )
 
     def to_dict(self):
         return {
-            'Nombre': self.Nombre,
-            'CodigoBarra': self.CodigoBarra,
-            'UnidadMedida': self.UnidadMedida,
-            'Precio': self.Precio,
-            'Exento': self.Exento,
-            'TieneImpuestos': self.TieneImpuestos,
-            'Impuestos': self.Impuestos
+            'nombre': self.nombre,
+            'codigoBarra': self.codigoBarra,
+            'unidadMedida': self.unidadMedida,
+            'precio': self.precio,
+            'exento': self.exento,
+            'tieneImpuestos': self.tieneImpuestos,
+            'impuestos': self.impuestos
         }

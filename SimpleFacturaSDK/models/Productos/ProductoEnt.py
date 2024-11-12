@@ -15,7 +15,20 @@ class ProductoEnt:
     SucursalId: UUID
     UnidadMedida: Optional[str]
     Impuestos: List[ImpuestoEnt] 
+    @property
+    def NombreCategoria(self) -> str:
+        return "Sin Categoría"
 
+    @property
+    def NombreMarca(self) -> str:
+        return "Sin Marca"
+
+    @property
+    def Stock(self) -> int:
+        return 50
+
+
+'''
     @property
     def NombreCategoria(self) -> str:
         return "Sin Categoría"
@@ -58,4 +71,4 @@ class ProductoEnt:
             'NombreCategoria': self.NombreCategoria,
             'NombreMarca': self.NombreMarca,
             'Stock': self.Stock
-        }
+        }'''
