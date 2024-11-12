@@ -180,3 +180,16 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
             print(f"tasa: {imp.tasa}")
  
     
+
+-------------List proveedores---------
+ ListProveedores = client_api.Proveedores.listarDteRecibidos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListProveedores.status}")
+    print(f"Message: {ListProveedores.message}")
+    for lista in ListProveedores.data:
+        print(f"Ambiente: {lista.ambiente}")
+        print(f"codigoSii: {lista.codigoSii}")
+        print(f"Tipo DTE: {lista.tipoDte}")
+        print(f"estadoSII: {lista.estadoSII}")
+        print(f"estado: {lista.estado}")
+        print(f"folio: {lista.folio}")
