@@ -35,37 +35,38 @@ from SimpleFacturaSDK.models.GetFactura.EnvioMailRequest import EnvioMailRequest
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from datetime import datetime
 
+fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
+fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
 
-solicitud = EnvioMailRequest(
-    RutEmpresa="76269769-6",
-    Dte=DteClass(
-        folio=2149,
-        tipoDTE=33
+solicitud = ListaDteRequestEnt(
+    Credenciales=Credenciales(
+        rut_emisor="76269769-6"
     ),
-    Mail=MailClass(
-        to = [ "contacto@chilesystems.com"],
-        ccos = ["correo@gmail.com"],
-        ccs = ["correo2@gmail.com"]
-    ),
-    Xml=True,
-    Pdf=True,
-    Comments="ESTO ES UN COMENTARIO"
+    ambiente=AmbienteEnum.Certificacion,
+    desde=fecha_desde,
+    hasta=fecha_hasta
 )
 
 
 try:
     
-    EnviarMail = client_api.Facturacion.enviarCorreo(solicitud)
+    Consolidado = client_api.Facturacion.consolidadoVentas(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {EnviarMail.status}")
-    print(f"Message: {EnviarMail.message}")
-    print(f"Data: {EnviarMail.data}")
-
-   
+    print(f"Status: {Consolidado.status}")
+    print(f"Message: {Consolidado.message}")
+    for item in Consolidado.data:
+        print(f"fecha: {item.fecha}")
+        print(f"tipoDTE: {item.tiposDTE}")
+        print(f"Emitidos: {item.emitidos}")
+        print(f"anulados: {item.anulados}")
+        print(f"total: {item.total}")
+        print(f"totalNeto: {item.totalNeto}")
+        print(f"totalIva: {item.totalIva}")
+        print(item)
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)

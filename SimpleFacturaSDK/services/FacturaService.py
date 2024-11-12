@@ -4,6 +4,7 @@ from typing import List
 from requests_toolbelt import MultipartEncoder
 import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.GetFactura.ReporteDTE import ReporteDTE
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
@@ -210,5 +211,17 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-
+    def consolidadoVentas(self, solicitud) -> ReporteDTE:
+        url = f"{self.base_url}/dte/consolidated/issued"
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=ReporteDTE)
+            return resultado
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
