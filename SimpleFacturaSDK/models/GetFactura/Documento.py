@@ -11,3 +11,4 @@ from SimpleFacturaSDK.models.GetFactura.ComisionRecargo import ComisionRecargo
 class Documento:
     Encabezado: Encabezado
     Detalle: List[Detalle]
+    Referencia: Optional[List[Referencia]] = None

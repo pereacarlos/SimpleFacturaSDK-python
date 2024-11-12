@@ -12,5 +12,5 @@ class Detalle:
     UnmdItem: str
     PrcItem: float
     MontoItem: int
-    IndExe: IndicadorFacturacionExencionEnum
+    IndExe: Optional[IndicadorFacturacionExencionEnum] = None
     DscItem: Optional[str] = None

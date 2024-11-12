@@ -99,7 +99,6 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
     
-
     def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
         # Validar que la sucursal sea un string
         if not isinstance(sucursal, str):
@@ -138,7 +137,6 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
    
-
     def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
         url = f"{self.base_url}/massiveInvoice"
         if not os.path.isfile(path_csv):
@@ -161,18 +159,42 @@ class FacturacionService:
             return response_json
         else:
             raise Exception(f"Error en la petición: {contenido_respuesta}")
+    
+    def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> InvoiceData:
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+
+        if not isinstance(motivo, int):
+            raise ValueError("El parámetro 'motivo' debe ser un número entero.")
+        url = f"{self.base_url}/invoiceCreditDebitNotesV2/{sucursal}/{motivo}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
+
+
     def listadoDteEmitidos(self, solicitud) -> Dte:
-        url = f"{self.base_url}/documentIssued"
-        response = self.session.post(url, json=solicitud)
+        url = f"{self.base_url}/documentsIssued"
+        solicitud_dict = solicitud.to_dict()  # Convertir a diccionario
+        response = self.session.post(url, json=solicitud_dict)
+        
         contenidoRespuesta = response.text
         print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=Dte)
-            return resultado.data
+            
+            return deserialized_response.data
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
-
 
 
 

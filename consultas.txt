@@ -96,6 +96,19 @@
 
     print("La factura se ha descargado correctamente.")
 
+----------EmisioNCND-------------
+   Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Emision.status}")
+    print(f"Message: {Emision.message}")
+    print(f"TipoDTE: {Emision.data.tipoDTE}")
+    print(f"RUT Emisor: {Emision.data.rutEmisor}")
+    print(f"RUT Receptor: {Emision.data.rutReceptor}")
+    print(f"Folio: {Emision.data.folio}")
+    print(f"Fecha Emision: {Emision.data.fechaEmision}")
+    print(f"Total: {Emision.data.total}")
+    print(Emision.data)
+
 
     
     

@@ -11,10 +11,13 @@ import json
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
+from SimpleFacturaSDK.enumeracion.ReasonTypeEnum import ReasonTypeEnum
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Aduana import Aduana
 from SimpleFacturaSDK.models.GetFactura.Transporte import Transporte
 from SimpleFacturaSDK.models.GetFactura.Chofer import Chofer
 from SimpleFacturaSDK.models.GetFactura.TipoBulto import TipoBulto
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
 from SimpleFacturaSDK.enumeracion.CodigosAduana import Paises,Moneda, ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, TipoBultoEnum
 from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
 from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
@@ -28,27 +31,43 @@ from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from datetime import datetime
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
-
+fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d").date().isoformat()
+fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d").date().isoformat()
 
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-credenciales = Credenciales(
-    rut_emisor="76269769-6",
-    nombre_sucursal="Casa Matriz"
+solicitud = ListaDteRequestEnt(
+    Credenciales=Credenciales(
+        rut_emisor="76269769-6",
+        rut_contribuyente="10422710-4",
+        nombre_sucursal="Casa Matriz"
+    ),
+    ambiente=AmbienteEnum.Certificacion,
+    folio=0,
+    codigoTipoDte=DTEType.NotSet,
+    desde=fecha_desde,
+    hasta=fecha_hasta
 )
 
-path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
 
 try:
-    factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
- 
+    Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {factura.get('status')}")
-    print(f"Message: {factura.get('message')}")
-    print(f"Data: {factura.get('data')}")
+    print(f"Status: {Listado.status}")
+    print(f"Message: {Listado.message}")
+    print(f"TipoDTE: {Listado.data.tipoDTE}")
+    print(f"RUT Emisor: {Listado.data.rutEmisor}")
+    print(f"RUT Receptor: {Listado.data.rutReceptor}")
+    print(f"Folio: {Listado.data.folio}")
+    print(f"Fecha Emision: {Listado.data.fechaEmision}")
+    print(f"Total: {Listado.data.total}")
+    print(Listado.data)
+
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)

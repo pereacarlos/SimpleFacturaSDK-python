@@ -3,7 +3,7 @@ from typing import List, Optional
 from SimpleFacturaSDK.enumeracion.CodigosAduana import Moneda
 @dataclass
 class Totales:
-    TpoMoneda: Moneda
+    TpoMoneda: Optional[Moneda] = None
     MntNeto: Optional[float] = None
     TasaIVA: Optional[str] = None
     IVA: Optional[int] = None
