@@ -1,12 +1,17 @@
 from dataclasses import dataclass
-from typing import List, Optional
-from datetime import datetime
 
 @dataclass
 class ActividadesEconomicaEnt:
-    Codigo: int
-    Descripcion: str = ""
-    
+    codigo: int = 0  # Valor predeterminado
+    descripcion: str = ""  # Valor predeterminado vacío
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            codigo=data.get("codigo", 0),  # Obtiene el valor de "codigo" o usa 0 si falta
+            descripcion=data.get("descripcion", "")  # Obtiene el valor de "descripcion" o usa una cadena vacía si falta
+        )
+
 '''
 from dataclasses import dataclass
 

@@ -24,15 +24,14 @@ solicitud= Credenciales(
     rut_emisor="76269769-6"
 )
 try:
-    FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
+    DatosEmpresa = client_api.ConfiguracionService.datos_empresa(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {FolioSinUsar.status}")
-    print(f"Message: {FolioSinUsar.message}")
-    print(f"Data: {FolioSinUsar.data}")
-    for data in FolioSinUsar.data:
-        print(f"desde: {data.desde}")
-        print(f"hasta: {data.hasta}")
-        print(f"fechaIngreso: {data.cantidad}")
+    print(f"Status: {DatosEmpresa.status}")
+    print(f"Message: {DatosEmpresa.message}")
+    print(f"Data: {DatosEmpresa.data}")
+    print(f"rut: {DatosEmpresa.data.rut}")
+    print(f"razonSocial: {DatosEmpresa.data.razonSocial}")
+    print(f"giro: {DatosEmpresa.data.giro}")
    
 
 except requests.exceptions.HTTPError as http_err:

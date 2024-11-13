@@ -5,19 +5,40 @@ from SimpleFacturaSDK.models.ActividadesEconomicaApiEnt import ActividadesEconom
 
 @dataclass
 class EmisorAapiEnt:
-    Rut: str
-    RazonSocial: str
-    Giro: str
-    CorreoFact: str
-    Comuna: str
-    NroResol: int
-    FechaResol: datetime
-    Ambiente: int
-    Telefono: float
-    RutRepresentanteLegal: str
-    ActividadesEconomicas: List[ActividadesEconomicaEnt]
-    DirPart: Optional[str] = None
-    DirFact: Optional[str] = None
-    CorreoPart: Optional[str] = None
-    Ciudad: Optional[str] = None
-    UnidadSII: Optional[str] = None
+    rut: str
+    razonSocial: str
+    giro: str
+    correoFact: str
+    comuna: str
+    nroResol: int
+    fechaResol: datetime
+    ambiente: int
+    telefono: float
+    rutRepresentanteLegal: str
+    actividadesEconomicas: List[ActividadesEconomicaEnt]
+    dirPart: Optional[str] = None
+    dirFact: Optional[str] = None
+    correoPar: Optional[str] = None
+    ciudad: Optional[str] = None
+    unidadSII: Optional[str] = None
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        return cls(
+            Rut=d.get("rut"),
+            RazonSocial=d.get("razonSocial"),
+            Giro=d.get("giro"),
+            CorreoFact=d.get("correoFact"),
+            Comuna=d.get("comuna"),
+            NroResol=d.get("nroResol"),
+            FechaResol=datetime.strptime(d.get("fechaResol"), "%Y-%m-%d"),
+            Ambiente=d.get("ambiente"),
+            Telefono=d.get("telefono"),
+            RutRepresentanteLegal=d.get("rutRepresentanteLegal"),
+            ActividadesEconomicas=[ActividadesEconomicaEnt.from_dict(item) for item in d.get("actividadesEconomicas")],
+            DirPart=d.get("dirPart"),
+            DirFact=d.get("dirFact"),
+            CorreoPart=d.get("correoPar"),
+            Ciudad=d.get("ciudad"),
+            UnidadSII=d.get("unidadSII")
+        )
