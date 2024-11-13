@@ -177,10 +177,26 @@
     print(f"Data: {enviarCorreo.data}")
 
 ----ConsolidadoVentas------
+ Consolidado = client_api.Facturacion.consolidadoVentas(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Consolidado.status}")
+    print(f"Message: {Consolidado.message}")
+    for item in Consolidado.data:
+        print(f"fecha: {item.fecha}")
+        print(f"tipoDTE: {item.tiposDTE}")
+        print(f"Emitidos: {item.emitidos}")
+        print(f"anulados: {item.anulados}")
+        print(f"total: {item.total}")
+        print(f"totalNeto: {item.totalNeto}")
+        print(f"totalIva: {item.totalIva}")
+        print(item)
 
-
-
-
+-----ConciliarEmitidos---------
+ Conciliar = client_api.Facturacion.ConciliarEmitidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Conciliar.status}")
+    print(f"Message: {Conciliar.message}")
+    print(f"Data: {Conciliar.data}")
 
 
 
