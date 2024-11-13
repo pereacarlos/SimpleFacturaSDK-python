@@ -3,12 +3,7 @@ from SimpleFacturaSDK.Base import APIClient
 import base64
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
-from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
-from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
 import json
 #from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -20,19 +15,18 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= Credenciales(
-    rut_emisor="76269769-6"
+solicitud= BHERequest(
+    credenciales=Credenciales(
+        rut_emisor="76269769-6"
+    ),
+    Folio=15
 )
 try:
-    DatosEmpresa = client_api.ConfiguracionService.datos_empresa(solicitud)
-    print("\nDatos de la Respuesta:")
-    print(f"Status: {DatosEmpresa.status}")
-    print(f"Message: {DatosEmpresa.message}")
-    print(f"Data: {DatosEmpresa.data}")
-    print(f"rut: {DatosEmpresa.data.rut}")
-    print(f"razonSocial: {DatosEmpresa.data.razonSocial}")
-    print(f"giro: {DatosEmpresa.data.giro}")
-   
+    ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
+    ruta = "BoletaHonorario.pdf"
+    with open(ruta, "wb") as archivo:
+        archivo.write(ObtenerPdf)
+
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
