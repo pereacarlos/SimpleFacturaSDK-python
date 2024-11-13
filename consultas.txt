@@ -236,8 +236,6 @@
             print(f"nombreImp: {imp.nombreImp}")
             print(f"tasa: {imp.tasa}")
  
-    
-
 -------------List proveedores---------
  ListProveedores = client_api.Proveedores.listarDteRecibidos(solicitud)
     print("\nDatos de la Respuesta:")
@@ -251,9 +249,8 @@
         print(f"estado: {lista.estado}")
         print(f"folio: {lista.folio}")
 
-
 ------------Proveedores obtener xml------------------
-Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
+    Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
     ruta = "xml.xml"
     with open(ruta, "wb") as file:
         file.write(Obtenerxml)
