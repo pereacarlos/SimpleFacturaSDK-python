@@ -20,10 +20,8 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= SolicitudFolios(
-    RutEmpresa="76269769-6",
-    TipoDTE=33,
-    Ambiente=0
+solicitud= Credenciales(
+    rut_emisor="76269769-6"
 )
 try:
     FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
