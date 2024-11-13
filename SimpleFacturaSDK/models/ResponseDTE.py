@@ -5,7 +5,7 @@ T = TypeVar("T")
 
 class Response(BaseModel, Generic[T]):
     status: int
-    message: str
+    message: Optional[str] = None 
     data: T
     errors: Optional[Any] = None
 
