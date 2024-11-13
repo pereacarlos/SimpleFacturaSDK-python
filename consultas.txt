@@ -262,4 +262,16 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print(f"Status: {ConsultaFolio.status}")
     print(f"Message: {ConsultaFolio.message}")
     print(f"Data: {ConsultaFolio.data}")
-   
+
+
+---SolicitarFolio---------
+
+ SolicitarFolio = client_api.Folios.SolicitarFolios(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {SolicitarFolio.status}")
+    print(f"Message: {SolicitarFolio.message}")
+    print(f"Data: {SolicitarFolio.data}")
+    print(f"codigoSii: {SolicitarFolio.data.codigoSii}")
+    print(f"fechaIngreso: {SolicitarFolio.data.fechaIngreso}")
+    print(f"desde: {SolicitarFolio.data.desde}")
+    print(f"hasta: {SolicitarFolio.data.hasta}")

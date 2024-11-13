@@ -7,6 +7,8 @@ from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
 from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
+from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
+from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
 import json
 #from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -18,19 +20,26 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= SolicitudFolios(
-    RutEmpresa="76269769-6",
-    TipoDTE=33,
-    Ambiente=0
-)
+solicitud= FolioRequest(
+    credenciales=Credenciales(
+        rut_emisor = "76269769-6",
+        nombre_sucursal = "Casa Matriz"
+    ),
+    Cantidad= 3,
+    CodigoTipoDte= DTEType.FacturaElectronica
 
+)
 try:
 
-    ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
+    SolicitarFolio = client_api.Folios.SolicitarFolios(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {ConsultaFolio.status}")
-    print(f"Message: {ConsultaFolio.message}")
-    print(f"Data: {ConsultaFolio.data}")
+    print(f"Status: {SolicitarFolio.status}")
+    print(f"Message: {SolicitarFolio.message}")
+    print(f"Data: {SolicitarFolio.data}")
+    print(f"codigoSii: {SolicitarFolio.data.codigoSii}")
+    print(f"fechaIngreso: {SolicitarFolio.data.fechaIngreso}")
+    print(f"desde: {SolicitarFolio.data.desde}")
+    print(f"hasta: {SolicitarFolio.data.hasta}")
    
 
 except requests.exceptions.HTTPError as http_err:

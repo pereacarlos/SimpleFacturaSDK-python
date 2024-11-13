@@ -8,56 +8,56 @@ class TimbrajeEnt:
     TimbrajeId: UUID
     TipoDteId: UUID
     SucursalId: UUID
-    CodigoSii: int
-    FechaIngreso: datetime
+    codigoSii: int
+    fechaIngreso: datetime
     EmisorId: UUID
     UsuarioId: UUID
-    FechaVencimiento: datetime
+    fechaVencimiento: datetime
 
     # Campos opcionales o con valores predeterminados
-    Desde: int = 0
-    Hasta: int = 0
+    desde: int = 0
+    hasta: int = 0
     Activo: bool = False
     Xml: bytes = field(default_factory=bytes)
     NombreSucursal: str = ""
-    TipoDte: str = ""
-    FoliosDisponibless: int = 0
+    tipoDte: str = ""
+    foliosDisponibles: int = 0
     FoliosSinUsar: int = 0
     UltimoFolioEmitido: int = 0
     RutEmisor: str = ""
-    Ambiente: int = 0
+    ambiente: int = 0
     BorrarFolioBloqueado: bool = False
     Sincronizado: bool = False
-    FechaCaf: Optional[datetime] = None
+    fechaCaf: Optional[datetime] = None
     FechaUltimaSincronizacion: Optional[datetime] = None
 
 @dataclass
 class TimbrajeApiEnt:
-    CodigoSii: int = 0
-    Desde: int = 0
-    Hasta: int = 0
-    TipoDte: str = ""
-    FoliosDisponibles: int = 0
-    Ambiente: int = 0
-    FechaCaf: Optional[datetime] = None
-    FechaVencimiento: Optional[datetime] = None
-    FechaIngreso: Optional[datetime] = None
+    codigoSii: int = 0
+    desde: int = 0
+    hasta: int = 0
+    tipoDte: str = ""
+    foliosDisponibles: int = 0
+    ambiente: int = 0
+    fechaCaf: Optional[datetime] = None
+    fechaVencimiento: Optional[datetime] = None
+    fechaIngreso: Optional[datetime] = None
 
     # Constructor alternativo para inicializar a partir de TimbrajeEnt
     @classmethod
     def from_timbraje_ent(cls, ent: Optional[TimbrajeEnt]) -> "TimbrajeApiEnt":
         if ent:
             return cls(
-                CodigoSii=ent.CodigoSii,
-                FechaIngreso=ent.FechaIngreso,
-                FechaCaf=ent.FechaCaf,
-                Desde=ent.Desde,
-                Hasta=ent.Hasta,
-                FechaVencimiento=ent.FechaVencimiento,
-                TipoDte= Utilidades.ObtenerNombreTipoDTE(ent.CodigoSii),
-                FoliosDisponibles=ent.FoliosDisponibles,
-                Ambiente=ent.Ambiente
+                codigoSii=ent.codigoSii,
+                fechaIngreso=ent.fechaIngreso,
+                fechaCaf=ent.fechaCaf,
+                desde=ent.desde,
+                hasta=ent.hasta,
+                fechaVencimiento=ent.fechaVencimiento,
+                tipoDte= Utilidades.ObtenerNombreTipoDTE(ent.codigoSii),
+                foliosDisponibles=ent.foliosDisponibles,
+                ambiente=ent.ambiente
             )
         else:
-            CodigoSii: int = 0
-            TipoDte: str = ""
+            codigoSii: int = 0
+            tipoDte: str = ""
