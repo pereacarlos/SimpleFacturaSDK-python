@@ -58,3 +58,18 @@ class FolioService:
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+
+    def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
+        url = f"{self.base_url}/folios/consultar/sin-uso"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[List[FoliosAnulablesEnt]].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")

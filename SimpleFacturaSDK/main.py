@@ -20,26 +20,21 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= FolioRequest(
-    credenciales=Credenciales(
-        rut_emisor = "76269769-6",
-        nombre_sucursal = "Casa Matriz"
-    ),
-    CodigoTipoDte= 33,
-    Ambiente= 0
-
+solicitud= SolicitudFolios(
+    RutEmpresa="76269769-6",
+    TipoDTE=33,
+    Ambiente=0
 )
 try:
-    consultarFolio = client_api.Folios.ConsultarFolios(solicitud)
+    FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {consultarFolio.status}")
-    print(f"Message: {consultarFolio.message}")
-    print(f"Data: {consultarFolio.data}")
-    for data in consultarFolio.data:
-        print(f"codigoSii: {data.codigoSii}")
-        print(f"fechaIngreso: {data.fechaIngreso}")
+    print(f"Status: {FolioSinUsar.status}")
+    print(f"Message: {FolioSinUsar.message}")
+    print(f"Data: {FolioSinUsar.data}")
+    for data in FolioSinUsar.data:
         print(f"desde: {data.desde}")
         print(f"hasta: {data.hasta}")
+        print(f"fechaIngreso: {data.cantidad}")
    
 
 except requests.exceptions.HTTPError as http_err:
