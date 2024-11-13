@@ -125,14 +125,15 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
-   
+
     def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
         url = f"{self.base_url}/massiveInvoice"
         if not os.path.isfile(path_csv):
             raise ValueError(f"El archivo '{path_csv}' no existe.")
+        solicitud_dict = serializar_solicitud_dict(credenciales)
         m = MultipartEncoder(
             fields={
-                'data': json.dumps(credenciales.to_dict()),
+                'data': json.dumps(solicitud_dict),
                 'input': ('archivo.csv', open(path_csv, 'rb'), 'text/csv')
             }
         )
@@ -148,7 +149,7 @@ class FacturacionService:
             return response_json
         else:
             raise Exception(f"Error en la petición: {contenido_respuesta}")
-    
+
     def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> InvoiceData:
         if not isinstance(sucursal, str):
             raise ValueError("El parámetro 'sucursal' debe ser un string.")
@@ -170,17 +171,15 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-    def listadoDteEmitidos(self, solicitud) -> Dte:
+    def listadoDteEmitidos(self, solicitud) -> Response[List[Dte]]:
         url = f"{self.base_url}/documentsIssued"
-        solicitud_dict = solicitud.to_dict()
-        print("Solicitud:", solicitud_dict)
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=Dte)
-            return resultado
+            deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
