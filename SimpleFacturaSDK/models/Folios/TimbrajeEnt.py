@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from uuid import UUID
 from datetime import datetime
+from SimpleFacturaSDK.Utilidades.Utilidades import Utilidades
 
 @dataclass
 class TimbrajeEnt:
@@ -52,7 +53,7 @@ class TimbrajeApiEnt:
                 Desde=ent.Desde,
                 Hasta=ent.Hasta,
                 FechaVencimiento=ent.FechaVencimiento,
-                TipoDte=cls.obtener_nombre_tipo_dte(ent.codigo_sii),
+                TipoDte= Utilidades.ObtenerNombreTipoDTE(ent.CodigoSii),
                 FoliosDisponibles=ent.FoliosDisponibles,
                 Ambiente=ent.Ambiente
             )
