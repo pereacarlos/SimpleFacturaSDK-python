@@ -34,18 +34,18 @@
 
 
 ------------# Obtener DTE--------------
-   solicitud_dict = solicitud.to_dict() 
-    # Obtener DTE
-    dte_bytes = client_api.Facturacion.obtener_dte(solicitud_dict)
-    ruta = "dte.json"
-    with open(ruta, "w", encoding="utf-8") as f:
-        json.dump(dte_bytes, f, default=lambda o: o.__dict__, ensure_ascii=False)
-    
-    print("El DTE se ha descargado correctamente.", dte_bytes.folio)
-
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
+    print(f"Status: {dte_bytes.status}")
+    print(f"Message: {dte_bytes.message}")
+    print(f"TipoDTE: {dte_bytes.data.tipoDte}")
+    print(f"folioReutilizado: {dte_bytes.data.folioReutilizado}")
+    print(f"fechaCreacionr: {dte_bytes.data.fechaCreacion}")
+    print(f"Folio: {dte_bytes.data.folio}")
+    print(f"razonSocialReceptor: {dte_bytes.data.razonSocialReceptor}")
+    print(f"iva: {dte_bytes.data.iva}")
+    print(dte_bytes.data)
 
 -----------   # Obtener sobre XML----------
-    # Obtener DTE
     sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
     ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
     with open(ruta, "wb") as f:

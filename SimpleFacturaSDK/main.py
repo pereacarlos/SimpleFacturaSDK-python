@@ -20,19 +20,19 @@ solicitud= SolicitudPdfDte(
         rut_emisor="76269769-6"
     ),
     dte_referenciado_externo=DteReferenciadoExterno(
-        Folio=2963,
+        Folio=2393,
         CodigoTipoDte=33,
         Ambiente=0
     )
 )
 
 try:
-    # Guardar PDF
-    xml = client_api.Facturacion.obtener_xml(solicitud)
-    ruta = "Facturaxml.xml"
-    with open(ruta, "wb") as file:
-        file.write(xml)
-    print("XML guardado en:", ruta)
+    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
+    ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
+    with open(ruta, "wb") as f:
+        f.write(sobre_xml_bytes)
+    print("El sobre XML se ha descargado correctamente.")
+
 
 
 except requests.exceptions.HTTPError as http_err:

@@ -11,30 +11,30 @@ class Dte:
     codigoSii: int
     tipoDte: str
     estadoAcuse: str
-    estadoSII: Optional[str]
-    estado: Optional[str]
     fechaDte: str
     fechaCreacion: str
-    fechaEmision: Optional[str]
-    fechaRecepcionSII: Optional[str]
     folio: int
     razonSocialReceptor: str
     rutReceptor: str
-    razonSocialProveedor: Optional[str]
-    rutProveedor: Optional[str]
     trackId: int
     neto: float
     exento: float
     iva: float
     ivaTerceros: float
     ivaPropio: float
-    totalImpuestosAdicionales: float
-    montoNoFacturable: Optional[float]
-    formaPago: Optional[str]
     total: float
     detalles: List[DetalleDte]
     referencias: List[dict]
-    impuestos: List[dict]
+    totalImpuestosAdicionales: float
+    estadoSII: Optional[str] = None
+    estado: Optional[str] = None
+    fechaEmision: Optional[str] = None
+    fechaRecepcionSII: Optional[str] = None
+    razonSocialProveedor: Optional[str] = None
+    rutProveedor: Optional[str] = None
+    montoNoFacturable: Optional[float] = None
+    formaPago: Optional[str] = None
+    impuestos: Optional[List[dict]] = None
 
     @classmethod
     def from_dict(cls, data: dict):

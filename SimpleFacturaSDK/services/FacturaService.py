@@ -49,6 +49,17 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
+    def obtener_dte(self, solicitud) -> Response[Dte]:
+        url = f"{self.base_url}/documentIssued"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        if response.status_code == 200:
+            deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
+            return deserialized_response  # Asegúrate de retornar el `Response[Dte]`
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
     def obtener_sobreXml(self, solicitud, sobre) -> bytes:
         if isinstance(sobre, int):
             try:
@@ -61,7 +72,8 @@ class FacturacionService:
             raise ValueError("El parámetro 'sobre' debe ser un número entero.")
 
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
-        response = self.session.post(url, json=solicitud.to_dict())
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
 
         if response.status_code == 200:
@@ -69,21 +81,6 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-    def obtener_dte(self, solicitud) -> Dte:
-        url = f"{self.base_url}/documentIssued"
-        solicitud_dict =  solicitud.to_dict()
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
-        if response.status_code == 200:
-            response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=Dte)
-             #print("Status:", resultado.status)
-             #print("Message:", resultado.message)
-             #print("DTE Data:", resultado.data) 
-            return resultado.data
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
     def facturacion_individualV2_Dte(self, solicitud, sucursal) -> InvoiceData:
         # Validar que la sucursal sea un string
