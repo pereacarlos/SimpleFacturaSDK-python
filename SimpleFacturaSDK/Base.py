@@ -6,6 +6,8 @@ from SimpleFacturaSDK.services.ClientesService import ClientesService
 from SimpleFacturaSDK.services.SucursalService import SucursalService
 from SimpleFacturaSDK.services.FolioService import FolioService
 from SimpleFacturaSDK.services.ConfiguracionService import ConfiguracionService
+from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
+
 
 import requests
 import base64
@@ -37,3 +39,4 @@ class APIClient:
         self.Sucursales = SucursalService(self.session, self.base_url)
         self.Folios = FolioService(self.session, self.base_url)
         self.ConfiguracionService = ConfiguracionService(self.session, self.base_url)
+        self.BoletaHonorarioService = BoletaHonorarioService(self.session, self.base_url)

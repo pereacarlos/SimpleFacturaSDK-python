@@ -3,36 +3,39 @@ from SimpleFacturaSDK.Base import APIClient
 import base64
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
-from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
-from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
 import json
 #from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.Sucursal import Sucursal
 from datetime import datetime
-fecha_desde = datetime.strptime("2024-04-01", "%Y-%m-%d")
-fecha_hasta = datetime.strptime("2024-04-30", "%Y-%m-%d")
+fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
+fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= Credenciales(
-    rut_emisor="76269769-6"
+solicitud= ListaBHERequest(
+    credenciales=Credenciales(
+        rut_emisor="76269769-6",
+        nombre_sucursal="Casa Matriz"
+    ),
+    Folio=None,
+    Desde=fecha_desde,
+    Hasta=fecha_hasta
 )
 try:
-    DatosEmpresa = client_api.ConfiguracionService.datos_empresa(solicitud)
+    ListadoBHERecibido = client_api.BoletaHonorarioService.ListadoBHERecibido(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {DatosEmpresa.status}")
-    print(f"Message: {DatosEmpresa.message}")
-    print(f"Data: {DatosEmpresa.data}")
-    print(f"rut: {DatosEmpresa.data.rut}")
-    print(f"razonSocial: {DatosEmpresa.data.razonSocial}")
-    print(f"giro: {DatosEmpresa.data.giro}")
-   
+    print(f"Status: {ListadoBHERecibido.status}")
+    print(f"Message: {ListadoBHERecibido.message}")
+
+    for cliente in ListadoBHERecibido.data:
+        print(f"fOLIO: {cliente.folio}")
+        print(f"FECHAEMISION: {cliente.fechaEmision}")
+        print("\n")     
+
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
