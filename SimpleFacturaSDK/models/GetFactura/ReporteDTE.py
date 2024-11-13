@@ -5,15 +5,16 @@ from datetime import datetime
 
 @dataclass
 class ReporteDTE:
-    Fecha: datetime
-    TipoDTE: str
-    Emitidos: int
-    Anulados: int
-    TotalNeto: float
-    TotalExento: float
-    TotalIva: float
-    Total: float
-    Detalles: List[DetalleDte]
+    fecha: datetime
+    tiposDTE: str
+    emitidos: int
+    anulados: int
+    totalNeto: float
+    totalExento: float
+    totalIva: float
+    total: float
+    detalle: List[DetalleDte]
+
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -21,15 +22,15 @@ class ReporteDTE:
         detalles = [DetalleDte.from_dict(detalle) for detalle in detalles_data]
         
         return cls(
-            Fecha=data.get('Fecha'),
-            TipoDTE=data.get('TipoDTE'),
-            Emitidos=data.get('Emitidos'),
-            Anulados=data.get('Anulados'),
-            TotalNeto=data.get('TotalNeto'),
-            TotalExento=data.get('TotalExento'),
-            TotalIva=data.get('TotalIva'),
-            Total=data.get('Total'),
-            Detalles=detalles
+            fecha=data.get('fecha'),
+            tiposDTE=data.get('tiposDTE'),
+            emitidos=data.get('emitidos'),
+            anulados=data.get('anulados'),
+            totalNeto=data.get('totalNeto'),
+            totalExento=data.get('totalExento'),
+            totalIva=data.get('totalIva'),
+            total=data.get('total'),
+            detalle=detalles
         )
 
     def to_dict(self):

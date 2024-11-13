@@ -2,15 +2,11 @@ from enum import Enum
 import json
 
 class TipoSalidaEnum(Enum):
-    Base64 = (0, "Base64")
-    XML = (1, "XML")
+    Base64 = 0
+    XML = 1
 
-    @property
-    def xml_enum(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+    def description(self):
+        descriptions = {
+            0: "Base64",
+            1: "XML"
+        }

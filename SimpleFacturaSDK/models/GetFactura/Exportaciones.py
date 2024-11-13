@@ -8,23 +8,11 @@ from .ComisionRecargo import ComisionRecargo
 from .DetalleExportacion import DetalleExportacion
 @dataclass
 class Exportaciones:
-    Id: Optional[str]
     Encabezado: Encabezado
     Detalle: List[DetalleExportacion]
-    SubTotInfo: Optional[List[SubTotal]] 
-    DscRcgGlobal: Optional[List[DescuentosRecargos]] 
-    Referencia: Optional[List[Referencia]]
-    Comisiones: Optional[List[ComisionRecargo]]
+    Id: Optional[str] = None
+    SubTotInfo: Optional[List[SubTotal]] = None
+    DscRcgGlobal: Optional[List[DescuentosRecargos]] = None
+    Referencia: Optional[List[Referencia]] = None
+    Comisiones: Optional[List[ComisionRecargo]] = None
 
-
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(
-            Id=data.get('Id'),
-            Encabezado=Encabezado,
-            Detalle=[DetalleExportacion],
-            SubTotInfo=[SubTotal],
-            DscRcgGlobal=[DescuentosRecargos],
-            Referencia=[Referencia],
-            Comisiones=[ComisionRecargo]
-        )

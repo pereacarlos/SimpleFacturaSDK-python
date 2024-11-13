@@ -4,67 +4,75 @@ from uuid import UUID
 
 @dataclass
 class ImpuestoProductoExternoEnt:
-    CodigoSii: int
-    NombreImp: str
-    Tasa: float
-
+    codigoSii: int
+    nombreImp: str
+    tasa: float
 @dataclass
 class ProductoExternoEnt:
-    ProductoId: UUID
-    Nombre: str
-    Precio: float
-    Exento: bool
-    Impuestos: List[ImpuestoProductoExternoEnt]
+    productoId: UUID
+    nombre: str
+    precio: float
+    exento: bool
+    impuestos: List[ImpuestoProductoExternoEnt]
 
     @classmethod
     def from_dict(cls, data: dict):
+        producto_id = data.get('productoId')
+        try:
+            producto_id = UUID(producto_id) if producto_id else None
+        except ValueError:
+            raise ValueError(f"productoId '{producto_id}' no es un UUID válido.")
+
         return cls(
-            ProductoId=UUID(data.get('ProductoId')),
-            Nombre=data.get('Nombre'),
-            Precio=data.get('Precio'),
-            Exento=data.get('Exento'),
-            Impuestos=[ImpuestoProductoExternoEnt]
+            productoId=producto_id,
+            nombre=data.get('nombre', ""),
+            precio=data.get('precio', 0.0),
+            exento=data.get('exento', False),
+            impuestos=[
+                ImpuestoProductoExternoEnt(**imp) for imp in data.get('impuestos', [])
+            ]
         )
 
     def to_dict(self):
         return {
-            'ProductoId': str(self.ProductoId),
-            'Nombre': self.Nombre,
-            'Precio': self.Precio,
-            'Exento': self.Exento,
-            'Impuestos': [imp.__dict__ for imp in self.Impuestos]
+            'productoId': str(self.productoId) if self.productoId else None,
+            'nombre': self.nombre,
+            'precio': self.precio,
+            'exento': self.exento,
+            'impuestos': [imp.__dict__ for imp in self.impuestos]
         }
 
 
 @dataclass
 class NuevoProductoExternoRequest:
-    Nombre: str
-    CodigoBarra: str
-    UnidadMedida: str
-    Precio: float
-    Exento: bool
-    TieneImpuestos: bool
-    Impuestos: List[int]
+    nombre: str
+    codigoBarra: str
+    unidadMedida: str
+    precio: float
+    exento: bool
+    tieneImpuestos: bool
+    impuestos: List[int]
+
 
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            Nombre=data.get('Nombre'),
-            CodigoBarra=data.get('CodigoBarra'),
-            UnidadMedida=data.get('UnidadMedida'),
-            Precio=data.get('Precio'),
-            Exento=data.get('Exento'),
-            TieneImpuestos=data.get('TieneImpuestos'),
-            Impuestos=data.get('Impuestos')
+            nombre=data.get('nombre'),
+            codigoBarra=data.get('codigoBarra'),
+            unidadMedida=data.get('unidadMedida'),
+            precio=data.get('precio'),
+            exento=data.get('exento'),
+            tieneImpuestos=data.get('tieneImpuestos'),
+            impuestos=data.get('impuestos')
         )
 
     def to_dict(self):
         return {
-            'Nombre': self.Nombre,
-            'CodigoBarra': self.CodigoBarra,
-            'UnidadMedida': self.UnidadMedida,
-            'Precio': self.Precio,
-            'Exento': self.Exento,
-            'TieneImpuestos': self.TieneImpuestos,
-            'Impuestos': self.Impuestos
+            'nombre': self.nombre,
+            'codigoBarra': self.codigoBarra,
+            'unidadMedida': self.unidadMedida,
+            'precio': self.precio,
+            'exento': self.exento,
+            'tieneImpuestos': self.tieneImpuestos,
+            'impuestos': self.impuestos
         }

@@ -1,31 +1,45 @@
 from enum import Enum
 import json
 
+
 class DTEType(Enum):
-    NotSet = (0, "No Asignado")
-    Factura = (30, "Factura")
-    FacturaExenta = (32, "Factura Exenta")
-    FacturaElectronica = (33, "Factura Electrónica")
-    FacturaElectronicaExenta = (34, "Factura Electrónica Exenta")
-    FacturaCompraElectronica = (46, "Factura Compra Electrónica")
-    FacturaExportacionElectronica = (110, "Factura Exportación Electrónica")
-    NotaCreditoExportacionElectronica = (112, "Nota Credito Exportación Electrónica")
-    NotaDebitoExportacionElectronica = (111, "Nota Debito Exportación Electrónica")
-    GuiaDespachoElectronica = (52, "Guia Despacho Electrónica")
-    NotaDebitoElectronica = (56, "Nota Debito Electrónica")
-    NotaCredito = (60, "Nota Credito")
-    NotaCreditoElectronica = (61, "Nota Credito Electrónica")
-    BoletaElectronica = (39, "Boleta Electrónica")
-    BoletaElectronicaExenta = (41, "Boleta Exenta Electrónica")
-    LiquidacionFacturaElectronica = (43, "Liquidación Factura Electrónica")
+    NotSet = 0
+    Factura = 30
+    FacturaExenta = 32
+    FacturaElectronica = 33
+    FacturaElectronicaExenta = 34
+    FacturaCompraElectronica = 46
+    FacturaExportacionElectronica = 110
+    NotaCreditoExportacionElectronica = 112
+    NotaDebitoExportacionElectronica = 111
+    GuiaDespachoElectronica = 52
+    NotaDebitoElectronica = 56
+    NotaCredito = 60
+    NotaCreditoElectronica = 61
+    BoletaElectronica = 39
+    BoletaElectronicaExenta = 41
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "NotSet",
+            30: "Factura",
+            32: "Factura Exenta",
+            33: "Factura Electrónica",
+            34: "Factura Electrónica Exenta",
+            46: "Factura Compra Electrónica",
+            110: "Factura Exportación Electrónica",
+            112: "Nota Crédito Exportación Electrónica",
+            111: "Nota Débito Exportación Electrónica",
+            52: "Guía Despacho Electrónica",
+            56: "Nota Débito Electrónica",
+            60: "Nota Crédito",
+            61: "Nota Crédito Electrónica",
+            39: "Boleta Electrónica",
+            41: "Boleta Electrónica Exenta"
+        }
+        return descriptions.get(self.value, "Unknown")
+
+
 
 class DOCType(Enum):
     NotSet = (0, "No Asignado")
@@ -116,10 +130,3 @@ class TipoDocumentoLibro(Enum):
     @property
     def description(self):
         return self.value[1]
-
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)

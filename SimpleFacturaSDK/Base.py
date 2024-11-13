@@ -1,5 +1,10 @@
 # Base.py
 from SimpleFacturaSDK.services.FacturaService import FacturacionService
+from SimpleFacturaSDK.services.ProductoService import ProductoService
+from SimpleFacturaSDK.services.ProveedorService import ProveedorService
+from SimpleFacturaSDK.services.ClientesService import ClientesService
+from SimpleFacturaSDK.services.SucursalService import SucursalService
+from SimpleFacturaSDK.services.FolioService import FolioService
 import requests
 import base64
 
@@ -24,4 +29,8 @@ class APIClient:
         
         # Initialize services
         self.Facturacion = FacturacionService(self.session, self.base_url)
-        #self.Productos = ProductosService(self.session)
+        self.Productos = ProductoService(self.session, self.base_url)
+        self.Proveedores = ProveedorService(self.session, self.base_url)
+        self.Clientes = ClientesService(self.session, self.base_url)
+        self.Sucursales = SucursalService(self.session, self.base_url)
+        self.Folios = FolioService(self.session, self.base_url)

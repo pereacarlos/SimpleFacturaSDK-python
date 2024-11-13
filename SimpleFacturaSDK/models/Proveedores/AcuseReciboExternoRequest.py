@@ -22,3 +22,12 @@ class AcuseReciboExternoRequest:
             tipo_rechazo = RejectionType(dict['tipo_rechazo']) if dict.get('tipo_rechazo') else None,
             comentario = dict.get('comentario')
         )
+
+    def to_dict(self):
+        return {
+            "credenciales": self.credenciales.to_dict(),
+            "dte_referenciado_externo": self.dte_referenciado_externo.to_dict(),
+            "respuesta": self.respuesta.value,
+            "tipo_rechazo": self.tipo_rechazo.value if self.tipo_rechazo else None,
+            "comentario": self.comentario
+        }

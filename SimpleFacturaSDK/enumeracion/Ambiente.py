@@ -10,3 +10,5 @@ class AmbienteEnum(Enum):
             0: "Certificación",
             1: "Producción"
         }
+
+        return descripcion.get(self.value, "Ambiente no definido")

@@ -1,10 +1,16 @@
+import os
 import json
+from typing import List
+from requests_toolbelt import MultipartEncoder
+import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.GetFactura.ReporteDTE import ReporteDTE
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
 from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
-from SimpleFacturaSDK.enumeracion.CodigosAduana import CustomJSONEncoder
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 
 class FacturacionService:
     def __init__(self, session, base_url):
@@ -64,7 +70,8 @@ class FacturacionService:
 
     def obtener_dte(self, solicitud) -> Dte:
         url = f"{self.base_url}/documentIssued"
-        response = self.session.post(url, json=solicitud)
+        solicitud_dict =  solicitud.to_dict()
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
@@ -81,75 +88,162 @@ class FacturacionService:
         # Validar que la sucursal sea un string
         if not isinstance(sucursal, str):
             raise ValueError("El parámetro 'sucursal' debe ser un string.")
-        
-        solicitud_json = json.dumps(solicitud, cls=CustomJSONEncoder)
         url = f"{self.base_url}/invoiceV2/{sucursal}"
-        response = self.session.post(url, json=json.loads(solicitud_json))
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         
-        contenidoRespuesta = response.text
-        print(f"Respuesta completa: {solicitud_json}")
-        ruta = "jsonsolicitud.json"
-        with open(ruta, "w") as archivo:
-            archivo.write(solicitud_json)
-            
+        contenidoRespuesta = response.text        
         print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=InvoiceData)
-            return resultado.data
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
     
-    def listadoDteEmitidos(self, solicitud) -> Dte:
-        url = f"{self.base_url}/documentIssued"
-        response = self.session.post(url, json=solicitud)
-        contenidoRespuesta = response.text
+    def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
+        # Validar que la sucursal sea un string
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+        url = f"{self.base_url}/invoiceV2/{sucursal}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
         print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
+    
+    def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> InvoiceData:
+        # Validar que la sucursal sea un string
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+        url = f"{self.base_url}/dte/exportacion/{sucursal}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
+   
+    def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
+        url = f"{self.base_url}/massiveInvoice"
+        if not os.path.isfile(path_csv):
+            raise ValueError(f"El archivo '{path_csv}' no existe.")
+        m = MultipartEncoder(
+            fields={
+                'data': json.dumps(credenciales.to_dict()),
+                'input': ('archivo.csv', open(path_csv, 'rb'), 'text/csv')
+            }
+        )
+        headers = {
+            'Content-Type': m.content_type
+        }
+        response = self.session.post(url, headers=headers, data=m)
+        contenido_respuesta = response.text
+        print("Respuesta completa:", contenido_respuesta)
+
+        if response.status_code == 200:
+            response_json = response.json()
+            return response_json
+        else:
+            raise Exception(f"Error en la petición: {contenido_respuesta}")
+    
+    def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> InvoiceData:
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+
+        if not isinstance(motivo, int):
+            raise ValueError("El parámetro 'motivo' debe ser un número entero.")
+        url = f"{self.base_url}/invoiceCreditDebitNotesV2/{sucursal}/{motivo}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
+
+    def listadoDteEmitidos(self, solicitud) -> Dte:
+        url = f"{self.base_url}/documentsIssued"
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
             resultado = Response.from_dict(response_json, data_type=Dte)
-            return resultado.data
+            return resultado
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
+    def enviarCorreo(self, solicitud) -> bool:
+        url = f"{self.base_url}/dte/enviar/mail"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            response_json = response.json()
+            return Response.from_dict(response_json, data_type=bool)  # Ajusta el tipo de datos según sea necesario
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
+    def consolidadoVentas(self, solicitud) -> ReporteDTE:
+        url = f"{self.base_url}/dte/consolidated/issued"
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        #print("Respuesta completa:", contenidoRespuesta)
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=ReporteDTE)
+            return resultado
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-
-
-
-
-
-
-'''
-
-    def facturacion_individualV2_Dte(self, solicitud):
-        url = "https://api.simplefactura.cl/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
+    #pendiente
+    def ConciliarEmitidos(self, solicitud, mes, anio) -> Credenciales:
+        url = f"{self.base_url}/documentsIssued/consolidate/{mes}/{anio}"
+        # deben de ser tipo número
+        if not isinstance(mes, int):
+            raise ValueError("El parámetro 'mes' debe ser un número entero.")
+        if not isinstance(anio, int):
+            raise ValueError("El parámetro 'anio' debe ser un número entero.")
+        
+        solicitud_dict = solicitud.to_dict()
+        print("Solicitud:", solicitud_dict)
+        
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
-            return response.content
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=Credenciales)
+            return resultado
         else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-    
-    def facturacion_individualV2_Boletas(self, solicitud):
-        url = "https://api.simplefactura.cl/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
-        
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-    
-    def facturacion_individualV2_Exportacion(self, solicitud):
-        url = f"{self.base_url}/invoiceV2/Casa_Matriz"
-        response = self.session.post(url, data=json.dumps(solicitud))
-        
-        if response.status_code == 200:
-            return response.content
-        else:
-            error_message = response.json().get("errors", "Unknown error")
-            raise Exception(f"Error en la petición: {error_message}")
-'''
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")

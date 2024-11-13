@@ -45,7 +45,8 @@
 
 
 -----------   # Obtener sobre XML----------
-    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud)
+    # Obtener DTE
+    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
     ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
     with open(ruta, "wb") as f:
         f.write(sobre_xml_bytes)
@@ -54,18 +55,37 @@
 
 ----------  # Facturación individual-----------
     
-    response = client_api.Facturacion.facturacion_individualV2_Dte(solicitud)
-    ruta = "factura.json"  # Ruta donde se guardará la factura
-    with open(ruta, "wb") as f:
-        f.write(response)
-    print("La factura se ha descargado correctamente.")
+    Factura = client_api.Facturacion.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Factura.status}")
+    print(f"Message: {Factura.message}")
+    print(f"TipoDTE: {Factura.data.tipoDTE}")
+    print(f"RUT Emisor: {Factura.data.rutEmisor}")
+    print(f"RUT Receptor: {Factura.data.rutReceptor}")
+    print(f"Folio: {Factura.data.folio}")
+    print(f"Fecha Emision: {Factura.data.fechaEmision}")
+    print(f"Total: {Factura.data.total}")
+    print(Factura.data)
 
 ------  # Facturación individual boletas--------
-    response = client_api.Facturacion.facturacion_individualV2_Boletas(solicitud)
-    ruta = "boleta.json"  # Ruta donde se guardará la factura
-    with open(ruta, "wb") as f:
-        f.write(response)
-    print("La factura se ha descargado correctamente.")
+  def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
+        # Validar que la sucursal sea un string
+        if not isinstance(sucursal, str):
+            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+        url = f"{self.base_url}/invoiceV2/{sucursal}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
+        
+        contenidoRespuesta = response.text        
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+            return deserialized_response
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()  # Lanza una excepción para códigos de estado 4xx/5xx
 
 ----------      # Facturación individual Exportaciones-----------
 
@@ -76,6 +96,182 @@
 
     print("La factura se ha descargado correctamente.")
 
+----------EmisioNCND-------------
+   Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Emision.status}")
+    print(f"Message: {Emision.message}")
+    print(f"TipoDTE: {Emision.data.tipoDTE}")
+    print(f"RUT Emisor: {Emision.data.rutEmisor}")
+    print(f"RUT Receptor: {Emision.data.rutReceptor}")
+    print(f"Folio: {Emision.data.folio}")
+    print(f"Fecha Emision: {Emision.data.fechaEmision}")
+    print(f"Total: {Emision.data.total}")
+    print(Emision.data)
+
+
+--------ListadoDteEmitidos--------------
+Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Listado.status}")
+    print(f"Message: {Listado.message}")
+
+    for dte in Listado.data:
+        print(f"ambiente: {dte.ambiente}")
+        print(f"tipoDTE: {dte.tipoDte}")
+        print(f"folioReutilizado: {dte.folioReutilizado}")
+        print(f"fechaCreacion: {dte.fechaCreacion}")
+        print(f"Folio: {dte.folio}")
+        print(f"razonSocialReceptor: {dte.razonSocialReceptor}")
+        print(f"Total: {dte.total}")
+        print(dte)
+
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ----------------ADddProducto-----
+     addProducts = client_api.Productos.CrearProducto(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {addProducts.status}")
+    print(f"Message: {addProducts.message}")
+    for productos in addProducts.data:
+        print(f"ProductoId: {productos.productoId}")
+        print(f"Nombre: {productos.nombre}")
+        print(f"Precio: {productos.precio}")
+        print(f"Exento: {productos.exento}")
+        print(f"Activo: {productos.activo}")
+        print(f"EmisorId: {productos.emisorId}")
+        print(f"SucursalId: {productos.sucursalId}")
+        print(f"Impuestos: {productos.impuestos}")
+        print(f"CodigoBarra: {productos.codigoBarra}")
+        print(f"UnidadMedida: {productos.unidadMedida}")
+        print(f"NombreCategoria: {productos.NombreCategoria}")
+        print(f"NombreMarca: {productos.NombreMarca}")
+        print(f"Stock: {productos.Stock}")
+        print("\n")
+   
+
+----------List producto------
+
+    ListProduct = client_api.Productos.listarProductos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListProduct.status}")
+    print(f"Message: {ListProduct.message}")
+    for i in ListProduct.data:
+        print(f"productoId: {i.productoId}")
+        print(f"nombre: {i.nombre}")
+        print(f"precio: {i.precio}")
+        print(f"exento: {i.exento}")
+        for imp in i.impuestos:
+            print(f"codigoSii: {imp.codigoSii}")
+            print(f"nombreImp: {imp.nombreImp}")
+            print(f"tasa: {imp.tasa}")
+ 
     
+
+-------------List proveedores---------
+ ListProveedores = client_api.Proveedores.listarDteRecibidos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListProveedores.status}")
+    print(f"Message: {ListProveedores.message}")
+    for lista in ListProveedores.data:
+        print(f"Ambiente: {lista.ambiente}")
+        print(f"codigoSii: {lista.codigoSii}")
+        print(f"Tipo DTE: {lista.tipoDte}")
+        print(f"estadoSII: {lista.estadoSII}")
+        print(f"estado: {lista.estado}")
+        print(f"folio: {lista.folio}")
+
+
+------------Proveedores obtener xml------------------
+Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
+    ruta = "xml.xml"
+    with open(ruta, "wb") as file:
+        file.write(Obtenerxml)
+    print(f"XML guardado en {ruta}")
+
+
+
+------AddCliente-----
+
+    AddClient = client_api.Clientes.CrearClientes(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {AddClient.status}")
+    print(f"Message: {AddClient.message}")
+    
+    for cliente in AddClient.data:
+        print(f"ReceptorId: {cliente.receptorId}")
+        print(f"EmisorId: {cliente.emisorId}")
+        print(f"RUT: {cliente.rut}")
+        print(f"Dv: {cliente.dv}")
+        print(f"RutFormateado: {cliente.rutFormateado}")
+        print(f"RazonSocial: {cliente.razonSocial}")
+        print(f"NombreFantasia: {cliente.nombreFantasia}")
+        print(f"Giro: {cliente.giro}")
+        print(f"DirPart: {cliente.dirPart}")
+        print(f"DirFact: {cliente.dirFact}")
+        print(f"CorreoPar: {cliente.correoPar}")
+        print(f"CorreoFact: {cliente.correoFact}")
+        print(f"Ciudad: {cliente.ciudad}")
+        print(f"Comuna: {cliente.comuna}")
+        print(f"Activo: {cliente.activo}")
+        print("\n")
+
+
+-------------ListClient------------
+ListClient = client_api.Clientes.ListarClientes(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListClient.status}")
+    print(f"Message: {ListClient.message}")
+
+    for cliente in ListClient.data:
+        print(f"ReceptorId: {cliente.receptorId}")
+        print(f"EmisorId: {cliente.emisorId}")
+        print(f"RUT: {cliente.rut}")
+        print(f"Dv: {cliente.dv}")
+        print(f"RutFormateado: {cliente.rutFormateado}")
+        print(f"RazonSocial: {cliente.razonSocial}")
+        print(f"NombreFantasia: {cliente.nombreFantasia}")
+        print(f"Giro: {cliente.giro}")
+        print(f"DirPart: {cliente.dirPart}")
+        print(f"DirFact: {cliente.dirFact}")
+        print(f"CorreoPar: {cliente.correoPar}")
+        print(f"CorreoFact: {cliente.correoFact}")
+        print(f"Ciudad: {cliente.ciudad}")
+        print(f"Comuna: {cliente.comuna}")
+        print(f"Activo: {cliente.activo}")
+        print("\n")        
+
+
+--------------ConsultaFoliosDisponibles--------
+
+ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ConsultaFolio.status}")
+    print(f"Message: {ConsultaFolio.message}")
+    print(f"Data: {ConsultaFolio.data}")
+
+
+---SolicitarFolio---------
+
+ SolicitarFolio = client_api.Folios.SolicitarFolios(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {SolicitarFolio.status}")
+    print(f"Message: {SolicitarFolio.message}")
+    print(f"Data: {SolicitarFolio.data}")
+    print(f"codigoSii: {SolicitarFolio.data.codigoSii}")
+    print(f"fechaIngreso: {SolicitarFolio.data.fechaIngreso}")
+    print(f"desde: {SolicitarFolio.data.desde}")
+    print(f"hasta: {SolicitarFolio.data.hasta}")
