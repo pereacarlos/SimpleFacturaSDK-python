@@ -26,15 +26,14 @@ solicitud= ListaBHERequest(
     Hasta=fecha_hasta
 )
 try:
-    ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
+    ListadoBHERecibido = client_api.BoletaHonorarioService.ListadoBHERecibido(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {ListadoBHEEmitidos.status}")
-    print(f"Message: {ListadoBHEEmitidos.message}")
+    print(f"Status: {ListadoBHERecibido.status}")
+    print(f"Message: {ListadoBHERecibido.message}")
 
-    for cliente in ListadoBHEEmitidos.data:
+    for cliente in ListadoBHERecibido.data:
         print(f"fOLIO: {cliente.folio}")
         print(f"FECHAEMISION: {cliente.fechaEmision}")
-        print(f"codigoBarra: {cliente.codigoBarra}")
         print("\n")     
 
 
