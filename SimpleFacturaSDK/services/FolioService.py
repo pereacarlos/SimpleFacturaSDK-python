@@ -29,9 +29,23 @@ class FolioService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-
     def SolicitarFolios(self, solicitud) -> Optional[TimbrajeApiEnt]:
         url = f"{self.base_url}/folios/solicitar"
+        solicitud_dict = solicitud.to_dict()
+        response = self.session.post(url, json=solicitud_dict)
+        contenidoRespuesta = response.text
+        print("Respuesta completa:", contenidoRespuesta)
+        
+        if response.status_code == 200:
+            response_json = response.json()
+            resultado = Response.from_dict(response_json, data_type=TimbrajeApiEnt)
+            return resultado
+        else:
+            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+
+    #Corregir
+    def ConsultarFolios(self, solicitud) -> Optional[TimbrajeApiEnt]:
+        url = f"{self.base_url}/folios/consultar"
         solicitud_dict = solicitud.to_dict()
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text

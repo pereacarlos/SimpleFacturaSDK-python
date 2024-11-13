@@ -6,7 +6,7 @@ from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 @dataclass
 class FolioRequest:
     credenciales: Credenciales
-    Cantidad: int
+    Cantidad: Optional[int] = None
     CodigoTipoDte: Optional[DTEType] = None
     ambiente: Optional[int] = None
 
@@ -17,16 +17,3 @@ class FolioRequest:
             "CodigoTipoDte": self.CodigoTipoDte.value if self.CodigoTipoDte else None,
             "Ambiente": self.ambiente
         }
-
-'''
-from dataclasses import dataclass
-from typing import Optional
-from SDKSimpleFactura.Models.Facturacion import Credenciales
-from SDKSimpleFactura.Enum.TipoDTE import DTEType
-
-@dataclass
-class FolioRequest:
-    credenciales: Credenciales
-    cantidad: int
-    codigo_tipo_dte: Optional[DTEType] = None
-    ambiente: Optional[int] = None'''

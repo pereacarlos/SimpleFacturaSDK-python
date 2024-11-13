@@ -25,21 +25,21 @@ solicitud= FolioRequest(
         rut_emisor = "76269769-6",
         nombre_sucursal = "Casa Matriz"
     ),
-    Cantidad= 3,
-    CodigoTipoDte= DTEType.FacturaElectronica
+    CodigoTipoDte= None,
+    ambiente=0
 
 )
 try:
-
-    SolicitarFolio = client_api.Folios.SolicitarFolios(solicitud)
+    consultarFolio = client_api.Folios.ConsultarFolios(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {SolicitarFolio.status}")
-    print(f"Message: {SolicitarFolio.message}")
-    print(f"Data: {SolicitarFolio.data}")
-    print(f"codigoSii: {SolicitarFolio.data.codigoSii}")
-    print(f"fechaIngreso: {SolicitarFolio.data.fechaIngreso}")
-    print(f"desde: {SolicitarFolio.data.desde}")
-    print(f"hasta: {SolicitarFolio.data.hasta}")
+    print(f"Status: {consultarFolio.status}")
+    print(f"Message: {consultarFolio.message}")
+    print(f"Data: {consultarFolio.data}")
+    for data in consultarFolio.data:
+        print(f"codigoSii: {data.codigoSii}")
+        print(f"fechaIngreso: {data.fechaIngreso}")
+        print(f"desde: {data.desde}")
+        print(f"hasta: {data.hasta}")
    
 
 except requests.exceptions.HTTPError as http_err:
