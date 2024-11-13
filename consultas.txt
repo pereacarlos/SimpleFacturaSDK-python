@@ -7,7 +7,6 @@
         file.write(pdf)
     print("PDF guardado exitosamente", pdf)
 
-
 -----------Timbre--------------------
         # Obtener timbre
     Timbre = client_api.Facturacion.obtener_timbre(solicitud)
@@ -20,9 +19,6 @@
         print("Timbre obtenido correctamente", timbre_base64)   
     else:
         print("Error al obtener timbre")
-
-
-
 
 -------------------Obtener XML-------------------
  #OBTENER XML
@@ -89,12 +85,17 @@
 
 ----------      # Facturación individual Exportaciones-----------
 
-    response = client_api.Facturacion.facturacion_individualV2_Exportacion(solicitud)
-    ruta = "exportaciones.json"  # Ruta donde se guardará la factura
-    with open(ruta, "wb") as f:
-        f.write(response)
-
-    print("La factura se ha descargado correctamente.")
+    Exportacion = client_api.Facturacion.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Exportacion.status}")
+    print(f"Message: {Exportacion.message}")
+    print(f"TipoDTE: {Exportacion.data.tipoDTE}")
+    print(f"RUT Emisor: {Exportacion.data.rutEmisor}")
+    print(f"RUT Receptor: {Exportacion.data.rutReceptor}")
+    print(f"Folio: {Exportacion.data.folio}")
+    print(f"Fecha Emision: {Exportacion.data.fechaEmision}")
+    print(f"Total: {Exportacion.data.total}")
+    print(Exportacion.data)
 
 ----------EmisioNCND-------------
    Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
