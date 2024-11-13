@@ -4,33 +4,33 @@ from typing import Optional
 @dataclass
 class EmisorEnt:
     rutEmisor: Optional[str] = None
-    Direccion: Optional[str] = None
-    RazonSocial: Optional[str] = None
+    direccion: Optional[str] = None
+    razonSocial: Optional[str] = None
 
 @dataclass
 class ReceptorEnt:
-    Rut: Optional[str] = None
-    Comuna: Optional[str] = None
-    Nombre: Optional[str] = None
-    Direccion: Optional[str] = None
-    Region: Optional[str] = None
+    rut: Optional[str] = None
+    comuna: Optional[str] = None
+    nombre: Optional[str] = None
+    direccion: Optional[str] = None
+    region: Optional[str] = None
 
 @dataclass
 class TotalesEnt:
-    TotalHonoraios: Optional[float] = None
-    Bruto: Optional[float] = None
-    Liquido: Optional[float] = None
-    Pagado: Optional[float] = None
-    Retenido: Optional[float] = None
+    totalHonorarios: Optional[float] = None
+    bruto: Optional[float] = None
+    liquido: Optional[float] = None
+    pagado: Optional[float] = None
+    retenido: Optional[float] = None
 
 
 @dataclass
 class BHEEnt:
-    Folio: Optional[int] = None
-    FechaEmision: Optional[str] = None
-    CodigoBarra: Optional[str] = None
-    Emisor: Optional[EmisorEnt] = None
-    Receptor: Optional[ReceptorEnt] = None
-    Totales: Optional[TotalesEnt] = None
-    Estado: Optional[str] = None
-    DescriptionAnulacion: Optional[str] = None
+    folio: Optional[int] = None
+    fechaEmision: Optional[str] = None
+    codigoBarra: Optional[str] = None
+    emisor: Optional[EmisorEnt] = None
+    receptor: Optional[ReceptorEnt] = None
+    totales: Optional[TotalesEnt] = None
+    estado: Optional[str] = None
+    descripcionAnulacion: Optional[str] = None

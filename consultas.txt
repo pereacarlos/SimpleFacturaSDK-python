@@ -301,3 +301,22 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print(f"giro: {DatosEmpresa.data.giro}")
    
    
+----------obtenerPDFBoletaHonorario---------
+ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
+    ruta = "BoletaHonorario.pdf"
+    with open(ruta, "wb") as archivo:
+        archivo.write(ObtenerPdf)
+
+
+
+--------ListadoBHEEmitidos----------------
+ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListadoBHEEmitidos.status}")
+    print(f"Message: {ListadoBHEEmitidos.message}")
+
+    for cliente in ListadoBHEEmitidos.data:
+        print(f"fOLIO: {cliente.folio}")
+        print(f"FECHAEMISION: {cliente.fechaEmision}")
+        print(f"codigoBarra: {cliente.codigoBarra}")
+        print("\n")     
