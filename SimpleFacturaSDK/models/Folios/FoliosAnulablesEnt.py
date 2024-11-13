@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+@dataclass
 class FoliosAnulablesEnt:
     def __init__(self, desde: int, hasta: int):
         self.desde = desde

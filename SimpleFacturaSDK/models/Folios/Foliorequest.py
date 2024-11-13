@@ -1,7 +1,8 @@
 from typing import Optional
+from dataclasses import dataclass
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SDKSimpleFactura.Enum.TipoDTE import DTEType
-
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+@dataclass
 class FolioRequest:
     def __init__(self, credenciales: Credenciales, cantidad: int, codigo_tipo_dte: Optional[DTEType] = None, ambiente: Optional[int] = None):
         self.credenciales = credenciales

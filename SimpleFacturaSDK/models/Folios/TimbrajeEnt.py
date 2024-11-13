@@ -3,7 +3,6 @@ from typing import Optional
 from uuid import UUID
 from datetime import datetime
 from SimpleFacturaSDK.Utilidades.Utilidades import Utilidades
-
 @dataclass
 class TimbrajeEnt:
     TimbrajeId: UUID
@@ -11,13 +10,14 @@ class TimbrajeEnt:
     SucursalId: UUID
     CodigoSii: int
     FechaIngreso: datetime
-    FechaCaf: Optional[datetime] = None
-    Desde: int = 0
-    Hasta: int = 0
-    Activo: bool = False
     EmisorId: UUID
     UsuarioId: UUID
     FechaVencimiento: datetime
+
+    # Campos opcionales o con valores predeterminados
+    Desde: int = 0
+    Hasta: int = 0
+    Activo: bool = False
     Xml: bytes = field(default_factory=bytes)
     NombreSucursal: str = ""
     TipoDte: str = ""
@@ -28,19 +28,20 @@ class TimbrajeEnt:
     Ambiente: int = 0
     BorrarFolioBloqueado: bool = False
     Sincronizado: bool = False
+    FechaCaf: Optional[datetime] = None
     FechaUltimaSincronizacion: Optional[datetime] = None
 
 @dataclass
 class TimbrajeApiEnt:
     CodigoSii: int = 0
-    FechaIngreso: Optional[datetime] = None
-    FechaCaf: Optional[datetime] = None
     Desde: int = 0
     Hasta: int = 0
-    FechaVencimiento: Optional[datetime] = None
     TipoDte: str = ""
     FoliosDisponibles: int = 0
     Ambiente: int = 0
+    FechaCaf: Optional[datetime] = None
+    FechaVencimiento: Optional[datetime] = None
+    FechaIngreso: Optional[datetime] = None
 
     # Constructor alternativo para inicializar a partir de TimbrajeEnt
     @classmethod

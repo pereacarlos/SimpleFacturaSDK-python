@@ -253,3 +253,13 @@ ListClient = client_api.Clientes.ListarClientes(solicitud)
         print(f"Comuna: {cliente.comuna}")
         print(f"Activo: {cliente.activo}")
         print("\n")        
+
+
+--------------ConsultaFoliosDisponibles--------
+
+ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ConsultaFolio.status}")
+    print(f"Message: {ConsultaFolio.message}")
+    print(f"Data: {ConsultaFolio.data}")
+   

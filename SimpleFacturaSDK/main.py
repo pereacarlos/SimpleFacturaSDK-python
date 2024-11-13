@@ -6,6 +6,7 @@ from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
 from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
 import json
 #from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -17,19 +18,19 @@ username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
 
-solicitud= Credenciales(rut_emisor="76269769-6")
+solicitud= SolicitudFolios(
+    RutEmpresa="76269769-6",
+    TipoDTE=33,
+    Ambiente=0
+)
 
 try:
 
-    ListClient = client_api.Sucursales.ListarSucursales(solicitud)
+    ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {ListClient.status}")
-    print(f"Message: {ListClient.message}")
-
-    for cliente in ListClient.data:
-        print(f"nombre: {cliente.nombre}")
-        print(f"direccion: {cliente.direccion}")
-        print("\n")
+    print(f"Status: {ConsultaFolio.status}")
+    print(f"Message: {ConsultaFolio.message}")
+    print(f"Data: {ConsultaFolio.data}")
    
 
 except requests.exceptions.HTTPError as http_err:
