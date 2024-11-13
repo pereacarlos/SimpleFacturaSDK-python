@@ -17,11 +17,10 @@ client_api = APIClient(username, password)
 
 solicitud= SolicitudPdfDte(
     credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        nombre_sucursal="Casa Matriz"
+        rut_emisor="76269769-6"
     ),
     dte_referenciado_externo=DteReferenciadoExterno(
-        Folio=4117,
+        Folio=2963,
         CodigoTipoDte=33,
         Ambiente=0
     )
@@ -29,16 +28,11 @@ solicitud= SolicitudPdfDte(
 
 try:
     # Guardar PDF
-    Timbre = client_api.Facturacion.obtener_timbre(solicitud)
-    Timbre_data = json.loads(Timbre)
-    if 'data' in Timbre_data:
-        timbre_base64 = Timbre_data['data']
-        timbre = base64.b64decode(timbre_base64)
-        with open("timbre.png", "wb") as file:
-            file.write(timbre)
-        print("Timbre obtenido correctamente", timbre_base64)   
-    else:
-        print("Error al obtener timbre")
+    xml = client_api.Facturacion.obtener_xml(solicitud)
+    ruta = "Facturaxml.xml"
+    with open(ruta, "wb") as file:
+        file.write(xml)
+    print("XML guardado en:", ruta)
 
 
 except requests.exceptions.HTTPError as http_err:
