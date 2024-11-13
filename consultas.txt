@@ -287,4 +287,17 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
         print(f"desde: {data.desde}")
         print(f"hasta: {data.hasta}")
         print(f"fechaIngreso: {data.cantidad}")
+
+
+------Configuracionservice---------
+
+  DatosEmpresa = client_api.ConfiguracionService.datos_empresa(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {DatosEmpresa.status}")
+    print(f"Message: {DatosEmpresa.message}")
+    print(f"Data: {DatosEmpresa.data}")
+    print(f"rut: {DatosEmpresa.data.rut}")
+    print(f"razonSocial: {DatosEmpresa.data.razonSocial}")
+    print(f"giro: {DatosEmpresa.data.giro}")
+   
    
