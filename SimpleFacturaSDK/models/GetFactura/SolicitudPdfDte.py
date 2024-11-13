@@ -1,7 +1,10 @@
+from dataclasses import dataclass
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+@dataclass
 class SolicitudPdfDte:
-    def __init__(self, credenciales, dte_referenciado_externo):
-        self.credenciales = credenciales
-        self.dte_referenciado_externo = dte_referenciado_externo
+    credenciales: Credenciales
+    dte_referenciado_externo: DteReferenciadoExterno
 
     def to_dict(self):
         return {

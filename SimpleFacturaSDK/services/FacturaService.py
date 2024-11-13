@@ -20,9 +20,9 @@ class FacturacionService:
 
     def obtener_pdf(self, solicitud):
         url = f"{self.base_url}/dte/pdf"
-        response = self.session.post(url, json=solicitud.to_dict())
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             return response.content
         else:
@@ -30,9 +30,9 @@ class FacturacionService:
 
     def obtener_timbre(self, solicitud):
         url = f"{self.base_url}/dte/timbre"
-        response = self.session.post(url, json=solicitud.to_dict())
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             return response.content
         else:
