@@ -31,29 +31,30 @@ class FolioService:
 
     def SolicitarFolios(self, solicitud) -> Optional[TimbrajeApiEnt]:
         url = f"{self.base_url}/folios/solicitar"
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=TimbrajeApiEnt)
-            return resultado
+            deserialized_response = Response[TimbrajeApiEnt].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-    #Corregir
-    def ConsultarFolios(self, solicitud) -> Optional[TimbrajeApiEnt]:
+
+    def ConsultarFolios(self, solicitud) -> Optional[Response[List[TimbrajeApiEnt]]]:
         url = f"{self.base_url}/folios/consultar"
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)       
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         print("Respuesta completa:", contenidoRespuesta)
         
         if response.status_code == 200:
+            # Ajuste para procesar una lista de TimbrajeApiEnt
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=TimbrajeApiEnt)
-            return resultado
+            deserialized_response = Response[List[TimbrajeApiEnt]].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")

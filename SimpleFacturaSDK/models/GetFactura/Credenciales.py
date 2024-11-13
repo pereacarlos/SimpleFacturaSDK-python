@@ -1,9 +1,13 @@
+from dataclasses import dataclass
+from typing import Optional
+
+@dataclass
 class Credenciales:
-    def __init__(self, rut_emisor, nombre_sucursal=None, email_usuario=None, rut_contribuyente=None): 
-        self.rut_emisor = rut_emisor
-        self.nombre_sucursal = nombre_sucursal
-        self.email_usuario = email_usuario
-        self.rut_contribuyente = rut_contribuyente
+    rut_emisor: str
+    nombre_sucursal: Optional[str] = None
+    email_usuario: Optional[str] = None
+    rut_contribuyente: Optional[str] = None
+
 
     def to_dict(self):
         return {

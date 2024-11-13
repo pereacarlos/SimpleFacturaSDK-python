@@ -25,8 +25,8 @@ solicitud= FolioRequest(
         rut_emisor = "76269769-6",
         nombre_sucursal = "Casa Matriz"
     ),
-    CodigoTipoDte= None,
-    ambiente=0
+    CodigoTipoDte= 33,
+    Ambiente= 0
 
 )
 try:

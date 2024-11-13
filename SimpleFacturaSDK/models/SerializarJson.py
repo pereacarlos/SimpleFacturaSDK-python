@@ -6,18 +6,19 @@ from enum import Enum
 T = TypeVar('T')
 
 def dataclass_to_dict(obj: Any) -> Any:
-    if is_dataclass(obj):
+    if hasattr(obj, 'to_dict'):  # Si el objeto tiene `to_dict`, úsalo
+        return obj.to_dict()
+    elif is_dataclass(obj):
         result = {}
         for field in obj.__dataclass_fields__:
             value = getattr(obj, field)
             if value is not None:  # Omitir campos con valor None
                 converted_value = dataclass_to_dict(value)
-                # Solo agregar al resultado si no es None
                 if converted_value is not None:
                     result[field] = converted_value
         return result
     elif isinstance(obj, Enum):
-        return obj.value  # Cambia a obj.description() si prefieres la descripción
+        return obj.value
     elif isinstance(obj, list):
         return [dataclass_to_dict(item) for item in obj if item is not None]
     else:
