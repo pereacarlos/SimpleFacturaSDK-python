@@ -275,3 +275,16 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print(f"fechaIngreso: {SolicitarFolio.data.fechaIngreso}")
     print(f"desde: {SolicitarFolio.data.desde}")
     print(f"hasta: {SolicitarFolio.data.hasta}")
+
+
+----Folio sin uso-------
+ FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {FolioSinUsar.status}")
+    print(f"Message: {FolioSinUsar.message}")
+    print(f"Data: {FolioSinUsar.data}")
+    for data in FolioSinUsar.data:
+        print(f"desde: {data.desde}")
+        print(f"hasta: {data.hasta}")
+        print(f"fechaIngreso: {data.cantidad}")
+   
