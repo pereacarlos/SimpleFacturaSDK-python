@@ -98,13 +98,11 @@
     print(Exportacion.data)
 
 ----------------Facturacion masiva-----------------------
-factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
+    factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
     print("\nDatos de la Respuesta:")
     print(f"Status: {factura.get('status')}")
     print(f"Message: {factura.get('message')}")
     print(f"Data: {factura.get('data')}")
-
-
 
 ----------EmisioNCND-------------
    Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
@@ -171,8 +169,18 @@ factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
         print(f"Stock: {productos.Stock}")
         print("\n")
    
-
 -----------EnvioCorreo-------
+    enviarCorreo = client_api.Facturacion.enviarCorreo(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {enviarCorreo.status}")
+    print(f"Message: {enviarCorreo.message}")
+    print(f"Data: {enviarCorreo.data}")
+
+----ConsolidadoVentas------
+
+
+
+
 
 
 

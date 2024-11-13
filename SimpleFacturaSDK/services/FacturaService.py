@@ -188,24 +188,21 @@ class FacturacionService:
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             response_json = response.json()
-            return Response.from_dict(response_json, data_type=bool)  # Ajusta el tipo de datos según sea necesario
+            deserialized_response = Response[bool].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-    def consolidadoVentas(self, solicitud) -> ReporteDTE:
+    def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
         url = f"{self.base_url}/dte/consolidated/issued"
-        solicitud_dict = solicitud.to_dict()
-        print("Solicitud:", solicitud_dict)
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
-            response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=ReporteDTE)
-            return resultado
+            deserialized_response = Response[List[ReporteDTE]].parse_raw(contenidoRespuesta)
+            return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
