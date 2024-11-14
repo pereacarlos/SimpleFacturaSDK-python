@@ -17,11 +17,11 @@ class ProveedorService:
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            response_json = response.json()
             deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def obtenerXml(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/documentReceived/xml"
@@ -32,6 +32,7 @@ class ProveedorService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def obtener_pdf(self, solicitud):
         url = f"{self.base_url}/documentReceived/getPdf"
@@ -42,6 +43,7 @@ class ProveedorService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
         url = f"{self.base_url}/documentsReceived/consolidate/{mes}/{anio}"
@@ -55,8 +57,8 @@ class ProveedorService:
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            response_json = response.json()
             deserialize_response = Response[str].parse_raw(contenidoRespuesta)
             return deserialize_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()

@@ -14,10 +14,7 @@ class ClientesService:
         url = f"{self.base_url}/addClients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
             deserialized_response = Response[List[ReceptorExternoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
@@ -29,10 +26,7 @@ class ClientesService:
         url = f"{self.base_url}/clients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
             deserialized_response = Response[List[ReceptorExternoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response

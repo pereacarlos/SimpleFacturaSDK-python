@@ -17,23 +17,19 @@ class ProductoService:
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        print("Respuesta completa:", contenidoRespuesta)
-
         if response.status_code == 200:
             deserialized_response = Response[List[ProductoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def listarProductos(self, solicitud) -> Response[List[ProductoExternoEnt]]:
         url = f"{self.base_url}/products"
         solicitud_dict = solicitud.to_dict()
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        
         if response.status_code == 200:
-            response_json = response.json()
-            print("Respuesta completa:", response_json)
             deserialized_response = Response[List[ProductoExternoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:

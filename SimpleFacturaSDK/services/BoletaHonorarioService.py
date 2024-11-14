@@ -21,6 +21,7 @@ class BoletaHonorarioService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ListadoBHEEmitidos(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesIssued"
@@ -32,6 +33,7 @@ class BoletaHonorarioService:
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ObtenerPdfBoletaRecibida(self, solicitud) -> bytes:
         url = f"{self.base_url}/bhe/pdfReceived"
@@ -42,6 +44,7 @@ class BoletaHonorarioService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ListadoBHERecibido(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesReceived"
@@ -53,3 +56,4 @@ class BoletaHonorarioService:
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")       
+            response.raise_for_status()
