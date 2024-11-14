@@ -6,6 +6,7 @@ from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
 from SimpleFacturaSDK.models.GetFactura.Documento import Documento
 from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
@@ -45,7 +46,7 @@ class TestFacturacionService(unittest.TestCase):
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Facturacion
 
-    def test_obtener_pdf(self):
+    def test_obtener_pdf_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -82,7 +83,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
 
-    def test_obtener_timbre(self):
+    def test_obtener_timbre_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -118,7 +119,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
 
-    def test_obtener_xml(self):
+    def test_obtener_xml_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -153,7 +154,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
 
-    def test_obtener_dte(self):
+    def test_obtener_dte_returnOK(self):
         solicitud= SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -190,7 +191,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
 
-    def test_obtener_sobreXml(self):
+    def test_obtener_sobreXml_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -239,6 +240,78 @@ class TestFacturacionService(unittest.TestCase):
         response = self.service.obtener_sobreXml(solicitud,"sdd", test=True)
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
+
+    def test_facturacion_individualV2_dte_returnOK(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.FacturaElectronica,
+                        FchEmis="2024-09-05",
+                        FmaPago=1,
+                        FchVenc="2024-09-05"
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="mvega@chilesystems.com",
+                        Acteco=[620200],
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago",
+                        CiudadOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="17096073-4",
+                        RznSocRecep="Hotel Iquique",
+                        GiroRecep="test",
+                        CorreoRecep="mvega@chilesystems.com",
+                        DirRecep="calle 12",
+                        CmnaRecep="Paine",
+                        CiudadRecep="Santiago"
+                    ),
+                    Totales=Totales(
+                        MntNeto="832",
+                        TasaIVA="19",
+                        IVA="158",
+                        MntTotal="990"
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet="1",
+                        NmbItem="Alfajor",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="ALFA",
+                                VlrCodigo="123"
+                            )
+                        ],
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="831.932773",
+                        MontoItem="832"
+                    )
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA",
+            TipoPago="30 dias"
+        )
+
+        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz", test=True)
+
+        if response["status_code"] == 200:
+            self.assertIsInstance(response["content"], InvoiceData)
+            self.assertIsNotNone(response["content"].tipoDTE, "El tipoDTE no debe ser None")
+            self.assertIsNotNone(response["content"].rutEmisor, "El rutEmisor no debe ser None")
+            self.assertIsNotNone(response["content"].folio, "El folio no debe ser None")
+        
+        else:
+            self.assertIsNotNone(response["error"])
+            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+
+
 
 
 

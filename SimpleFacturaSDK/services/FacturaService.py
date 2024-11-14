@@ -129,20 +129,41 @@ class FacturacionService:
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
 
-    def facturacion_individualV2_Dte(self, solicitud, sucursal) -> InvoiceData:
+    def facturacion_individualV2_Dte(self, solicitud, sucursal, test=False) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
-            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+            error_message = "El parámetro 'sucursal' debe ser un string."
+            if test:
+                return {
+                    "status_code": 400,
+                    "content": None,
+                    "error": error_message
+                }
+            else:
+                raise ValueError(error_message)
         url = f"{self.base_url}/invoiceV2/{sucursal}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text        
+        contenidoRespuesta = response.text
+        if test:
+            if response.status_code == 200:
+                deserialized_content = Response[InvoiceData].parse_raw(contenidoRespuesta).data
+                return {
+                    "status_code": 200,
+                    "content": deserialized_content,
+                    "error": None
+                }
+            else:
+                return {
+                    "status_code": response.status_code,
+                    "content": None,
+                    "error": contenidoRespuesta
+                }
         if response.status_code == 200:
             deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()  
-    
+
     def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
         if not isinstance(sucursal, str):
             raise ValueError("El parámetro 'sucursal' debe ser un string.")
