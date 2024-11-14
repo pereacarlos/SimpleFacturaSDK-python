@@ -69,11 +69,17 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-    def obtener_dte(self, solicitud) -> Response[Dte]:
+    def obtener_dte(self, solicitud, test=False) -> Response[Dte]:
         url = f"{self.base_url}/documentIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
+        if test:
+            return {
+                "status_code": response.status_code,
+                "content": response.content,
+                "error": contenidoRespuesta if response.status_code != 200 else None
+            }
         if response.status_code == 200:
             deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
             return deserialized_response 
