@@ -2,16 +2,16 @@ from dataclasses import dataclass
 
 @dataclass
 class DteReferenciadoExterno:
-    Folio: int
-    CodigoTipoDte: int
-    Ambiente: int
+    folio: int
+    codigoTipoDte: int
+    ambiente: int
 
 
     def to_dict(self):
         return {
-            "folio": self.Folio,
-            "codigoTipoDte": self.CodigoTipoDte,
-            "ambiente": self.Ambiente
+            "folio": self.folio,
+            "codigoTipoDte": self.codigoTipoDte,
+            "ambiente": self.ambiente
         }
 
 

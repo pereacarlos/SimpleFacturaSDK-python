@@ -219,4 +219,4 @@ class FacturacionService:
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            
