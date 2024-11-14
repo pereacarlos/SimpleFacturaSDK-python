@@ -73,5 +73,30 @@ class TestFacturacionService(unittest.TestCase):
             print(f"Error en la petición: {response['error']}")
             self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
 
+    def test_obtener_timbre_bad_request(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                nombre_sucursal="Casa Matriz"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None, 
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_timbre(solicitud, test=True)
+        self.assertEqual(response["status_code"], 400)
+        self.assertIsNotNone(response["error"])
+        print("Prueba para código 400: Prueba exitosa, se obtuvo el error 400 esperado.")
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()

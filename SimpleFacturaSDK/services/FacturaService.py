@@ -33,6 +33,7 @@ class FacturacionService:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def obtener_timbre(self, solicitud, test=False):
         url = f"{self.base_url}/dte/timbre"
