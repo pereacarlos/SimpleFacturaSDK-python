@@ -321,15 +321,22 @@
         print(f"Activo: {cliente.activo}")
         print("\n")        
 
+---------ListSucursal-------------
+    ListSucursal = client_api.Sucursales.ListarSucursales(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListSucursal.status}")
+    print(f"Message: {ListSucursal.message}")
+    for cliente in ListSucursal.data:
+        print(f"Nombre: {cliente.nombre}")
+        print(f"Direccion: {cliente.direccion}")
+        print("\n")
 
 --------------ConsultaFoliosDisponibles--------
-
-ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
+    ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ConsultaFolio.status}")
     print(f"Message: {ConsultaFolio.message}")
     print(f"Data: {ConsultaFolio.data}")
-
 
 ---SolicitarFolio---------
 
@@ -343,6 +350,18 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print(f"desde: {SolicitarFolio.data.desde}")
     print(f"hasta: {SolicitarFolio.data.hasta}")
 
+--------Consultar folios---
+    ConsultarFolios = client_api.Folios.ConsultarFolios(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ConsultarFolios.status}")
+    print(f"Message: {ConsultarFolios.message}")
+    print(f"Data: {ConsultarFolios.data}")
+    for folio in ConsultarFolios.data:
+        print(f"folio: {folio.foliosDisponibles}")
+        print(f"codigoSii: {folio.codigoSii}")
+        print(f"fechaIngreso: {folio.fechaIngreso}")
+        print(f"desde: {folio.desde}")
+        print(f"hasta: {folio.hasta}")
 
 ----Folio sin uso-------
  FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
@@ -353,7 +372,7 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     for data in FolioSinUsar.data:
         print(f"desde: {data.desde}")
         print(f"hasta: {data.hasta}")
-        print(f"fechaIngreso: {data.cantidad}")
+        print(f"Cantidad: {data.cantidad}")
 
 
 ------Configuracionservice---------
