@@ -10,15 +10,15 @@ class ReceptorExternoEnt:
     dv: str = ""
     rutFormateado: str = ""
     razonSocial: str = ""
-    nombreFantasia: str = ""
     giro: str = ""
     dirPart: str = ""
     dirFact: str = ""
-    correoPar: str = ""
     correoFact: str = ""
     ciudad: str = ""
     comuna: str = ""
     activo: bool = False
+    correoPar: Optional[str] = None 
+    nombreFantasia: Optional[str] = None
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -29,11 +29,11 @@ class ReceptorExternoEnt:
             dv=data.get('dv', ""),
             rutFormateado=data.get('rutFormateado', ""),
             razonSocial=data.get('razonSocial', ""),
-            nombreFantasia=data.get('nombreFantasia', ""),
+            nombreFantasia=data.get('nombreFantasia'),
             giro=data.get('giro', ""),
             dirPart=data.get('dirPart', ""),
             dirFact=data.get('dirFact', ""),
-            correoPar=data.get('correoPar', ""),
+            correoPar=data.get('correoPar'),
             correoFact=data.get('correoFact', ""),
             ciudad=data.get('ciudad', ""),
             comuna=data.get('comuna', ""),

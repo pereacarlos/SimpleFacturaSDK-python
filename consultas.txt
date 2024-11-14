@@ -272,8 +272,6 @@
     print(f"Message: {Obtener_pdf.message}")
     print(f"Data: {Obtener_pdf.data}")
 
-
-
 ------AddCliente-----
 
     AddClient = client_api.Clientes.CrearClientes(solicitud)
@@ -299,9 +297,8 @@
         print(f"Activo: {cliente.activo}")
         print("\n")
 
-
 -------------ListClient------------
-ListClient = client_api.Clientes.ListarClientes(solicitud)
+    ListClient = client_api.Clientes.ListarClientes(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ListClient.status}")
     print(f"Message: {ListClient.message}")
