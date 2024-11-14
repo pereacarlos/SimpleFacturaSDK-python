@@ -52,11 +52,17 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-    def obtener_xml(self, solicitud):
+    def obtener_xml(self, solicitud, test=False):
         url = f"{self.base_url}/dte/xml"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
+        if test:
+            return {
+                "status_code": response.status_code,
+                "content": response.content,
+                "error": contenidoRespuesta if response.status_code != 200 else None
+            }
         if response.status_code == 200:
             return response.content
         else:

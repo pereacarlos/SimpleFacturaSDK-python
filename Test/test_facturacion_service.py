@@ -90,11 +90,42 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsNotNone(response["error"])
         print("Prueba para código 400: Prueba exitosa, se obtuvo el error 400 esperado.")
 
+    def test_obtener_xml(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=12553,
+                codigoTipoDte=39,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_xml(solicitud, test=True)
+        
+        if response["status_code"] == 200:
+            self.assertIsInstance(response["content"], bytes)
+            self.assertGreater(len(response["content"]), 0, "El PDF no debe estar vacío")
+            print("Prueba exitosa, el XML fue obtenido correctamente.")
+        else:
+            print(f"Error en la petición: {response['error']}")
+            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
 
-
-
-
-
+    def test_obtener_xml_bad_request(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None, 
+                codigoTipoDte=39,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_xml(solicitud, test=True)
+        self.assertEqual(response["status_code"], 400)
+        self.assertIsNotNone(response["error"])
+        print("Prueba para código 400: Prueba exitosa, se obtuvo el error 400 esperado.")
 
 
 
