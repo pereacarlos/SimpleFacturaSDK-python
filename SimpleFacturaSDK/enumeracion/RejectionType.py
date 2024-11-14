@@ -1,21 +1,14 @@
 from enum import Enum
-import json
 
 class OperacionDetalleEnum(Enum):
-    RCD = (1, "Reclamo al Contenido del Documento")
-    RFP = (3, "Reclamo por Falta Parcial de Mercaderías")
-    Elimina = (4, "Reclamo por Falta Total de Mercaderías")
+    RCD = 1
+    RFP = 3
+    RFT = 4
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+        descriptions = {
+            1: "Reclamo al Contenido del Documento",
+            3: "Reclamo por Falta Parcial de Mercaderías",
+            4: "Reclamo por Falta Total de Mercaderías"
+        }
+        return descriptions.get(self.value, "")

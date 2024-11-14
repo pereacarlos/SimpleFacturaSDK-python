@@ -30,21 +30,16 @@ class IndicadorServicioEnum(Enum):
     
 
 class IndicadorServicioDetalleLibroEnum(Enum):
-    NotSet = (0, "No Asignado")
-    FacturaServiciosPeriodicosDomiciliarios = (1, "Factura de servicios periódicos domiciliarios")
-    FacturaOtrosServiciosPeriódicos = (2, "Factura de otros servicios periódicos")
-    FacturaServicios = (3, "Factura de servicios")
+    NotSet = 0
+    FacturaServiciosPeriodicosDomiciliarios = 1
+    FacturaOtrosServiciosPeriódicos = 2
+    FacturaServicios = 3
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+        descriptions = {
+            0: "",
+            1: 1,
+            2: 2,
+            3: 3
+        }
+        return descriptions.get(self.value, "")

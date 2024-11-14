@@ -1,36 +1,33 @@
 from enum import Enum
-import json
+
 
 class TipoLibroEnum(Enum):
-    NotSet = (0, "")
-    Mensual = (1, "MENSUAL")
-    Especial = (2, "ESPECIAL")
-    Rectifica = (3, "RECTIFICA")
+    NotSet = 0
+    Mensual = 1
+    Especial = 2
+    Rectifica = 3
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            1: "MENSUAL",
+            2: "ESPECIAL",
+            3: "RECTIFICA"
+        }
+        return descriptions.get(self.value, "")
 
 class TipoLibroOrigenEnum(Enum):
-    NotSet = (0, "")
-    IECV = (1, "IECV")
-    Boletas = (2, "BOLETAS")
-    Guias = (3, "GUIAS")
+    NotSet = 0
+    IECV = 1
+    Boletas = 2
+    Guias = 3
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            1: "IECV",
+            2: "BOLETAS",
+            3: "GUIAS"
+        }
+        return descriptions.get(self.value, "")
 
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)

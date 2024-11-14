@@ -1,18 +1,12 @@
 from enum import Enum
-import json
 
 class TipoSobreEnvio(Enum):
-    AlSII = (0, "Al SII")
-    AlReceptor = (1, "Al Receptor")
+    AlSII = 0
+    AlReceptor = 1
 
-    def __new__(cls, value, description):
-        obj = object.__new__(cls)
-        obj._value_ = value  # Asignamos el valor interno del Enum
-        obj.description = description  # Asignamos la descripción
-        return obj
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+    def description(self):
+        descriptions = {
+            0: "Al SII",
+            1: "Al Receptor"
+        }
+        return descriptions.get(self.value, "")

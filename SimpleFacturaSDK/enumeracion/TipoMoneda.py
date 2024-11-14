@@ -44,12 +44,48 @@ class TipoMonedaEnum(Enum):
     Sucre = "SUCRE"
     Yen = "YEN"
 
-    @property
-    def xml_enum(self):
-        return self.value
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+    def description(self):
+        descriptions = {
+            "": "",
+            "BOLIVAR": "BOLIVAR",
+            "BOLIVIANO": "BOLIVIANO",
+            "CHELIN": "CHELIN",
+            "CORONA DIN": "CORONA DIN",
+            "CORONA NOR": "CORONA NOR",
+            "CORONA SC": "CORONA SC",
+            "CRUZEIRO REAL": "CRUZEIRO REAL",
+            "DIRHAM": "DIRHAM",
+            "DOLAR AUST": "DOLAR AUST",
+            "DOLAR CAN": "DOLAR CAN",
+            "DOLAR HK": "DOLAR HK",
+            "DOLAR NZ": "DOLAR NZ",
+            "DOLAR SIN": "DOLAR SIN",
+            "DOLAR TAI": "DOLAR TAI",
+            "DOLAR USA": "DOLAR USA",
+            "DRACMA": "DRACMA",
+            "ESCUDO": "ESCUDO",
+            "EURO": "EURO",
+            "FLORIN": "FLORIN",
+            "FRANCO BEL": "FRANCO BEL",
+            "FRANCO FR": "FRANCO FR",
+            "FRANCO SZ": "FRANCO SZ",
+            "GUARANI": "GUARANI",
+            "LIBRA EST": "LIBRA EST",
+            "LIRA": "LIRA",
+            "MARCO AL": "MARCO AL",
+            "MARCO FIN": "MARCO FIN",
+            "NUEVO SOL": "NUEVO SOL",
+            "OTRAS MONEDAS": "OTRAS MONEDAS",
+            "PESETA": "PESETA",
+            "PESO": "PESO",
+            "PESO CL": "PESO CL",
+            "PESO COL": "PESO COL",
+            "PESO MEX": "PESO MEX",
+            "PESO URUG": "PESO URUG",
+            "RAND": "RAND",
+            "RENMINBI": "RENMINBI",
+            "RUPIA": "RUPIA",
+            "SUCRE": "SUCRE",
+            "YEN": "YEN"
+        }
+        return descriptions.get(self.value, "")

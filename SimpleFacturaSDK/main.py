@@ -1,5 +1,5 @@
 
-from SimpleFacturaSDK.Base import APIClient
+from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
@@ -14,7 +14,7 @@ fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
 fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
-client_api = APIClient(username, password)
+client_api = ClientSimpleFactura(username, password)
 solicitud= ListaBHERequest(
     credenciales=Credenciales(
         rut_emisor="76269769-6",

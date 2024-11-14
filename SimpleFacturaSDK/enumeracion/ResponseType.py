@@ -1,21 +1,14 @@
 from enum import Enum
-import json
 
 class ResponseType(Enum):
-    Accepted = (3, "Aceptado")
-    AcceptedWithQualms = (4, "Contado")
-    Rejected = (5, "Crédito")
+    Accepted = 3
+    AcceptedWithQualms = 4
+    Rejected = 5
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  
-        return super().default(obj)
+        descriptions = {
+            3: "Aceptado",
+            4: "Aceptado con reparos",
+            5: "Rechazado"
+        }
+        return descriptions.get(self.value, "")

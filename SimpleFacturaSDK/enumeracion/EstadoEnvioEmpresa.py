@@ -2,21 +2,25 @@ from enum import Enum
 import json
 
 class EstadoEnvioEmpresaEnum(Enum):
-    OK = (0, "Envío recibido conforme.")
-    ErrorSchema = (1, "Envío rechazado - Error de Schema.")
-    ErrorFirma = (2, "Envío rechazado - Error de firma.")
-    RUTReceptorNoCorresponde = (3, "Envío rechazado - Rut receptor no corresponde.")
-    ArchivoRepetido = (90, "Envío rechazado - Archivo repetido")
-    ArchivoIlegible = (91, "Envío rechazado - Archivo ilegible.")
-    RechazoOtraRazon = (99, "Envío rechazado - Otra razón.")
+    OK = 0
+    ErrorSchema = 1
+    ErrorFirma = 2
+    RUTReceptorNoCorresponde = 3
+    ArchivoRepetido = 90
+    ArchivoIlegible = 91
+    RechazoOtraRazon = 99
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "0",
+            1: "1",
+            2: "2",
+            3: "3",
+            90: "90",
+            91: "91",
+            99: "99"
+        }
+        return descriptions.get(self.value, "")
 
     @staticmethod
     def glosa(state, motivo_rechazo=""):
@@ -36,9 +40,3 @@ class EstadoEnvioEmpresaEnum(Enum):
             return f"Envío rechazado - Otra razón: {motivo_rechazo}"
         else:
             raise ValueError("Invalid state.")
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)

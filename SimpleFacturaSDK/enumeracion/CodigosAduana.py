@@ -1,7 +1,5 @@
 from enum import Enum
 
-
-
 class FormaPagoExportacionEnum(Enum):
     NotSet = 0
     COB1 = 1
@@ -248,8 +246,6 @@ class UnidadMedida(Enum):
             9: "9"
         }
         return description.get(self.value, "")
-
-
 class TipoBultoEnum(Enum):
     NotSet = 0
     POLVO = 1
@@ -892,349 +888,682 @@ class Paises(Enum):
 
 
 class Puertos(Enum):
-    NotSet = (0, "No Asignado")
-    MONTREAL = (111, "Montreal")
-    COSTA_DEL_PACIFICO_1 = (112, "Costa del Pacífico 1")
-    HALIFAX = (113, "Halifax")
-    VANCOUVER = (114, "Vancouver")
-    SAINT_JOHN = (115, "Saint John")
-    TORONTO = (116, "Toronto")
-    OTROS_PUERTOS_CANADA = (117, "Otros Puertos Canadá")
-    BAYSIDE = (118, "Bayside")
-    PORT_CARTIES = (120, "Puerto Cartier")
-    COSTA_DEL_ATLANTICO = (121, "Costa del Atlántico")
-    PUERTOS_DEL_GOLFO_ME = (122, "Puertos del Golfo México")
-    COSTA_DEL_PACIFICO_2 = (123, "Costa del Pacífico 2")
-    QUEBEC = (124, "Quebec")
-    PRINCE_RUPERT = (125, "Prince Rupert")
-    HAMILTON = (126, "Hamilton")
-    BOSTON = (131, "Boston")
-    NEW_HAVEN = (132, "New Haven")
-    BRIDGEPORT = (133, "Bridgeport")
-    NEW_YORK = (134, "Nueva York")
-    FILADELFIA = (135, "Filadelfia")
-    BALTIMORE = (136, "Baltimore")
-    NORFOLK = (137, "Norfolk")
-    CHARLESTON = (139, "Charlestón")
-    SAVANAH = (140, "Savannah")
-    MIAMI = (141, "Miami")
-    EVERGLADES = (142, "Everglades")
-    JACKSONVILLE = (143, "Jacksonville")
-    PALM_BEACH = (145, "Palm Beach")
-    BATON_ROUGE = (146, "Baton Rouge")
-    COLUMBRES = (147, "Columbres")
-    PITTSBURGH = (148, "Pittsburgh")
-    DULUTH = (149, "Duluth")
-    MILWAUKEE = (150, "Milwaukee")
-    TAMPA = (151, "Tampa")
-    PENSACOLA = (152, "Pensacola")
-    MOBILE = (153, "Mobile")
-    NEW_ORLEANS = (154, "Nueva Orleans")
-    PORT_ARTHUR = (155, "Port Arthur")
-    GALVESTON = (156, "Galveston")
-    CORPUS_CRISTI = (157, "Corpus Cristi")
-    BROWNSVILLE = (158, "Brownsville")
-    HOUSTON = (159, "Houston")
-    OAKLAND = (160, "Oakland")
-    STOCKTON = (161, "Stockton")
-    SEATTLE = (171, "Seattle")
-    PORTLAND = (172, "Portland")
-    SAN_FRANCISCO = (173, "San Francisco")
-    LOS_ANGELES = (174, "Los Angeles")
-    LONG_BEACH = (175, "Long Beach")
-    SAN_DIEGO = (176, "San Diego")
-    OTROS_PUERTOS_EE_UU_ = (180, "Otros Puertos EEUU")
-    LOS_VILOS = (199, "Los Vilos")
-    PATACHE = (204, "Patache")
-    CALBUCO = (205, "Calbuco")
-    MICHILLA = (206, "Michilla")
-    PUERTO_ANGAMOS = (207, "Puerto Angamos")
-    POSEIDON = (208, "Poseidon")
-    TRES_PUENTES = (209, "Tres Puentes")
-    OTROS_PUERTOS_MEXICO = (210, "Otros Puertos México")
-    TAMPICO = (211, "Tampico")
-    COSTA_DEL_PACIFICO_3 = (212, "Costa del Pacífico 3")
-    VERACRUZ = (213, "Veracruz")
-    COATZACOALCOS = (214, "Coatzacoalcos")
-    GUAYMAS = (215, "Guaymas")
-    MAZATLAN = (216, "Mazatlán")
-    MANZANILLO = (217, "Manzanillo")
-    ACAPULCO = (218, "Acapulco")
-    GOLFO_DE_MEXICO_OTRO = (219, "Golfo de México, Otro")
-    ALTAMIRA = (220, "Altamira")
-    CRISTOBAL = (221, "Cristobal")
-    BALBOA = (222, "Balboa")
-    COLON = (223, "Colón")
-    OTROS_PTOS__PANAMA = (224, "Otros Puertos Panamá")
-    OTROS_PTOS__COLOMBIA = (231, "Otros Puertos Colombia")
-    BUENAVENTURA = (232, "Buenaventura")
-    BARRANQUILLA = (233, "Barranquilla")
-    OTROS_PTOS__ECUADOR = (241, "Otros Puertos Ecuador")
-    GUAYAQUIL = (242, "Guayaquil")
-    OTROS_PTOS__DE_PERU = (251, "Otros Puertos Perú")
-    CALLAO = (252, "Callao")
-    ILO = (253, "Ilo")
-    IQUITOS = (254, "Iquitos")
-    OTROS_PTOS_ARGENTINA = (261, "Otros Puertos Argentina")
-    BUENOS_AIRES = (262, "Buenos Aires")
-    NECOCHEA = (263, "Necochea")
-    MENDOZA = (264, "Mendoza")
-    CORDOBA = (265, "Córdoba")
-    BAHIA_BLANCA = (266, "Bahía Blanca")
-    COMODORO_RIVADAVIA = (267, "Comodoro Rivadavia")
-    PUERTO_MADRYN = (268, "Puerto Madryn")
-    MAR_DEL_PLATA = (269, "Mar del Plata")
-    ROSARIO = (270, "Rosario")
-    OTROS_PTOS_URUGUAY = (271, "Otros Puertos Uruguay")
-    MONTEVIDEO = (272, "Montevideo")
-    OTROS_PTOS_VENEZUELA = (281, "Otros Puertos Venezuela")
-    LA_GUAIRA = (282, "La Guaira")
-    MARACAIBO = (285, "Maracaibo")
-    OTROS_PTOS_BRASIL = (291, "Otros Puertos Brasil")
-    SANTOS = (292, "Santos")
-    RIO_DE_JANEIRO = (293, "Río de Janeiro")
-    RIO_GRANDE_DEL_SUR = (294, "Río Grande del Sur")
-    PARANAGUA = (295, "Paranaguá")
-    SAO_PAULO = (296, "Sao Paulo")
-    SALVADOR = (297, "Salvador")
-    OTROS_ANT_HOLANDESA = (301, "Otros Ant Holandesa")
-    CURAZAO = (302, "Curazao")
-    OTROS_PTOS_AMERICA = (399, "Otros Puertos América")
-    SHANGAI = (411, "Shanghái")
-    DAIREN = (412, "Dairen")
-    OTROS_PTOS_DE_CHINA = (413, "Otros Puertos China")
-    OTROS_PUERT_COREA_N = (420, "Otros Puertos Corea del Norte")
-    NAMPO = (421, "Nampo")
-    BUSAN = (422, "Busan")
-    OTROS_PTOS__COREA_S = (423, "Otros Puertos Corea del Sur")
-    MANILA = (431, "Manila")
-    OTROS_PTOS_FILIPINAS = (432, "Otros Puertos Filipinas")
-    OTROS_PTOS_JAPONESES = (441, "Otros Puertos Japoneses")
-    OSAKA = (442, "Osaka")
-    KOBE = (443, "Kobe")
-    YOKOHAMA = (444, "Yokohama")
-    NAGOYA = (445, "Nagoya")
-    SHIMIZUI = (446, "Shimizui")
-    MOJI = (447, "Moji")
-    YAWATA = (448, "Yawata")
-    FUKUYAMA = (449, "Fukuyama")
-    KAOHSIUNG = (451, "Kaohsiung")
-    KEELUNG = (452, "Keelung")
-    OTROS_PTOS_TAIWAN = (453, "Otros Puertos Taiwan")
-    KARHG_ISLAND = (461, "Karhg Island")
-    OTROS_PTO_IRAN_NO_ES = (462, "Otros Puertos Iran No Es")
-    CALCUTA = (471, "Calcuta")
-    OTROS_PTOS__DE_INDIA = (472, "Otros Puertos India")
-    CHALNA = (481, "Chalna")
-    OTROS_PTO_BANGLADESH = (482, "Otros Puertos Bangladesh")
-    OTROS_PTO_SINGAPURE = (491, "Otros Puertos Singapure")
-    HONG_KONG = (492, "Hong Kong")
-    OTROS_PTO_ASIATICOS = (499, "Otros Puertos Asiaticos")
-    CONSTANZA = (511, "Constanza")
-    OTROS_PTO_DE_RUMANIA = (512, "Otros Puertos Rumanía")
-    VARNA = (521, "Varna")
-    OTROS_PTOS_BULGARIA = (522, "Otros Puertos Bulgaria")
-    BELGRADO = (533, "Belgrado")
-    OTROS_PUERTOS_DE_SER = (534, "Otros Puertos Ser")
-    PODGORITSA = (535, "Podgoritsa")
-    OTROS_PUERTOS_DE_MON = (536, "Otros Puertos de Mon")
-    OTROS_PUERTOS_DE_CRO = (537, "Otros Puertos de Cro")
-    RIJEKA = (538, "Rijeka")
-    OTROS_PTOS_DE_ITALIA = (541, "Otros Puertos de Italia")
-    GENOVA = (542, "Genova")
-    LIORNA_LIVORNO = (543, "Liora, Livorno")
-    NAPOLES = (544, "Napoles")
-    SALERNO = (545, "Salermo")
-    AUGUSTA = (546, "Augusta")
-    SAVONA = (547, "Savona")
-    OTROS_PTOS_FRANCIA = (551, "Otros Puertos de Francia")
-    LA_PALLICE = (552, "La Pallice")
-    LE_HAVRE = (553, "Le Havre")
-    MARSELLA = (554, "Marsella")
-    BURDEOS = (555, "Burdeos")
-    CALAIS = (556, "Calais")
-    BREST = (557, "Brest")
-    RUAN = (558, "Ruan")
-    OTROS_PTOS_ESPANA = (561, "Otros Puertos de España")
-    CADIZ = (562, "Cadiz")
-    BARCELONA = (563, "Barcelona")
-    BILBAO = (564, "Bilbao")
-    HUELVA = (565, "Huelva")
-    SEVILLA = (566, "Sevilla")
-    TARRAGONA = (567, "Tarragona")
-    ALGECIRAS = (568, "Algeciras")
-    VALENCIA = (569, "Valencia")
-    LIVERPOOL = (571, "Liverpool")
-    LONDRES = (572, "Londres")
-    ROCHESTER = (573, "Rochester")
-    ETEN_SALVERRY = (574, "Eten Salverry")
-    OTROS_PTOS_INGLATERR = (576, "Otros Puertos de Inglaterra")
-    DOVER = (577, "Dover")
-    PLYMOUTH = (578, "Plymouth")
-    HELSINKI = (581, "Helsinki")
-    OTROS_PTOS_FINLANDIA = (582, "Otros Puertos de Finlandia")
-    HANKO = (583, "Hanko")
-    KEMI = (584, "Kemi")
-    KOKKOLA = (585, "Kokkola")
-    KOTKA = (586, "Kotra")
-    OULO = (587, "Oulo")
-    PIETARSAARI = (588, "Piertarsaari")
-    PORI = (589, "Pori")
-    BREMEN = (591, "Bremen")
-    HAMBURGO = (592, "Hamburgo")
-    NUREMBERG = (593, "Nuremberg")
-    FRANKFURT = (594, "Frankfurt")
-    DUSSELDORF = (595, "Dusseldorf")
-    OTROS_PTOS_ALEMANIA = (596, "Otros Puertos de Alemania")
-    CUXHAVEN = (597, "Cuxhaven")
-    ROSTOCK = (598, "Rostock")
-    OLDENBURG = (599, "Oldenburg")
-    AMBERES = (601, "Amberes")
-    OTROS_PTO_BELGICA = (602, "Otros Puertos de Belgica")
-    ZEEBRUGGE = (603, "Zeebrugge")
-    GHENT = (604, "Ghent")
-    OOSTENDE = (605, "Oostende")
-    LISBOA = (611, "Lisboa")
-    OTROSS_PTOS_PORTUGAL = (612, "Otros Puertos de Portugal")
-    SETUBAL = (613, "Setubal")
-    AMSTERDAM = (621, "Amsterdam")
-    ROTTERDAM = (622, "Rotterdam")
-    OTROS_PTOS_HOLANDA = (623, "Otros Puertos de Holanda")
-    GOTEMBURGO = (631, "Gotemburgo")
-    OTROS_PTOS_SUECIA = (632, "Otros Puertos de Suecia")
-    MALMO = (633, "Malmo")
-    HELSIMBORG = (634, "Helsimborg")
-    KALMAR = (635, "Kalmar")
-    AARHUS = (641, "Aarhus")
-    COPENHAGEN = (642, "Copenhagen")
-    OTROS_PTOS_DINAMARCA = (643, "Otros Puertos de Dinamarca")
-    AALBORG = (644, "Aalborg")
-    ODENSE = (645, "Odense")
-    OSLO = (651, "Oslo")
-    OTROS_PTO__NORUEGA = (652, "Otros Puertos de Noruega")
-    STAVANGER = (653, "Stavanger")
-    OTROS_PTOS_EUROPA = (699, "Otros Puertos de Europa")
-    DURBAM = (711, "Durbam")
-    CIUDAD_DEL_CABO = (712, "Ciudad del Cabo")
-    OTROS_PTO_SUDAFFRICA = (713, "Otros Puertos de Sudáfrica")
-    SALDANHA = (714, "Saldanha")
-    PORT_ELIZABETH = (715, "Puerto Elizabeth")
-    MOSSEL_BAY = (716, "Mossel Bay")
-    EAST_LONDON = (717, "East London")
-    OTROS_PTO_DE_AFRICA = (799, "Otros Puertos de África")
-    SIDNEY = (811, "Sidney")
-    FREMANTLE = (812, "Fremantle")
-    OTROS_PTOS_AUSTRALIA = (813, "Otros Puertos de Australia")
-    ADELAIDA = (814, "Adelaida")
-    DARWIN = (815, "Darwin")
-    GERALDTON = (816, "Geraldton")
-    OTROS_PTOS__OCEANIA = (899, "Otros Puertos de Oceanía")
-    LUBRIC_ = (900, "Lubric")
-    ARICA = (901, "Arica")
-    IQUIQUE = (902, "Iquique")
-    ANTOFAGASTA = (903, "Antofagasta")
-    COQUIMBO = (904, "Coquimbo")
-    VALPARAISO = (905, "Valparaíso")
-    SAN_ANTONIO = (906, "San Antonio")
-    TALCAHUANO = (907, "Talcahuano")
-    SAN_VICENTE = (908, "San Vicente")
-    LIRQUEN = (909, "Lirquen")
-    PUERTO_MONTT = (910, "Puerto Montt")
-    CHACABUCO_PTO_AYSEN = (911, "Chacabuco Puerto Aysen")
-    PUNTA_ARENAS = (912, "Punta Arenas")
-    PATILLOS = (913, "Patillos")
-    TOCOPILLA = (914, "Tocopilla")
-    MEJILLONES = (915, "Mejillones")
-    TALTAL = (916, "Taltal")
-    CHANARAL_BARQUITO = (917, "Barquito de Chañaral")
-    CALDERA = (918, "Caldera")
-    CALDERILLA = (919, "Calderilla")
-    HUASCO_GUACOLDA = (920, "Huasco Guacolda")
-    QUINTERO = (921, "Quintero")
-    JUAN_FERNANDEZ = (922, "Juan Fernandez")
-    CONSTUTUCION = (923, "Constitución")
-    TOME = (924, "Tomé")
-    PENCO = (925, "Penco")
-    CORONEL = (926, "Coronel")
-    LOTA = (927, "Lota")
-    LEBU = (928, "Lebu")
-    ISLA_DE_PASCUA = (929, "Isla de Pascua")
-    CORRAL = (930, "Corral")
-    ANCUD = (931, "Ancud")
-    CASTRO = (932, "Castro")
-    QUELLON = (933, "Quellón")
-    CHAITEN = (934, "Chaiten")
-    TORTEL = (935, "Tortel")
-    NATALES = (936, "Natales")
-    GUARELLO = (937, "Guarello")
-    PUERTO_ANDINO = (938, "Puerto Andino")
-    PERCY = (939, "Percy")
-    CLARENCIA = (940, "Clarencia")
-    GREGORIO = (941, "Gregorio")
-    CABO_NEGRO = (942, "Cabo Negro")
-    PUERTO_WILLIAMS = (943, "Puerto Williams")
-    TER_ANTARTICO_CHILEN = (944, "Territorio Chileno Antártico")
-    AEROP__CARRIEL_SUR = (945, "Aeropuerto Carriel Sur")
-    GUAYACAN = (946, "Guayacan")
-    PASO_PEHUENCHE = (947, "Paso Pehuenche")
-    VENTANAS = (948, "Ventanas")
-    PINO_HACHADO = (949, "Pino Hachado")
-    CALETA_COLOSO = (950, "Caleta Coloso")
-    AGUAS_NEGRAS = (951, "Aguas Negras")
-    ZONA_FRANCA_IQUIQUE = (952, "Zona Franca de Iquique")
-    ZONA_FRANCA_PTA_AREN = (953, "Zona Franca de Punta Arenas")
-    RIO_MAYER = (954, "Río Mayer")
-    RIO_MOSCO = (955, "Río Mosco")
-    VISVIRI = (956, "Visviri")
-    CHACALLUTA = (957, "Chacalluta")
-    CHUNGARA = (958, "Chungara")
-    COLCHANE = (959, "Colchane")
-    ABRA_DE_NAPA = (960, "Abra de Napa")
-    OLLAGUE = (961, "Ollague")
-    SAN_PEDRO_DE_ATACAMA = (962, "San Pedro de Atacama")
-    SOCOMPA = (963, "Socompa")
-    SAN_FRANCISCO_2 = (964, "San Francisco 2")
-    LOS_LIBERTADORES = (965, "Los Libertadores")
-    MAHUIL_MALAL = (966, "Mahuil Malal")
-    CARDENAL_SAMORE = (967, "Cardenal Samore")
-    PEREZ_ROSALES = (968, "Perez Rosales")
-    FUTALEUFU = (969, "Futaleufu")
-    PALENA_CARRENLEUFU = (970, "Palena Carrenleufu")
-    PANGUIPULLI = (971, "Panguipulli")
-    HUAHUM = (972, "Huahum")
-    LAGO_VERDE = (973, "Lago Verde")
-    APPELEG = (974, "Appeleg")
-    PAMPA_ALTA = (975, "Pampa Alta")
-    HUEMULES = (976, "Huemules")
-    CHILE_CHICO = (977, "Chile Chico")
-    BAKER = (978, "Baker")
-    DOROTEA = (979, "Dorotea")
-    CASAS_VIEJAS = (980, "Casas Viejas")
-    MONTE_AYMOND = (981, "Monte Aymond")
-    SAN_SEBASTIAN = (982, "San Sebastián")
-    COYHAIQUE_ALTO = (983, "Coyhaique Alto")
-    TRIANA = (984, "Triana")
-    IBANEZ_PALAVICINI = (985, "Ibáñez Pallavicini")
-    VILLA_OHIGGINS = (986, "Villa O'Higgins")
-    AEROP_CHACALLUTA = (987, "Aeropuerto Internacional Chacalluta")
-    AEROP_DIEGO_ARACENA = (988, "Aeropuerto Internacional General Diego Aracena Aguilar")
-    AEROP_CERRO_MORENO = (989, "Aeropuerto Cerro Moreno")
-    AEROP_EL_TEPUAL = (990, "Aeropuerto El Tepual")
-    AEROP_C_I_DEL_CAMPO = (991, "Aeropuerto Presidente Carlos Ibáñez del Campo")
-    AEROP_A_M_BENITEZ = (992, "Aeropuerto Arturo Merino Benítez")
-    AEROD_LOA = (993, "Aeropuerto Loa")
-    ARICA_TACNA = (994, "Arica, Tacna")
-    ARICA_LA_PAZ = (995, "Arica, La Paz")
-    OTROS_PTOS__CHILENOS = (997, "Otros Puertos Chilenos")
-    PASO_JAMA = (998, "Paso Jama")
+    NotSet = 0
+    MONTREAL = 111
+    COSTA_DEL_PACIFICO_1 = 112
+    HALIFAX = 113
+    VANCOUVER = 114
+    SAINT_JOHN = 115
+    TORONTO = 116
+    OTROS_PUERTOS_CANADA = 117
+    BAYSIDE = 118
+    PORT_CARTIES = 120
+    COSTA_DEL_ATLANTICO = 121
+    PUERTOS_DEL_GOLFO_ME = 122
+    COSTA_DEL_PACIFICO_2 = 123
+    QUEBEC = 124
+    PRINCE_RUPERT = 125
+    HAMILTON = 126
+    BOSTON = 131
+    NEW_HAVEN = 132
+    BRIDGEPORT = 133
+    NEW_YORK = 134
+    FILADELFIA = 135
+    BALTIMORE = 136
+    NORFOLK = 137
+    CHARLESTON = 139
+    SAVANAH = 140
+    MIAMI = 141
+    EVERGLADES = 142
+    JACKSONVILLE = 143
+    PALM_BEACH = 145
+    BATON_ROUGE = 146
+    COLUMBRES = 147
+    PITTSBURGH = 148
+    DULUTH = 149
+    MILWAUKEE = 150
+    TAMPA = 151
+    PENSACOLA = 152
+    MOBILE = 153
+    NEW_ORLEANS = 154
+    PORT_ARTHUR = 155
+    GALVESTON = 156
+    CORPUS_CRISTI = 157
+    BROWNSVILLE = 158
+    HOUSTON = 159
+    OAKLAND = 160
+    STOCKTON = 161
+    SEATTLE = 171
+    PORTLAND = 172
+    SAN_FRANCISCO = 173
+    LOS_ANGELES = 174
+    LONG_BEACH = 175
+    SAN_DIEGO = 176
+    OTROS_PUERTOS_EE_UU_ = 180
+    LOS_VILOS = 199
+    PATACHE = 204
+    CALBUCO = 205
+    MICHILLA = 206
+    PUERTO_ANGAMOS = 207
+    POSEIDON = 208
+    TRES_PUENTES = 209
+    OTROS_PUERTOS_MEXICO = 210
+    TAMPICO = 211
+    COSTA_DEL_PACIFICO_3 = 212
+    VERACRUZ = 213
+    COATZACOALCOS = 214
+    GUAYMAS = 215
+    MAZATLAN = 216
+    MANZANILLO = 217
+    ACAPULCO = 218
+    GOLFO_DE_MEXICO_OTRO = 219
+    ALTAMIRA = 220
+    CRISTOBAL = 221
+    BALBOA = 222
+    COLON = 223
+    OTROS_PTOS__PANAMA = 224
+    OTROS_PTOS__COLOMBIA = 231
+    BUENAVENTURA = 232
+    BARRANQUILLA = 233
+    OTROS_PTOS__ECUADOR =241
+    GUAYAQUIL = 242
+    OTROS_PTOS__DE_PERU = 251
+    CALLAO = 252
+    ILO = 253
+    IQUITOS = 254
+    OTROS_PTOS_ARGENTINA = 261
+    BUENOS_AIRES = 262
+    NECOCHEA = 263
+    MENDOZA = 264
+    CORDOBA = 265
+    BAHIA_BLANCA = 266
+    COMODORO_RIVADAVIA = 267
+    PUERTO_MADRYN = 268
+    MAR_DEL_PLATA = 269
+    ROSARIO = 270
+    OTROS_PTOS_URUGUAY = 271
+    MONTEVIDEO = 272
+    OTROS_PTOS_VENEZUELA = 281
+    LA_GUAIRA = 282
+    MARACAIBO = 285
+    OTROS_PTOS_BRASIL = 291
+    SANTOS = 292
+    RIO_DE_JANEIRO = 293
+    RIO_GRANDE_DEL_SUR = 294
+    PARANAGUA = 295
+    SAO_PAULO = 296
+    SALVADOR = 297
+    OTROS_ANT_HOLANDESA = 301
+    CURAZAO = 302
+    OTROS_PTOS_AMERICA = 399
+    SHANGAI = 411
+    DAIREN = 412
+    OTROS_PTOS_DE_CHINA = 413
+    OTROS_PUERT_COREA_N = 420
+    NAMPO = 421
+    BUSAN = 422
+    OTROS_PTOS__COREA_S = 423
+    MANILA = 431
+    OTROS_PTOS_FILIPINAS = 432
+    OTROS_PTOS_JAPONESES = 441
+    OSAKA = 442
+    KOBE = 443
+    YOKOHAMA = 444
+    NAGOYA = 445
+    SHIMIZUI = 446
+    MOJI = 447
+    YAWATA = 448
+    FUKUYAMA = 449
+    KAOHSIUNG = 451
+    KEELUNG = 452
+    OTROS_PTOS_TAIWAN = 453
+    KARHG_ISLAND = 461
+    OTROS_PTO_IRAN_NO_ES = 462
+    CALCUTA = 471
+    OTROS_PTOS__DE_INDIA = 472
+    CHALNA = 481
+    OTROS_PTO_BANGLADESH =482
+    OTROS_PTO_SINGAPURE = 491
+    HONG_KONG = 492
+    OTROS_PTO_ASIATICOS = 499
+    CONSTANZA = 511
+    OTROS_PTO_DE_RUMANIA = 512
+    VARNA = 521
+    OTROS_PTOS_BULGARIA = 522
+    BELGRADO = 533
+    OTROS_PUERTOS_DE_SER = 534
+    PODGORITSA = 535
+    OTROS_PUERTOS_DE_MON = 536
+    OTROS_PUERTOS_DE_CRO = 537
+    RIJEKA = 538
+    OTROS_PTOS_DE_ITALIA = 541
+    GENOVA = 542
+    LIORNA_LIVORNO = 543
+    NAPOLES = 544
+    SALERNO = 545
+    AUGUSTA = 546
+    SAVONA = 547
+    OTROS_PTOS_FRANCIA = 551
+    LA_PALLICE = 552
+    LE_HAVRE = 553
+    MARSELLA = 554
+    BURDEOS = 555
+    CALAIS = 556
+    BREST = 557
+    RUAN = 558
+    OTROS_PTOS_ESPANA = 561
+    CADIZ = 562
+    BARCELONA = 563
+    BILBAO = 564
+    HUELVA = 565
+    SEVILLA = 566
+    TARRAGONA = 567
+    ALGECIRAS = 568
+    VALENCIA = 569
+    LIVERPOOL = 571
+    LONDRES = 572
+    ROCHESTER = 573
+    ETEN_SALVERRY = 574
+    OTROS_PTOS_INGLATERR = 576
+    DOVER = 577
+    PLYMOUTH = 578
+    HELSINKI =581
+    OTROS_PTOS_FINLANDIA = 582
+    HANKO = 583
+    KEMI = 584
+    KOKKOLA = 585
+    KOTKA = 586
+    OULO = 587
+    PIETARSAARI = 588
+    PORI = 289
+    BREMEN = 291
+    HAMBURGO = 592
+    NUREMBERG = 593
+    FRANKFURT = 594
+    DUSSELDORF = 595
+    OTROS_PTOS_ALEMANIA = 596
+    CUXHAVEN = 597
+    ROSTOCK = 598
+    OLDENBURG = 599
+    AMBERES = 601
+    OTROS_PTO_BELGICA = 602
+    ZEEBRUGGE = 603
+    GHENT = 604
+    OOSTENDE = 605
+    LISBOA = 611
+    OTROSS_PTOS_PORTUGAL = 612
+    SETUBAL = 613
+    AMSTERDAM = 621
+    ROTTERDAM = 622
+    OTROS_PTOS_HOLANDA = 623
+    GOTEMBURGO = 631
+    OTROS_PTOS_SUECIA = 632
+    MALMO = 633
+    HELSIMBORG = 634
+    KALMAR = 635
+    AARHUS = 641
+    COPENHAGEN = 642
+    OTROS_PTOS_DINAMARCA = 643
+    AALBORG = 644
+    ODENSE = 645
+    OSLO = 651
+    OTROS_PTO__NORUEGA = 652
+    STAVANGER = 653
+    OTROS_PTOS_EUROPA = 699
+    DURBAM = 711
+    CIUDAD_DEL_CABO = 712
+    OTROS_PTO_SUDAFFRICA = 713
+    SALDANHA = 714
+    PORT_ELIZABETH = 715
+    MOSSEL_BAY = 716
+    EAST_LONDON = 717
+    OTROS_PTO_DE_AFRICA = 799
+    SIDNEY = 811
+    FREMANTLE = 812
+    OTROS_PTOS_AUSTRALIA = 813
+    ADELAIDA = 814
+    DARWIN = 815
+    GERALDTON = 816
+    OTROS_PTOS__OCEANIA = 899
+    LUBRIC_ = 900
+    ARICA = 901
+    IQUIQUE = 902
+    ANTOFAGASTA = 903
+    COQUIMBO = 904
+    VALPARAISO = 905
+    SAN_ANTONIO = 906
+    TALCAHUANO = 907
+    SAN_VICENTE = 908
+    LIRQUEN = 909
+    PUERTO_MONTT = 910
+    CHACABUCO_PTO_AYSEN = 911
+    PUNTA_ARENAS = 912
+    PATILLOS = 913
+    TOCOPILLA = 914
+    MEJILLONES = 915
+    TALTAL = 916
+    CHANARAL_BARQUITO = 917
+    CALDERA = 918
+    CALDERILLA = 919
+    HUASCO_GUACOLDA = 920
+    QUINTERO = 921
+    JUAN_FERNANDEZ = 922
+    CONSTUTUCION = 923
+    TOME = 924
+    PENCO = 925
+    CORONEL = 926
+    LOTA = 927
+    LEBU = 928
+    ISLA_DE_PASCUA = 929
+    CORRAL = 930
+    ANCUD = 931
+    CASTRO = 932
+    QUELLON = 933
+    CHAITEN = 934
+    TORTEL = 935
+    NATALES = 936
+    GUARELLO = 937
+    PUERTO_ANDINO = 938
+    PERCY = 939
+    CLARENCIA =940
+    GREGORIO = 941
+    CABO_NEGRO = 942
+    PUERTO_WILLIAMS = 943
+    TER_ANTARTICO_CHILEN = 944
+    AEROP__CARRIEL_SUR = 945
+    GUAYACAN = 946
+    PASO_PEHUENCHE = 947
+    VENTANAS = 948
+    PINO_HACHADO = 949
+    CALETA_COLOSO = 950
+    AGUAS_NEGRAS = 951
+    ZONA_FRANCA_IQUIQUE = 952
+    ZONA_FRANCA_PTA_AREN = 953
+    RIO_MAYER = 954
+    RIO_MOSCO = 955
+    VISVIRI = 956
+    CHACALLUTA = 957
+    CHUNGARA = 958
+    COLCHANE = 959
+    ABRA_DE_NAPA = 960
+    OLLAGUE = 961
+    SAN_PEDRO_DE_ATACAMA = 962
+    SOCOMPA = 963
+    SAN_FRANCISCO_2 = 964
+    LOS_LIBERTADORES = 965
+    MAHUIL_MALAL = 966
+    CARDENAL_SAMORE = 967
+    PEREZ_ROSALES = 968
+    FUTALEUFU = 969
+    PALENA_CARRENLEUFU = 970
+    PANGUIPULLI = 971
+    HUAHUM = 972
+    LAGO_VERDE = 973
+    APPELEG = 974
+    PAMPA_ALTA = 975
+    HUEMULES = 976
+    CHILE_CHICO =977
+    BAKER = 978
+    DOROTEA = 979
+    CASAS_VIEJAS = 980
+    MONTE_AYMOND = 981
+    SAN_SEBASTIAN = 982
+    COYHAIQUE_ALTO = 983
+    TRIANA = 984
+    IBANEZ_PALAVICINI = 985
+    VILLA_OHIGGINS = 986
+    AEROP_CHACALLUTA = 987
+    AEROP_DIEGO_ARACENA = 988
+    AEROP_CERRO_MORENO =989
+    AEROP_EL_TEPUAL = 990
+    AEROP_C_I_DEL_CAMPO = 991
+    AEROP_A_M_BENITEZ = 992
+    AEROD_LOA = 993
+    ARICA_TACNA = 994
+    ARICA_LA_PAZ = 995
+    OTROS_PTOS__CHILENOS = 997
+    PASO_JAMA = 998
     
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            111: "111",
+            112: "112",
+            113: "113",
+            114: "114",
+            115: "115",
+            116: "116",
+            117: "117", 
+            118: "118",
+            120: "120",
+            121: "121",
+            122: "122",
+            123: "123",
+            124: "124",
+            125: "125",
+            126: "126",
+            131: "131",
+            132: "132",
+            133: "133",
+            134: "134",
+            135: "135",
+            136: "136",
+            137: "137",
+            139: "139",
+            140: "140",
+            141: "141",
+            142: "142",
+            143: "143",
+            145: "145",
+            146: "146",
+            147: "147",
+            148: "148",
+            149: "149",
+            150: "150",
+            151: "151",
+            152: "152",
+            153: "153",
+            154: "154",
+            155: "155",
+            156: "156",
+            157: "157",
+            158: "158",
+            159: "159",
+            160: "160",
+            161: "161",
+            171: "171",
+            172: "172",
+            173: "173",
+            174: "174",
+            175: "175",
+            176: "176",
+            180: "180",
+            199: "199",
+            204: "204",
+            205: "205",
+            206: "206",
+            207: "207",
+            208: "208",
+            209: "209",
+            210: "210",
+            211: "211",
+            212: "212",
+            213: "213",
+            214: "214",
+            215: "215",
+            216: "216",
+            217: "217",
+            218: "218",
+            219: "219",
+            220: "220",
+            221: "221",
+            222: "222",
+            223: "223",
+            224: "224",
+            231: "231",
+            232: "232",
+            233: "233",
+            241: "241",
+            242: "242",
+            251: "251",
+            252: "252",
+            253: "253",
+            254: "254",
+            261: "261",
+            262: "262",
+            263: "263",
+            264: "264",
+            265: "265",
+            266: "266",
+            267: "267",
+            268: "268",
+            269: "269",
+            270: "270",
+            271: "271",
+            272: "272",
+            281: "281",
+            282: "282",
+            285: "285",
+            291: "291",
+            292: "292",
+            293: "293",
+            294: "294",
+            295: "295",
+            296: "296",
+            297: "297",
+            301: "301",
+            302: "302",
+            399: "399",
+            411: "411",
+            412: "412",
+            413: "413",
+            420: "420",
+            421: "421",
+            422: "422",
+            423: "423",
+            431: "431",
+            432: "432",
+            441: "441",
+            442: "442",
+            443: "443",
+            444: "444",
+            445: "445",
+            446: "446",
+            447: "447",
+            448: "448",
+            449: "449",
+            451: "451",
+            452: "452",
+            453: "453",
+            461: "461",
+            462: "462",
+            471: "471",
+            472: "472",
+            481: "481",
+            482: "482",
+            491: "491",
+            492: "492",
+            499: "499",
+            511: "511",
+            512: "512",
+            521: "521",
+            522: "522",
+            533: "533",
+            534: "534",
+            535: "535",
+            536: "536",
+            537: "537",
+            538: "538",
+            541: "541",
+            542: "542",
+            543: "543",
+            544: "544",
+            545: "545",
+            546: "546",
+            547: "547",
+            551: "551",
+            552: "552",
+            553: "553",
+            554: "554",
+            555: "555",
+            556: "556",
+            557: "557",
+            558: "558",
+            561: "561",
+            562: "562",
+            563: "563",
+            564: "564",
+            565: "565",
+            566: "566",
+            567: "567",
+            568: "568",
+            569: "569",
+            571: "571",
+            572: "572",
+            573: "573",
+            574: "574",
+            576: "576",
+            577: "577",
+            578: "578",
+            581: "581",
+            582: "582",
+            583: "583",
+            584: "584",
+            585: "585",
+            586: "586",
+            587: "587",
+            588: "588",
+            589: "589",
+            591: "591",
+            592: "592",
+            593: "593",
+            594: "594",
+            595: "595",
+            596: "596",
+            597: "597",
+            598: "598",
+            599: "599",
+            601: "601",
+            602: "602",
+            603: "603",
+            604: "604",
+            605: "605",
+            611: "611",
+            612: "612",
+            613: "613",
+            621: "621",
+            622: "622",
+            623: "623",
+            631: "631",
+            632: "632",
+            633: "633",
+            634: "634",
+            635: "635",
+            641: "641",
+            642: "642",
+            643: "643",
+            644: "644",
+            645: "645",
+            651: "651",
+            652: "652",
+            653: "653",
+            699: "699",
+            711: "711",
+            712: "712",
+            713: "713",
+            714: "714",
+            715: "715",
+            716: "716",
+            717: "717",
+            799: "799",
+            811: "811",
+            812: "812",
+            813: "813",
+            814: "814",
+            815: "815",
+            816: "816",
+            899: "899",
+            900: "900",
+            901: "901",
+            902: "902",
+            903: "903",
+            904: "904",
+            905: "905",
+            906: "906",
+            907: "907",
+            908: "908",
+            909: "909",
+            910: "910",
+            911: "911",
+            912: "912",
+            913: "913",
+            914: "914",
+            915: "915",
+            916: "916", 
+            917: "917",
+            918: "918",
+            919: "919",
+            920: "920",
+            921: "921",
+            922: "922",
+            923: "923",
+            924: "924",
+            925: "925",
+            926: "926",
+            927: "927",
+            928: "928",
+            929: "929",
+            930: "930",
+            931: "931",
+            932: "932",
+            933: "933",
+            934: "934",
+            935: "935",
+            936: "936",
+            937: "937",
+            938: "938",
+            939: "939",
+            940: "940",
+            941: "941",
+            942: "942",
+            943: "943",
+            944: "944",
+            945: "945",
+            946: "946",
+            947: "947",
+            948: "948",
+            949: "949",
+            950: "950",
+            951: "951",
+            952: "952",
+            953: "953",
+            954: "954",
+            955: "955",
+            956: "956", 
+            957: "957",
+            958: "958",
+            959: "959",
+            960: "960",
+            961: "961",
+            962: "962",
+            963: "963",
+            964: "964",
+            965: "965",
+            966: "966",
+            967: "967",
+            968: "968",
+            969: "969",
+            970: "970",
+            971: "971",
+            972: "972",
+            973: "973",
+            974: "974",
+            975: "975",
+            976: "976",
+            977: "977",
+            978: "978",
+            979: "979",
+            980: "980",
+            981: "981",
+            982: "982",
+            983: "983",
+            984: "984",
+            985: "985",
+            986: "986",
+            987: "987",
+            988: "988",
+            989: "989",
+            990: "990",
+            991: "991",
+            992: "992",
+            994: "994",
+            995: "995",
+            997: "997",
+            998: "998"
+
+        }
+        return descriptions.get(self.value, "")
+
 
 
 
