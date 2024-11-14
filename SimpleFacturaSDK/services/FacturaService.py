@@ -87,27 +87,47 @@ class FacturacionService:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-    def obtener_sobreXml(self, solicitud, sobre) -> bytes:
+    def obtener_sobreXml(self, solicitud, sobre, test=False) -> bytes:
         if isinstance(sobre, int):
             try:
                 sobre_enum = TipoSobreEnvio(sobre)
                 sobre_value = sobre_enum.value
             except ValueError:
                 allowed_values = [e.value for e in TipoSobreEnvio]
-                raise ValueError(f"El valor numérico de 'sobre' debe ser uno de {allowed_values}, no '{sobre}'")
+                error_message = f"El valor numérico de 'sobre' debe ser uno de {allowed_values}, no '{sobre}'"
+                if test:
+                    return {
+                        "status_code": 400,
+                        "content": None,
+                        "error": error_message
+                    }
+                else:
+                    raise ValueError(error_message)
         else:
-            raise ValueError("El parámetro 'sobre' debe ser un número entero.")
+            error_message = "El parámetro 'sobre' debe ser un número entero."
+            if test:
+                return {
+                    "status_code": 400,
+                    "content": None,
+                    "error": error_message
+                }
+            else:
+                raise ValueError(error_message)
 
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-
+        if test:
+            return {
+                "status_code": response.status_code,
+                "content": response.content,
+                "error": contenidoRespuesta if response.status_code != 200 else None
+            }
         if response.status_code == 200:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
 
     def facturacion_individualV2_Dte(self, solicitud, sucursal) -> InvoiceData:
         if not isinstance(sucursal, str):

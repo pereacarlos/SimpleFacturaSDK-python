@@ -1,3 +1,4 @@
+
 from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
@@ -15,25 +16,25 @@ password = "Rv8Il4eV"
 client_api = ClientSimpleFactura(username, password)
 solicitud= SolicitudPdfDte(
     credenciales=Credenciales(
-        rut_emisor="",
-        nombre_sucursal="Casa Matriz"
+        rut_emisor="76269769-6"
     ),
     dte_referenciado_externo=DteReferenciadoExterno(
-        folio=None,
+        folio=2393,
         codigoTipoDte=33,
         ambiente=0
     )
 )
 try:
-    
-    pdf = client_api.Facturacion.obtener_pdf(solicitud)
-    # Guardar PDF
-    with open("factura.pdf", "wb") as file:
-        file.write(pdf)
-    print("PDF guardado exitosamente", pdf)
+    sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, "dsd")
+    ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
+    with open(ruta, "wb") as f:
+        f.write(sobre_xml_bytes)
+    print("El sobre XML se ha descargado correctamente.")
+
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)
 except Exception as err:
     print(f"Error: {err}")
+

@@ -189,5 +189,73 @@ class TestFacturacionService(unittest.TestCase):
         response = self.service.obtener_dte(solicitud, test=True)
         self.assertEqual(response["status_code"], 400)
         self.assertIsNotNone(response["error"])
+
+    def test_obtener_sobreXml(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=2393,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_sobreXml(solicitud,0, test=True)
+        
+        if response["status_code"] == 200:
+            self.assertIsInstance(response["content"], bytes)
+            self.assertGreater(len(response["content"]), 0, "El sobre no debe estar vacío")
+        else:
+            self.assertIsNotNone(response["error"])
+            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+    
+    def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None, 
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_sobreXml(solicitud,0, test=True)
+        self.assertEqual(response["status_code"], 400)
+        self.assertIsNotNone(response["error"])
+
+    def test_obtener_sobreXml_bad_request_WhenUrlIsInvalid(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=2393,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_sobreXml(solicitud,"sdd", test=True)
+        self.assertEqual(response["status_code"], 400)
+        self.assertIsNotNone(response["error"])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
