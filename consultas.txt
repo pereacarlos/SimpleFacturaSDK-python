@@ -388,15 +388,13 @@
    
    
 ----------obtenerPDFBoletaHonorario---------
-ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
+    ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
     ruta = "BoletaHonorario.pdf"
     with open(ruta, "wb") as archivo:
         archivo.write(ObtenerPdf)
 
-
-
 --------ListadoBHEEmitidos----------------
-ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
+    ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ListadoBHEEmitidos.status}")
     print(f"Message: {ListadoBHEEmitidos.message}")

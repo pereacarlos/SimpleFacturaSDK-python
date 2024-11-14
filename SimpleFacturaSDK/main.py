@@ -1,38 +1,38 @@
+
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
-from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
-from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
 import json
+#from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Sucursal import Sucursal
+from datetime import datetime
+fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
+fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-solicitud= FolioRequest(
+solicitud= ListaBHERequest(
     credenciales=Credenciales(
-        rut_emisor = "76269769-6",
-        nombre_sucursal = "Casa Matriz"
+        rut_emisor="76269769-6",
+        nombre_sucursal="Casa Matriz"
     ),
-    CodigoTipoDte= None,
-    Ambiente=0
+    Folio=None,
+    Desde=fecha_desde,
+    Hasta=fecha_hasta
 )
 try:
-    ConsultarFolios = client_api.Folios.ConsultarFolios(solicitud)
+    ListadoBHERecibido = client_api.BoletaHonorarioService.ListadoBHERecibido(solicitud)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {ConsultarFolios.status}")
-    print(f"Message: {ConsultarFolios.message}")
-    print(f"Data: {ConsultarFolios.data}")
-    for folio in ConsultarFolios.data:
-        print(f"folio: {folio.foliosDisponibles}")
-        print(f"codigoSii: {folio.codigoSii}")
-        print(f"fechaIngreso: {folio.fechaIngreso}")
-        print(f"desde: {folio.desde}")
-        print(f"hasta: {folio.hasta}")
+    print(f"Status: {ListadoBHERecibido.status}")
+    print(f"Message: {ListadoBHERecibido.message}")
+    for cliente in ListadoBHERecibido.data:
+        print(f"fOLIO: {cliente.folio}")
+        print(f"FECHAEMISION: {cliente.fechaEmision}")
+        print("\n")     
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
