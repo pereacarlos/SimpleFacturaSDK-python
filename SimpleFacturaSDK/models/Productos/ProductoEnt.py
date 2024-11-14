@@ -12,9 +12,10 @@ class ProductoEnt:
     activo: Optional[bool] = None
     emisorId: Optional[UUID] = None
     sucursalId: Optional[UUID] = None
-    impuestos: Optional[List[ImpuestoEnt]] = None
+    impuestos: Optional[List[ImpuestoEnt]] = field(default_factory=list)
     codigoBarra: Optional[str] = None
     unidadMedida: Optional[str] = None
+
     @property
     def NombreCategoria(self) -> str:
         return "Sin Categoría"
@@ -26,4 +27,3 @@ class ProductoEnt:
     @property
     def Stock(self) -> int:
         return 50
-

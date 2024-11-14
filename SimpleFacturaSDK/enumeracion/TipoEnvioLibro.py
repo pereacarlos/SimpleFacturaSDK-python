@@ -2,22 +2,18 @@ from enum import Enum
 import json
 
 class TipoEnvioLibroEnum(Enum):
-    NotSet = (0, "")
-    Total = (1, "TOTAL")
-    Parcial = (2, "PARCIAL")
-    Final = (3, "FINAL")
-    Ajuste = (4, "AJUSTE")
+    NotSet = ("")
+    Total = 1
+    Parcial = 2
+    Final = 3
+    Ajuste = 4
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+        descriptions = {
+            "": "",
+            1: "TOTAL",
+            2: "PARCIAL",
+            3: "FINAL",
+            4: "AJUSTE"
+        }
+        return descriptions.get(self.value, "")

@@ -17,49 +17,43 @@ class BoletaHonorarioService:
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict) 
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ListadoBHEEmitidos(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
-            response_json = response.json()
             deserialized_response = Response[List[BHEEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ObtenerPdfBoletaRecibida(self, solicitud) -> bytes:
         url = f"{self.base_url}/bhe/pdfReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict) 
         contenidoRespuesta = response.text
-        #print("Respuesta completa:", contenidoRespuesta)
         if response.status_code == 200:
             return response.content
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            response.raise_for_status()
 
     def ListadoBHERecibido(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
-            response_json = response.json()
             deserialized_response = Response[List[BHEEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")       
+            response.raise_for_status()

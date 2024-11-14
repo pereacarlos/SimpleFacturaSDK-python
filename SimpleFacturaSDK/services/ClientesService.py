@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import ReceptorExternoEnt
 from SimpleFacturaSDK.models.ResponseDTE import Response
 import requests
@@ -10,33 +10,25 @@ class ClientesService:
         self.session = session
         self.base_url = base_url
 
-    def CrearClientes(self, solicitud) -> List[ReceptorExternoEnt]:
+    def CrearClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
         url = f"{self.base_url}/addClients"
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
-            response_json = response.json()
-            deserialized_response = Response.from_dict(response_json, data_type=ReceptorExternoEnt)
+            deserialized_response = Response[List[ReceptorExternoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
             response.raise_for_status()
 
-    def ListarClientes(self, solicitud) -> List[ReceptorExternoEnt]:
+    def ListarClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
         url = f"{self.base_url}/clients"
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text        
-        print("Respuesta completa:", contenidoRespuesta)
-        
         if response.status_code == 200:
-            response_json = response.json()
-            deserialized_response = Response.from_dict(response_json, data_type=ReceptorExternoEnt)
+            deserialized_response = Response[List[ReceptorExternoEnt]].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")

@@ -7,7 +7,6 @@
         file.write(pdf)
     print("PDF guardado exitosamente", pdf)
 
-
 -----------Timbre--------------------
         # Obtener timbre
     Timbre = client_api.Facturacion.obtener_timbre(solicitud)
@@ -21,9 +20,6 @@
     else:
         print("Error al obtener timbre")
 
-
-
-
 -------------------Obtener XML-------------------
  #OBTENER XML
     xml = client_api.Facturacion.obtener_xml(solicitud)
@@ -34,18 +30,18 @@
 
 
 ------------# Obtener DTE--------------
-   solicitud_dict = solicitud.to_dict() 
-    # Obtener DTE
-    dte_bytes = client_api.Facturacion.obtener_dte(solicitud_dict)
-    ruta = "dte.json"
-    with open(ruta, "w", encoding="utf-8") as f:
-        json.dump(dte_bytes, f, default=lambda o: o.__dict__, ensure_ascii=False)
-    
-    print("El DTE se ha descargado correctamente.", dte_bytes.folio)
-
+    dte_bytes = client_api.Facturacion.obtener_dte(solicitud)
+    print(f"Status: {dte_bytes.status}")
+    print(f"Message: {dte_bytes.message}")
+    print(f"TipoDTE: {dte_bytes.data.tipoDte}")
+    print(f"folioReutilizado: {dte_bytes.data.folioReutilizado}")
+    print(f"fechaCreacionr: {dte_bytes.data.fechaCreacion}")
+    print(f"Folio: {dte_bytes.data.folio}")
+    print(f"razonSocialReceptor: {dte_bytes.data.razonSocialReceptor}")
+    print(f"iva: {dte_bytes.data.iva}")
+    print(dte_bytes.data)
 
 -----------   # Obtener sobre XML----------
-    # Obtener DTE
     sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
     ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
     with open(ruta, "wb") as f:
@@ -89,12 +85,24 @@
 
 ----------      # Facturación individual Exportaciones-----------
 
-    response = client_api.Facturacion.facturacion_individualV2_Exportacion(solicitud)
-    ruta = "exportaciones.json"  # Ruta donde se guardará la factura
-    with open(ruta, "wb") as f:
-        f.write(response)
+    Exportacion = client_api.Facturacion.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Exportacion.status}")
+    print(f"Message: {Exportacion.message}")
+    print(f"TipoDTE: {Exportacion.data.tipoDTE}")
+    print(f"RUT Emisor: {Exportacion.data.rutEmisor}")
+    print(f"RUT Receptor: {Exportacion.data.rutReceptor}")
+    print(f"Folio: {Exportacion.data.folio}")
+    print(f"Fecha Emision: {Exportacion.data.fechaEmision}")
+    print(f"Total: {Exportacion.data.total}")
+    print(Exportacion.data)
 
-    print("La factura se ha descargado correctamente.")
+----------------Facturacion masiva-----------------------
+    factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {factura.get('status')}")
+    print(f"Message: {factura.get('message')}")
+    print(f"Data: {factura.get('data')}")
 
 ----------EmisioNCND-------------
    Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
@@ -109,9 +117,8 @@
     print(f"Total: {Emision.data.total}")
     print(Emision.data)
 
-
 --------ListadoDteEmitidos--------------
-Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
+    Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {Listado.status}")
     print(f"Message: {Listado.message}")
@@ -162,6 +169,56 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
         print(f"Stock: {productos.Stock}")
         print("\n")
    
+-----------EnvioCorreo-------
+    enviarCorreo = client_api.Facturacion.enviarCorreo(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {enviarCorreo.status}")
+    print(f"Message: {enviarCorreo.message}")
+    print(f"Data: {enviarCorreo.data}")
+
+----ConsolidadoVentas------
+ Consolidado = client_api.Facturacion.consolidadoVentas(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Consolidado.status}")
+    print(f"Message: {Consolidado.message}")
+    for item in Consolidado.data:
+        print(f"fecha: {item.fecha}")
+        print(f"tipoDTE: {item.tiposDTE}")
+        print(f"Emitidos: {item.emitidos}")
+        print(f"anulados: {item.anulados}")
+        print(f"total: {item.total}")
+        print(f"totalNeto: {item.totalNeto}")
+        print(f"totalIva: {item.totalIva}")
+        print(item)
+
+-----ConciliarEmitidos---------
+ Conciliar = client_api.Facturacion.ConciliarEmitidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Conciliar.status}")
+    print(f"Message: {Conciliar.message}")
+    print(f"Data: {Conciliar.data}")
+
+-----AñadirProducto------------
+    addProducts = client_api.Productos.CrearProducto(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {addProducts.status}")
+    print(f"Message: {addProducts.message}")
+    for productos in addProducts.data:
+        print(f"ProductoId: {productos.productoId}")
+        print(f"Nombre: {productos.nombre}")
+        print(f"Precio: {productos.precio}")
+        print(f"Exento: {productos.exento}")
+        print(f"Activo: {productos.activo}")
+        print(f"EmisorId: {productos.emisorId}")
+        print(f"SucursalId: {productos.sucursalId}")
+        print(f"Impuestos: {productos.impuestos}")
+        print(f"CodigoBarra: {productos.codigoBarra}")
+        print(f"UnidadMedida: {productos.unidadMedida}")
+        print(f"NombreCategoria: {productos.NombreCategoria}")
+        print(f"NombreMarca: {productos.NombreMarca}")
+        print(f"Stock: {productos.Stock}")
+        print("\n")
+
 
 ----------List producto------
 
@@ -179,8 +236,6 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
             print(f"nombreImp: {imp.nombreImp}")
             print(f"tasa: {imp.tasa}")
  
-    
-
 -------------List proveedores---------
  ListProveedores = client_api.Proveedores.listarDteRecibidos(solicitud)
     print("\nDatos de la Respuesta:")
@@ -194,15 +249,28 @@ Listado = client_api.Facturacion.listadoDteEmitidos(solicitud)
         print(f"estado: {lista.estado}")
         print(f"folio: {lista.folio}")
 
-
 ------------Proveedores obtener xml------------------
-Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
+    Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
     ruta = "xml.xml"
     with open(ruta, "wb") as file:
         file.write(Obtenerxml)
     print(f"XML guardado en {ruta}")
 
+------------Obtener PDf----------------
+    ObtenerPdf = client_api.Proveedores.obtener_pdf(solicitud)
+    ruta = "pdf.pdf"
+    with open(ruta, "wb") as file:
+        file.write(ObtenerPdf)
+    print(f"PDF guardado en {ruta}")
 
+
+---------ConciliarRecibidos------------
+
+    Obtener_pdf = client_api.Proveedores.ConciliarRecibidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Obtener_pdf.status}")
+    print(f"Message: {Obtener_pdf.message}")
+    print(f"Data: {Obtener_pdf.data}")
 
 ------AddCliente-----
 
@@ -229,9 +297,8 @@ Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
         print(f"Activo: {cliente.activo}")
         print("\n")
 
-
 -------------ListClient------------
-ListClient = client_api.Clientes.ListarClientes(solicitud)
+    ListClient = client_api.Clientes.ListarClientes(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ListClient.status}")
     print(f"Message: {ListClient.message}")
@@ -254,15 +321,22 @@ ListClient = client_api.Clientes.ListarClientes(solicitud)
         print(f"Activo: {cliente.activo}")
         print("\n")        
 
+---------ListSucursal-------------
+    ListSucursal = client_api.Sucursales.ListarSucursales(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListSucursal.status}")
+    print(f"Message: {ListSucursal.message}")
+    for cliente in ListSucursal.data:
+        print(f"Nombre: {cliente.nombre}")
+        print(f"Direccion: {cliente.direccion}")
+        print("\n")
 
 --------------ConsultaFoliosDisponibles--------
-
-ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
+    ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ConsultaFolio.status}")
     print(f"Message: {ConsultaFolio.message}")
     print(f"Data: {ConsultaFolio.data}")
-
 
 ---SolicitarFolio---------
 
@@ -276,6 +350,18 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     print(f"desde: {SolicitarFolio.data.desde}")
     print(f"hasta: {SolicitarFolio.data.hasta}")
 
+--------Consultar folios---
+    ConsultarFolios = client_api.Folios.ConsultarFolios(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ConsultarFolios.status}")
+    print(f"Message: {ConsultarFolios.message}")
+    print(f"Data: {ConsultarFolios.data}")
+    for folio in ConsultarFolios.data:
+        print(f"folio: {folio.foliosDisponibles}")
+        print(f"codigoSii: {folio.codigoSii}")
+        print(f"fechaIngreso: {folio.fechaIngreso}")
+        print(f"desde: {folio.desde}")
+        print(f"hasta: {folio.hasta}")
 
 ----Folio sin uso-------
  FolioSinUsar = client_api.Folios.Folios_Sin_Uso(solicitud)
@@ -286,7 +372,7 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
     for data in FolioSinUsar.data:
         print(f"desde: {data.desde}")
         print(f"hasta: {data.hasta}")
-        print(f"fechaIngreso: {data.cantidad}")
+        print(f"Cantidad: {data.cantidad}")
 
 
 ------Configuracionservice---------
@@ -302,15 +388,13 @@ ConsultaFolio = client_api.Folios.ConsultaFoliosDisponibles(solicitud)
    
    
 ----------obtenerPDFBoletaHonorario---------
-ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
+    ObtenerPdf = client_api.BoletaHonorarioService.ObtenerPdf(solicitud)
     ruta = "BoletaHonorario.pdf"
     with open(ruta, "wb") as archivo:
         archivo.write(ObtenerPdf)
 
-
-
 --------ListadoBHEEmitidos----------------
-ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
+    ListadoBHEEmitidos = client_api.BoletaHonorarioService.ListadoBHEEmitidos(solicitud)
     print("\nDatos de la Respuesta:")
     print(f"Status: {ListadoBHEEmitidos.status}")
     print(f"Message: {ListadoBHEEmitidos.message}")

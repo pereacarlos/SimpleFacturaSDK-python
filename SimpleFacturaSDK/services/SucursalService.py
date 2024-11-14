@@ -1,5 +1,5 @@
 
-from typing import List
+from typing import List,Optional
 from SimpleFacturaSDK.models.Sucursal import Sucursal
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
@@ -10,16 +10,13 @@ class SucursalService:
         self.session = session
         self.base_url = base_url
 
-
-    def ListarSucursales(self, solicitud) -> List[Sucursal]:
+    def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
         url = f"{self.base_url}/branchOffices"
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
-        
         contenidoRespuesta = response.text                
         if response.status_code == 200:
-            response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=Sucursal)
+            resultado = Response[List[Sucursal]].parse_raw(contenidoRespuesta)
             return resultado
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")

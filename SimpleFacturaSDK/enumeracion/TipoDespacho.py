@@ -2,21 +2,16 @@ from enum import Enum
 import json
 
 class TipoDespachoEnum(Enum):
-    NotSet = (0, "No Asignado")
-    Receptor = (1, "Receptor")
-    EmisorACliente = (2, "Emisor A Cliente")
-    EmisorAOtrasInstalaciones = (3, "Emisor A Otras Instalaciones")
+    NotSet = 0
+    Receptor = 1
+    EmisorACliente = 2
+    EmisorAOtrasInstalaciones = 3
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+        descriptions = {
+            0: "",
+            1: "1",
+            2: "2",
+            3: "3"
+        }
+        return descriptions.get(self.value, "")

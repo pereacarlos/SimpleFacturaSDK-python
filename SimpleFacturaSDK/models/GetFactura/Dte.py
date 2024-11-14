@@ -5,36 +5,36 @@ from typing import Optional, List
 
 @dataclass
 class Dte:
-    ambiente: str
-    folioReutilizado: str
-    importado: str
-    codigoSii: int
-    tipoDte: str
-    estadoAcuse: str
-    estadoSII: Optional[str]
-    estado: Optional[str]
-    fechaDte: str
-    fechaCreacion: str
-    fechaEmision: Optional[str]
-    fechaRecepcionSII: Optional[str]
-    folio: int
-    razonSocialReceptor: str
-    rutReceptor: str
-    razonSocialProveedor: Optional[str]
-    rutProveedor: Optional[str]
-    trackId: int
-    neto: float
-    exento: float
-    iva: float
-    ivaTerceros: float
-    ivaPropio: float
-    totalImpuestosAdicionales: float
-    montoNoFacturable: Optional[float]
-    formaPago: Optional[str]
-    total: float
     detalles: List[DetalleDte]
     referencias: List[dict]
-    impuestos: List[dict]
+    ambiente: str = ""
+    folioReutilizado: str = ""
+    importado: str  = ""
+    codigoSii: int = 0
+    tipoDte: str = ""
+    estadoAcuse: str = ""
+    fechaDte: str = ""
+    fechaCreacion: str = ""
+    folio: int = 0
+    razonSocialReceptor: str = ""
+    rutReceptor: str = ""
+    trackId: int = 0
+    neto: float = 0
+    exento: float = 0
+    iva: float = 0
+    ivaTerceros: float = 0.0
+    ivaPropio: float = 0.0
+    total: float = 0.0
+    totalImpuestosAdicionales: float = 0.0
+    estadoSII: Optional[str] = None
+    estado: Optional[str] = None
+    fechaEmision: Optional[str] = None
+    fechaRecepcionSII: Optional[str] = None
+    razonSocialProveedor: Optional[str] = None
+    rutProveedor: Optional[str] = None
+    montoNoFacturable: Optional[float] = None
+    formaPago: Optional[str] = None
+    impuestos: Optional[List[dict]] = None
 
     @classmethod
     def from_dict(cls, data: dict):

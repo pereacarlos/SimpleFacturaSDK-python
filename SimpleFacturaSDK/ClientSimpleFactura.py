@@ -14,7 +14,7 @@ import base64
 
 BASE_URL = "https://api.simplefactura.cl"
 
-class APIClient:
+class ClientSimpleFactura:
     def __init__(self, username, password):
         # Configure the HTTP client
         self.session = requests.Session()

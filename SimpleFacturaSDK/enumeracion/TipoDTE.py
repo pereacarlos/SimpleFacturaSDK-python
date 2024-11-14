@@ -37,96 +37,148 @@ class DTEType(Enum):
             39: "Boleta Electrónica",
             41: "Boleta Electrónica Exenta"
         }
-        return descriptions.get(self.value, "Unknown")
+        return descriptions.get(self.value, "Error")
 
 
 
 class DOCType(Enum):
-    NotSet = (0, "No Asignado")
-    FacturaElectronica = (33, "Factura Electrónica")
-    FacturaElectronicaExenta = (34, "Factura Electrónica Exenta")
-    FacturaCompraElectronica = (46, "Factura Compra Electrónica")
-    GuiaDespachoElectronica = (52, "Guia Despacho Electrónica")
-    NotaDebitoElectronica = (56, "Nota Debito Electrónica")
-    NotaCreditoElectronica = (61, "Nota Credito Electrónica")
+    NotSet = 0
+    FacturaElectronica = 33
+    FacturaElectronicaExenta = 34
+    FacturaCompraElectronica = 46
+    GuiaDespachoElectronica = 52
+    NotaDebitoElectronica = 56
+    NotaCreditoElectronica = 61
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            33: "33",
+            34: "34",
+            46: "46",
+            52: "52",
+            56: "56",
+            61: "61"
+        }
+        return descriptions.get(self.value, "Error")
 
 class DTEFacturasType(Enum):
-    NotSet = (0, "No Asignado")
-    FacturaElectronica = (33, "Factura Electrónica")
-    FacturaElectronicaExcenta = (34, "Factura Electrónica Exenta")
-    FacturaCompraElectronica = (46, "Factura Compra Electrónica")
-    LiquidacionFacturaElectronica = (43, "Liquidación Factura Electrónica")
+    NotSet = 0
+    FacturaElectronica = 33
+    FacturaElectronicaExcenta = 34
+    FacturaCompraElectronica = 46
+    LiquidacionFacturaElectronica = 43
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "",
+            33: "33",
+            34: "34",
+            46: "46",
+            43: "43"
+        }
+        return descriptions.get(self.value, "Error")
 
 class TipoDocumentoLibro(Enum):
-    NotSet = (0, "No se ha definido un valor aún.")
-    FacturaManual = (30, "Factura manual")
-    FacturaExentaManual = (32, "Factura exenta manual")
-    FacturaElectronica = (33, "Factura electrónica")
-    FacturaExentaElectronica = (34, "Factura exenta electrónica")
-    BoletaVentasServicios = (36, "Boletas de ventas y servicios")
-    BoletaExenta = (38, "Boleta no afecta o exenta")
-    BoletaElectronica = (39, "Boletas electrónica")
-    LiquidacionFacturaManual = (40, "Liquidación Factura Manual")
-    BoletaExentaElectronica = (41, "Boletas no afectas o exentas electrónicas")
-    LiquidacionFacturaElectronica = (43, "Liquidación factura electrónica")
-    FacturaCompra = (45, "Factura de compra")
-    FacturaCompraElectronica = (46, "Factura de compra electrónica")
-    NotaDebito = (55, "Nota de débito manual")
-    NotaDebitoElectronica = (56, "Nota de débito electrónica")
-    NotaCredito = (60, "Nota de crédito manual")
-    NotaCreditoElectronica = (61, "Nota de crédito electrónica")
-    FacturaExportacion = (101, "Factura de exportación")
-    FacturaVentaExentaAZonaFrancaPrimaria = (102, "Factura de venta exenta a zona franca primaria")
-    Liquidacion = (103, "Liquidación")
-    NotaDebitoExportacion = (104, "Nota de débito de exportación")
-    BoletaLiquidacion = (105, "Boletas liquidación")
-    NotaCreditoExportacion = (106, "Nota de crédito de exportación")
-    SRF = (108, "SRF: Solicitud de registro de factura")
-    FacturaTurista = (109, "Factura a turista")
-    LiquidacionRecibidaPorMandante = (900, "DEPRECATED! Liquidación recibida por el mandante")
-    FacturaVentaaEmpresasTerritorioPreferencial = (901, "Factura de ventas a empresas del territorio preferencial")
-    ConocimientoEmbarque = (902, "Conocimiento de Embarque")
-    DUS = (903, "Documento Único de Salida (DUS)")
-    ZonaFranca_FacturaTraspaso = (904, "Factura de traspaso")
-    FacturaReexpedicion = (905, "Factura de reexpedición")
-    BoletaVentaModuloZonaFranca = (906, "Boletas de venta Modulos Zona Franca")
-    FacturaVentaModuloZonaFranca = (907, "Facturas de venta Módulos Zona Franca")
-    ZonaFranca_FacturaVentaModuloZF = (909, "Facturas venta módulo Zona franca")
-    ZonaFranca_SolicitudTrasladoZF = (910, "Solicitud de traslado Zona Franca")
-    DeclaracionIngresoZonaFrancaPrimaria = (911, "Declaración de ingreso a Zona Franca Primaria")
-    DIN = (914, "Declaración de Ingreso")
-    DeclaracionIngresoZonaFranca = (918, "DEPRECATED! Declaración de Ingreso de Zona Franca")
-    ResumenVentasNacionalesPasajesSinFactura = (919, "Resumen Ventas de nacionales pasajes sin Factura")
-    OtroRegistroAumentaDebito = (920, "Otros registros no documentados. Aumenta débito.")
-    LiquidacionRecibidaMandatario = (921, "DEPRECATED! Liquidación recibida por mandatario")
-    OtrosRegistrosDisminuyeDebito = (922, "Otros registros. Disminuye débito.")
-    FacturaExportacionElectronica = (110, "Factura de Exportación Electrónica")
-    NotaDebitoExportacionElectronica = (111, "Nota de Débito de Exportación Electrónica")
-    NotaCreditoExportacionElectronica = (112, "Nota de Crédito de Exportación Electrónica")
-    ResumenVentasInternacionalPasajesSinFactura = (924, "Resumen ventas de internacionales pasajes sin Factura")
-    AjusteAumentoTipoCambio = (500, "Ajuste aumento Tipo de Cambio")
-    AjusteDisminucionTipoCambio = (501, "Ajuste disminución Tipo de Cambio")
+    NotSet = ""
+    FacturaManual = 30
+    FacturaExentaManual = 32
+    FacturaElectronica = 33
+    FacturaExentaElectronica = 34
+    BoletaVentasServicios = 36
+    BoletaExenta = 38
+    BoletaElectronica = 39
+    LiquidacionFacturaManual = 40
+    BoletaExentaElectronica = 41
+    LiquidacionFacturaElectronica = 43
+    FacturaCompra = 45
+    FacturaCompraElectronica = 46
+    NotaDebito = 55
+    NotaDebitoElectronica = 56
+    NotaCredito = 60
+    NotaCreditoElectronica = 61
+    FacturaExportacion = 101
+    FacturaVentaExentaAZonaFrancaPrimaria = 102
+    Liquidacion = 103
+    NotaDebitoExportacion = 104
+    BoletaLiquidacion = 105
+    NotaCreditoExportacion = 106
+    SRF = 108
+    FacturaTurista = 109
+    LiquidacionRecibidaPorMandante = 900
+    FacturaVentaaEmpresasTerritorioPreferencial = 901
+    ConocimientoEmbarque = 902
+    DUS = 903
+    ZonaFranca_FacturaTraspaso = 904
+    FacturaReexpedicion = 905
+    BoletaVentaModuloZonaFranca = 906
+    FacturaVentaModuloZonaFranca = 907
+    ZonaFranca_FacturaVentaModuloZF = 909
+    ZonaFranca_SolicitudTrasladoZF = 910
+    DeclaracionIngresoZonaFrancaPrimaria = 911
+    DIN = 914
+    DeclaracionIngresoZonaFranca = 918
+    ResumenVentasNacionalesPasajesSinFactura = 919
+    OtroRegistroAumentaDebito = 920
+    LiquidacionRecibidaMandatario = 921
+    OtrosRegistrosDisminuyeDebito = 922
+    FacturaExportacionElectronica = 110
+    NotaDebitoExportacionElectronica = 111
+    NotaCreditoExportacionElectronica = 112
+    ResumenVentasInternacionalPasajesSinFactura = 924
+    AjusteAumentoTipoCambio = 500
+    AjusteDisminucionTipoCambio = 501
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            "": "",
+            30: "30",
+            32: "32",
+            33: "33",
+            34: "34",
+            36: "35",
+            38: "38",
+            39: "39",
+            40: "40",
+            41: "41",
+            43: "43",
+            45: "45",
+            46: "46",
+            55: "55",
+            56: "56",
+            60: "60",
+            61: "61",
+            101: "101",
+            102: "102",
+            103: "103",
+            104: "104",
+            105: "105",
+            106: "106",
+            108: "108",
+            109: "109",
+            900: "900",
+            901: "901",
+            902: "902",
+            903: "903",
+            904: "904",
+            905: "905",
+            906: "906",
+            907: "907",
+            909: "909",
+            910: "910",
+            911: "911",
+            914: "914",
+            918: "918",
+            919: "919",
+            920: "920",
+            921: "921",
+            922: "922",
+            110: "110",
+            111: "111",
+            112: "112",
+            924: "924",
+            500: "500",
+            501: "501"
+        }
+        return descriptions.get(self.value, "Error")
+   

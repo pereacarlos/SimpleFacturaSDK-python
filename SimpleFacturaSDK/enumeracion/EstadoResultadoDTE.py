@@ -1,10 +1,9 @@
 from enum import Enum
-import json
 
 class EstadoResultadoDTEEnum(Enum):
-    Ok = (0, "DTE Aceptado OK.")
-    AceptadoReparos = (1, "DTE Aceptado con Discrepancia.")
-    Rechazo = (2, "DTE Rechazado.")
+    Ok = 0
+    AceptadoReparos = 1
+    Rechazo = 2
 
     @property
     def xml_enum(self):
@@ -14,22 +13,16 @@ class EstadoResultadoDTEEnum(Enum):
     def description(self):
         return self.value[1]
 
-class EstadoResultadoDTE:
-    Motivo = ""
 
-    @staticmethod
-    def glosa(state):
-        if state == EstadoResultadoDTEEnum.Ok:
-            return f"DTE Aceptado OK. {EstadoResultadoDTE.Motivo}"
-        elif state == EstadoResultadoDTEEnum.AceptadoReparos:
-            return f"DTE Aceptado con discrepancias - {EstadoResultadoDTE.Motivo}"
-        elif state == EstadoResultadoDTEEnum.Rechazo:
-            return f"DTE Rechazado - {EstadoResultadoDTE.Motivo}"
-        else:
-            raise ValueError("Invalid state")
+Motivo = ""
 
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
+@staticmethod
+def glosa(state):
+    if state == EstadoResultadoDTEEnum.Ok:
+        return f"DTE Aceptado OK. {Motivo}"
+    elif state == EstadoResultadoDTEEnum.AceptadoReparos:
+        return f"DTE Aceptado con discrepancias - {Motivo}"
+    elif state == EstadoResultadoDTEEnum.Rechazo:
+        return f"DTE Rechazado - {Motivo}"
+    else:
+        raise ValueError("Invalid state")

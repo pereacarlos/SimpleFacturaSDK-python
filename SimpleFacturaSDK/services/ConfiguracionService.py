@@ -16,9 +16,7 @@ class ConfiguracionService:
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        print("Respuesta Completa",contenidoRespuesta)
         if response.status_code == 200:
-            response_json = response.json()
             deserialized_response = Response[EmisorAapiEnt].parse_raw(contenidoRespuesta)
             return deserialized_response
         else:

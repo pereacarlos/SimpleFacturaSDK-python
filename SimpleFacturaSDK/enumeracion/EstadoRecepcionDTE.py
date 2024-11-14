@@ -2,20 +2,23 @@ from enum import Enum
 import json
 
 class EstadoRecepcionDTEEnum(Enum):
-    Ok = (0, "DTE Recibido OK.")
-    ErrorFirma = (1, "DTE No Recibido - Error de firma.")
-    ErrorRutEmisor = (2, "DTE No Recibido - Error en RUT Emisor.")
-    ErrorRutReceptor = (3, "DTE No Recibido - Error en RUT Receptor.")
-    Repetido = (4, "DTE No Recibido - DTE Repetido.")
-    Otra = (99, "DTE No Recibido - Otra.")
+    Ok = 0
+    ErrorFirma = 1
+    ErrorRutEmisor = 2
+    ErrorRutReceptor = 3
+    Repetido = 4
+    Otra = 99
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
+        descriptions = {
+            0: "0",
+            1: "1",
+            2: "2",
+            3: "3",
+            4: "4",
+            99: "99"
+        }
+        return descriptions.get(self.value, "")
 
     @staticmethod
     def glosa(state):
@@ -33,9 +36,3 @@ class EstadoRecepcionDTEEnum(Enum):
             return "DTE No Recibido - Otra."
         else:
             raise ValueError("Invalid state.")
-
-class CustomJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.xml_enum  # o `str(obj)` si prefieres la representación de texto
-        return super().default(obj)
