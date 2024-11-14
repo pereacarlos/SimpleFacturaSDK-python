@@ -256,6 +256,22 @@
         file.write(Obtenerxml)
     print(f"XML guardado en {ruta}")
 
+------------Obtener PDf----------------
+    ObtenerPdf = client_api.Proveedores.obtener_pdf(solicitud)
+    ruta = "pdf.pdf"
+    with open(ruta, "wb") as file:
+        file.write(ObtenerPdf)
+    print(f"PDF guardado en {ruta}")
+
+
+---------ConciliarRecibidos------------
+
+    Obtener_pdf = client_api.Proveedores.ConciliarRecibidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Obtener_pdf.status}")
+    print(f"Message: {Obtener_pdf.message}")
+    print(f"Data: {Obtener_pdf.data}")
+
 
 
 ------AddCliente-----

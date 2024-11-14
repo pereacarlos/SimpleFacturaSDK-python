@@ -1,4 +1,3 @@
-
 from SimpleFacturaSDK.Base import APIClient
 import base64
 import requests
@@ -17,21 +16,13 @@ fecha_hasta = datetime.strptime("2024-04-30", "%Y-%m-%d")
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-solicitud=ListaDteRequestEnt(
-    Credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        rut_contribuyente="96689310-9"
-    ),
-    ambiente=AmbienteEnum.Produccion,
-    folio= 7366834,
-    codigoTipoDte=DTEType.NotaCreditoElectronica
-)
+solicitud=Credenciales(rut_emisor="76269769-6")
 try:
-    Obtenerxml = client_api.Proveedores.obtenerXml(solicitud)
-    ruta = "xml.xml"
-    with open(ruta, "wb") as file:
-        file.write(Obtenerxml)
-    print(f"XML guardado en {ruta}")
+    Obtener_pdf = client_api.Proveedores.ConciliarRecibidos(solicitud,5,2024)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {Obtener_pdf.status}")
+    print(f"Message: {Obtener_pdf.message}")
+    print(f"Data: {Obtener_pdf.data}")
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
     print("Detalle del error:", http_err.response.text)

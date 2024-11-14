@@ -35,7 +35,8 @@ class ProveedorService:
 
     def obtener_pdf(self, solicitud):
         url = f"{self.base_url}/documentReceived/getPdf"
-        response = self.session.post(url, json=solicitud.to_dict())
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
             return response.content
@@ -50,12 +51,12 @@ class ProveedorService:
         if not isinstance(anio, int):
             raise ValueError("El parámetro 'anio' debe ser un número entero.")
         
-        solicitud_dict = solicitud.to_dict()
+        solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
             response_json = response.json()
-            resultado = Response.from_dict(response_json, data_type=str)
-            return resultado
+            deserialize_response = Response[str].parse_raw(contenidoRespuesta)
+            return deserialize_response
         else:
             raise Exception(f"Error en la petición: {contenidoRespuesta}")
