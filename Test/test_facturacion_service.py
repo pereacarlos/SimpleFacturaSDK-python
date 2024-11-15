@@ -25,6 +25,7 @@ from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
 from SimpleFacturaSDK.models.GetFactura.Totales import Totales
 from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
@@ -80,8 +81,8 @@ class TestFacturacionService(unittest.TestCase):
         response = self.service.obtener_pdf(solicitud)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
-        self.assertIsNotNone(response.errors)
-        self.assertIn("validation errors", response.errors[0])
+        self.assertIsNotNone(response.message)
+        self.assertIn("data", response.message) 
 
     def test_obtener_timbre_returnOK(self):
         solicitud = SolicitudPdfDte(
@@ -118,8 +119,8 @@ class TestFacturacionService(unittest.TestCase):
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
-        self.assertIsNotNone(response.errors)
-        self.assertIn("validation errors", response.errors[0])
+        self.assertIsNotNone(response.message)
+        self.assertIn("data", response.message) 
 
     def test_obtener_xml_returnOK(self):
         solicitud = SolicitudPdfDte(
@@ -132,14 +133,12 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_xml(solicitud, test=True)
+        response = self.service.obtener_xml(solicitud)
         
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], bytes)
-            self.assertGreater(len(response["content"]), 0, "El XML no debe estar vacío")
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, bytes)
+        self.assertGreater(len(response.data), 0)
 
     def test_obtener_xml_bad_request(self):
         solicitud = SolicitudPdfDte(
@@ -152,9 +151,11 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_xml(solicitud, test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_xml(solicitud)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        self.assertIn("data", response.message) 
 
     def test_obtener_dte_returnOK(self):
         solicitud= SolicitudPdfDte(
@@ -168,15 +169,14 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
 
-        response = self.service.obtener_dte(solicitud, test=True)
+        response = self.service.obtener_dte(solicitud)
         
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], bytes)
-            self.assertGreater(len(response["content"]), 0, "El dte no debe estar vacío")
-
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+        # Verifica que la respuesta es correcta
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, Dte)
+        dte_data = response.data
+        self.assertIsNotNone(dte_data.folio)
 
     def test_obtener_dte_bad_request(self):
         solicitud = SolicitudPdfDte(
@@ -189,9 +189,13 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_dte(solicitud, test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_dte(solicitud)
+
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        self.assertIn("data", response.message) 
+
 
     def test_obtener_sobreXml_returnOK(self):
         solicitud = SolicitudPdfDte(

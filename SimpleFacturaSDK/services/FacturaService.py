@@ -2,6 +2,7 @@ import os
 import json
 import logging
 from typing import List
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 from requests_toolbelt import MultipartEncoder
 import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
@@ -28,9 +29,8 @@ class FacturacionService:
             return Response(status=200, data=response.content)
         return Response(
             status=response.status_code,
-            message="Error en la solicitud",
-            data=None,
-            errors=[contenidoRespuesta]
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
         )
 
     def obtener_timbre(self, solicitud):
@@ -42,45 +42,36 @@ class FacturacionService:
             return Response(status=200, data=response.content)
         return Response(
             status=response.status_code,
-            message="Error en la solicitud",
-            data=None,
-            errors=[contenidoRespuesta]
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
         )
 
-    def obtener_xml(self, solicitud, test=False):
+    def obtener_xml(self, solicitud):
         url = f"{self.base_url}/dte/xml"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            return {
-                "status_code": response.status_code,
-                "content": response.content,
-                "error": contenidoRespuesta if response.status_code != 200 else None
-            }
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
-
-    def obtener_dte(self, solicitud, test=False) -> Response[Dte]:
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
+    
+    def obtener_dte(self, solicitud) -> Response[Dte]:
         url = f"{self.base_url}/documentIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            return {
-                "status_code": response.status_code,
-                "content": response.content,
-                "error": contenidoRespuesta if response.status_code != 200 else None
-            }
         if response.status_code == 200:
             deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
-            return deserialized_response 
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def obtener_sobreXml(self, solicitud, sobre, test=False) -> bytes:
         if isinstance(sobre, int):
