@@ -1479,7 +1479,39 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
-        
 
+
+    def test_conciliarEmitidos_BadRequest_WhenMesIsInvalid(self):
+        solicitud = Credenciales(
+            rut_emisor="76269769-6"
+        )
+
+        response = self.service.ConciliarEmitidos(solicitud, "5", 2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    def test_conciliarEmitidos_BadRequest_WhenAnioIsInvalid(self):
+        solicitud = Credenciales(
+            rut_emisor="76269769-6"
+        )
+
+        response = self.service.ConciliarEmitidos(solicitud, 5, "2024")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        
+    def test_conciliarEmitidos_ServerError(self):
+        solicitud = Credenciales(
+            rut_emisor=""
+        )
+
+        response = self.service.ConciliarEmitidos(solicitud, 5, 2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
 if __name__ == '__main__':
     unittest.main()
