@@ -204,7 +204,6 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsNotNone(response.message)
         self.assertIn("data", response.message) 
 
-
     def test_obtener_sobreXml_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(

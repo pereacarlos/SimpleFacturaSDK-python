@@ -1,10 +1,9 @@
 '''Obtener PDF y timbre
 
-     # Obtener PDF
     pdf = client_api.Facturacion.obtener_pdf(solicitud)
-    # Guardar PDF
+    
     with open("factura.pdf", "wb") as file:
-        file.write(pdf)
+        file.write(pdf.data)
     print("PDF guardado exitosamente", pdf)
 
 -----------Timbre--------------------
