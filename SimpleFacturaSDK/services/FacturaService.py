@@ -144,24 +144,34 @@ class FacturacionService:
             data=None
         )
     
-    def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> InvoiceData:
+    def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
-            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+            return Response(
+                status=400,
+                message="El parámetro 'sucursal' debe ser un string.",
+                data=None
+            )
         url = f"{self.base_url}/dte/exportacion/{sucursal}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
         url = f"{self.base_url}/massiveInvoice"
         if not os.path.isfile(path_csv):
-            raise ValueError(f"El archivo '{path_csv}' no existe.")
+            return Response(
+                status=400,
+                message="El archivo no existe.",
+                data=None
+            )
         solicitud_dict = serializar_solicitud_dict(credenciales)
         m = MultipartEncoder(
             fields={
@@ -173,13 +183,14 @@ class FacturacionService:
             'Content-Type': m.content_type
         }
         response = self.session.post(url, headers=headers, data=m)
-        contenido_respuesta = response.text
+        contenidoRespuesta = response.text
         if response.status_code == 200:
-            response_json = response.json()
-            return response_json
-        else:
-            raise Exception(f"Error en la petición: {contenido_respuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=contenidoRespuesta)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> InvoiceData:
         if not isinstance(sucursal, str):

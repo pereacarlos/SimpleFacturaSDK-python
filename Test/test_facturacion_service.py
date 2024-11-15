@@ -231,7 +231,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsNotNone(response.message)
         self.assertIn("archivoExternoEnt", response.message)
 
-    def test_obtener_sobreXml_bad_request_WhenUrlIsInvalid(self):
+    def test_obtener_sobreXml_bad_request_WhenSobreIsInvalid(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -376,7 +376,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)  
        
-    def test_facturacion_individualV2_dte_bad_request(self):
+    def test_facturacion_individualV2_dte_bad_request_WhenSDatosInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -578,7 +578,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Boleta_bad_request(self):
+    def test_facturacion_individualV2_Boleta_bad_request_WhenSDatosInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -637,14 +637,376 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
+    def test_facturacion_individualV2_Exportacion_ReturnOK(self):
+        solicitud = RequestDTE(
+            Exportaciones=Exportaciones(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.FacturaExportacionElectronica,
+                        FchEmis="2024-08-17",
+                        FmaPago=1,
+                        FchVenc="2024-08-17",
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="Chilesystems",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="mvega@chilesystems.com",
+                        Acteco=[620200],
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago",
+                        CiudadOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="55555555-5",
+                        RznSocRecep="CLIENTE INTERNACIONAL EXP IMP",
+                        Extranjero=Extranjero(
+                            NumId="331-555555",
+                            Nacionalidad= 331
+                        ),
+                        GiroRecep="Giro de Cliente",
+                        CorreoRecep="amamani@chilesystems.com",
+                        DirRecep="Dirección de Cliente",
+                        CmnaRecep="Comuna de Cliente",
+                        CiudadRecep="Ciudad de Cliente"
+                    ),
+                    Transporte=Transporte(
+                        Aduana=Aduana(
+                            CodModVenta=ModalidadVenta.A_FIRME,
+                            CodClauVenta=ClausulaCompraVenta.FOB,
+                            TotClauVenta=1984.65,
+                            CodViaTransp=ViasdeTransporte.AEREO,
+                            CodPtoEmbarque= 901,
+                            CodPtoDesemb=262,
+                            Tara=1,
+                            CodUnidMedTara=UnidadMedida.U,
+                            PesoBruto=10.65,
+                            CodUnidPesoBruto=UnidadMedida.KN,
+                            PesoNeto=9.56,
+                            CodUnidPesoNeto=UnidadMedida.KN,
+                            TotBultos=30,
+                            TipoBultos=[
+                                TipoBulto(
+                                    CodTpoBultos=TipoBultoEnum.CONTENEDOR_REFRIGERADO,
+                                    CantBultos=30,
+                                    IdContainer="1-2",
+                                    Sello="1-3",
+                                    EmisorSello="CONTENEDOR"
+                                    
+                                )
+                            ],
+                            MntFlete=965.1,
+                            MntSeguro=10.25,
+                            CodPaisRecep=Paises.ARGENTINA,
+                            CodPaisDestin=Paises.ARGENTINA
+                        ),
+                        
+                    ),
+                    Totales=Totales(
+                            TpoMoneda=Moneda.DOLAR_ESTADOUNIDENSE,
+                            MntExe=1000,
+                            MntTotal=1000
+                        ),
+                    OtraMoneda= OtraMoneda(
+                            TpoMoneda=Moneda.PESO_CHILENO,
+                            TpoCambio=800.36,
+                            MntNetoOtrMnda=45454.36,
+                            MntExeOtrMnda=45454.36,
+                        ),
+                ),
+                Detalle=[
+                        Detalle(
+                        NroLinDet= 1,
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="INT1",
+                                VlrCodigo="39"
+                            )
+                        ],
+                        IndExe=1,
+                        NmbItem="CHATARRA DE ALUMINIO",
+                        DscItem="OPCIONAL",
+                        QtyItem=1,
+                        UnmdItem="U",
+                        PrcItem=100,
+                        MontoItem=100
+                    )
+                
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA"
+        )
 
+        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        self.assertIsNotNone(response.data.folio)
 
+    def test_facturacion_individualV2_Exportacion_badRequest_WhenSucursalInvalid(self):
+        solicitud = RequestDTE(
+            Exportaciones=Exportaciones(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.FacturaExportacionElectronica,
+                        FchEmis="2024-08-17",
+                        FmaPago=1,
+                        FchVenc="2024-08-17",
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="Chilesystems",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="mvega@chilesystems.com",
+                        Acteco=[620200],
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago",
+                        CiudadOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="55555555-5",
+                        RznSocRecep="CLIENTE INTERNACIONAL EXP IMP",
+                        Extranjero=Extranjero(
+                            NumId="331-555555",
+                            Nacionalidad= 331
+                        ),
+                        GiroRecep="Giro de Cliente",
+                        CorreoRecep="amamani@chilesystems.com",
+                        DirRecep="Dirección de Cliente",
+                        CmnaRecep="Comuna de Cliente",
+                        CiudadRecep="Ciudad de Cliente"
+                    ),
+                    Transporte=Transporte(
+                        Aduana=Aduana(
+                            CodModVenta=ModalidadVenta.A_FIRME,
+                            CodClauVenta=ClausulaCompraVenta.FOB,
+                            TotClauVenta=1984.65,
+                            CodViaTransp=ViasdeTransporte.AEREO,
+                            CodPtoEmbarque= 901,
+                            CodPtoDesemb=262,
+                            Tara=1,
+                            CodUnidMedTara=UnidadMedida.U,
+                            PesoBruto=10.65,
+                            CodUnidPesoBruto=UnidadMedida.KN,
+                            PesoNeto=9.56,
+                            CodUnidPesoNeto=UnidadMedida.KN,
+                            TotBultos=30,
+                            TipoBultos=[
+                                TipoBulto(
+                                    CodTpoBultos=TipoBultoEnum.CONTENEDOR_REFRIGERADO,
+                                    CantBultos=30,
+                                    IdContainer="1-2",
+                                    Sello="1-3",
+                                    EmisorSello="CONTENEDOR"
+                                    
+                                )
+                            ],
+                            MntFlete=965.1,
+                            MntSeguro=10.25,
+                            CodPaisRecep=Paises.ARGENTINA,
+                            CodPaisDestin=Paises.ARGENTINA
+                        ),
+                        
+                    ),
+                    Totales=Totales(
+                            TpoMoneda=Moneda.DOLAR_ESTADOUNIDENSE,
+                            MntExe=1000,
+                            MntTotal=1000
+                        ),
+                    OtraMoneda= OtraMoneda(
+                            TpoMoneda=Moneda.PESO_CHILENO,
+                            TpoCambio=800.36,
+                            MntNetoOtrMnda=45454.36,
+                            MntExeOtrMnda=45454.36,
+                        ),
+                ),
+                Detalle=[
+                        Detalle(
+                        NroLinDet= 1,
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="INT1",
+                                VlrCodigo="39"
+                            )
+                        ],
+                        IndExe=1,
+                        NmbItem="CHATARRA DE ALUMINIO",
+                        DscItem="OPCIONAL",
+                        QtyItem=1,
+                        UnmdItem="U",
+                        PrcItem=100,
+                        MontoItem=100
+                    )
+                
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA"
+        )
 
+        response = self.service.facturacion_individualV2_Exportacion(solicitud, 1)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
+    def test_facturacion_individualV2_Exportacion_badRequest_WhenDatosInvalid(self):
+        solicitud = RequestDTE(
+            Exportaciones=Exportaciones(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=None,
+                        FchEmis="",
+                        FmaPago=1,
+                        FchVenc="",
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="",
+                        RznSoc="Chilesystems",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="mvega@chilesystems.com",
+                        Acteco=[620200],
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago",
+                        CiudadOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="55555555-5",
+                        RznSocRecep="CLIENTE INTERNACIONAL EXP IMP",
+                        Extranjero=Extranjero(
+                            NumId="331-555555",
+                            Nacionalidad= 331
+                        ),
+                        GiroRecep="Giro de Cliente",
+                        CorreoRecep="amamani@chilesystems.com",
+                        DirRecep="Dirección de Cliente",
+                        CmnaRecep="Comuna de Cliente",
+                        CiudadRecep="Ciudad de Cliente"
+                    ),
+                    Transporte=Transporte(
+                        Aduana=Aduana(
+                            CodModVenta=ModalidadVenta.A_FIRME,
+                            CodClauVenta=ClausulaCompraVenta.FOB,
+                            TotClauVenta=1984.65,
+                            CodViaTransp=ViasdeTransporte.AEREO,
+                            CodPtoEmbarque= 901,
+                            CodPtoDesemb=262,
+                            Tara=1,
+                            CodUnidMedTara=UnidadMedida.U,
+                            PesoBruto=10.65,
+                            CodUnidPesoBruto=UnidadMedida.KN,
+                            PesoNeto=9.56,
+                            CodUnidPesoNeto=UnidadMedida.KN,
+                            TotBultos=30,
+                            TipoBultos=[
+                                TipoBulto(
+                                    CodTpoBultos=TipoBultoEnum.CONTENEDOR_REFRIGERADO,
+                                    CantBultos=30,
+                                    IdContainer="1-2",
+                                    Sello="1-3",
+                                    EmisorSello="CONTENEDOR"
+                                    
+                                )
+                            ],
+                            MntFlete=965.1,
+                            MntSeguro=10.25,
+                            CodPaisRecep=Paises.ARGENTINA,
+                            CodPaisDestin=Paises.ARGENTINA
+                        ),
+                        
+                    ),
+                    Totales=Totales(
+                            TpoMoneda=Moneda.DOLAR_ESTADOUNIDENSE,
+                            MntExe=1000,
+                            MntTotal=1000
+                        ),
+                    OtraMoneda= OtraMoneda(
+                            TpoMoneda=Moneda.PESO_CHILENO,
+                            TpoCambio=800.36,
+                            MntNetoOtrMnda=45454.36,
+                            MntExeOtrMnda=45454.36,
+                        ),
+                ),
+                Detalle=[
+                        Detalle(
+                        NroLinDet= 1,
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="INT1",
+                                VlrCodigo="39"
+                            )
+                        ],
+                        IndExe=1,
+                        NmbItem="CHATARRA DE ALUMINIO",
+                        DscItem="OPCIONAL",
+                        QtyItem=1,
+                        UnmdItem="U",
+                        PrcItem=100,
+                        MontoItem=100
+                    )
+                
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA"
+        )
 
+        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        
+    def test_facturacion_individualV2_Exportacion_ServerError(self):
+        solicitud = RequestDTE(
+        )
 
+        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
 
+    def test_facturacion_masiva_ReturnOK(self):
+        credenciales = Credenciales(
+            rut_emisor="76269769-6",
+            nombre_sucursal="Casa Matriz"
+        )
+        path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
+        
+        response = self.service.facturacion_Masiva(credenciales, path_csv)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
 
+    def test_facturacion_masiva_BadRequest_WhenCsvIsInvalid(self):
+        credenciales = Credenciales(
+            rut_emisor="76269769-6",
+            nombre_sucursal="Casa Matriz"
+        )
+        path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional52.csv"
+        
+        response = self.service.facturacion_Masiva(credenciales, path_csv)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+    
+    def test_facturacion_masiva_ServerError(self):
+        credenciales = Credenciales(
+            rut_emisor="",
+            nombre_sucursal=""
+        )
+        path_csv = r"C:\Users\perea\Downloads\SinDatos.csv"
+
+        response = self.service.facturacion_Masiva(credenciales, path_csv)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
 
 
 
