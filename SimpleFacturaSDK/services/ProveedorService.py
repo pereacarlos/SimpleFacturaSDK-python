@@ -2,6 +2,7 @@ from typing import List, Optional
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
@@ -18,10 +19,12 @@ class ProveedorService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def obtenerXml(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/documentReceived/xml"

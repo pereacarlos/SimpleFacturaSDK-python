@@ -25,7 +25,6 @@ class TestProductoService(unittest.TestCase):
         
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Productos
-        self.service_folios = self.client_api.Folios
 
     def test_CrearProducto(self):
         producto_1_nombre = f"NombreGoma_{random.randint(1, 1000)}"
