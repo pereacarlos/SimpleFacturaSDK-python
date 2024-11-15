@@ -130,7 +130,6 @@ class TestProductoService(unittest.TestCase):
             self.assertIsNotNone(response.message)
             self.assertIn("Internal Server Error", response.message)
 
-
     def test_listarProductos_ReturnOK(self):       
         solicitud= Credenciales(
             rut_emisor="76269769-6",
