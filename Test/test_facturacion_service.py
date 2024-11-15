@@ -214,7 +214,6 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsInstance(response.data, bytes)
         self.assertGreater(len(response.data), 0)
         
-        
     def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
@@ -247,7 +246,6 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
-
 
     def test_facturacion_individualV2_dte_returnOK(self):
         solicitud = RequestDTE(
@@ -313,6 +311,70 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, InvoiceData)
         self.assertIsNotNone(response.data.folio) 
+
+    def test_facturacion_individualV2_dte_bad_request_WhenSucursalInvalid(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.FacturaElectronica,
+                        FchEmis="2024-09-05",
+                        FmaPago=1,
+                        FchVenc="2024-09-05"
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="mvega@chilesystems.com",
+                        Acteco=[620200],
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago",
+                        CiudadOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="17096073-4",
+                        RznSocRecep="Hotel Iquique",
+                        GiroRecep="test",
+                        CorreoRecep="mvega@chilesystems.com",
+                        DirRecep="calle 12",
+                        CmnaRecep="Paine",
+                        CiudadRecep="Santiago"
+                    ),
+                    Totales=Totales(
+                        MntNeto="832",
+                        TasaIVA="19",
+                        IVA="158",
+                        MntTotal="990"
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet="1",
+                        NmbItem="Alfajor",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="ALFA",
+                                VlrCodigo="123"
+                            )
+                        ],
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="831.932773",
+                        MontoItem="832"
+                    )
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA",
+            TipoPago="30 dias"
+        )
+
+        response = self.service.facturacion_individualV2_Dte(solicitud, 1)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)  
        
     def test_facturacion_individualV2_dte_bad_request(self):
         solicitud = RequestDTE(
@@ -373,13 +435,207 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
+    def test_facturacion_individualV2_Boleta_ReturnOK(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.BoletaElectronica,
+                        FchEmis="2024-09-03",
+                        FchVenc="2024-09-03",
+                        IndServicio=IndicadorServicioEnum.BoletaVentasYServicios,
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSocEmisor="Chilesystems",
+                        GiroEmisor="Desarrollo de software",
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="17096073-4",
+                        RznSocRecep="Proveedor Test",
+                        DirRecep="calle 12",
+                        CmnaRecep="Paine",
+                        CiudadRecep="Santiago",
+                        CorreoRecep="mercocha13@gmail.com",
+                    ),
+                    Totales=Totales(
+                        MntNeto="8320",
+                        IVA="1580",
+                        MntTotal="9900"
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet="1",
+                        DscItem="Desc1",
+                        NmbItem="Producto Test",
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="100",
+                        MontoItem="100",
+                        CdgItem=[]
+                    ),
+                    Detalle(
+                        NroLinDet="2",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="ALFA",
+                                VlrCodigo="123"
+                            )
+                        ],
+                        DscItem="Desc2",
+                        NmbItem="Producto Test",
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="100",
+                        MontoItem="100"
+                        
+                    )
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA",
+            Cajero="CAJERO",
+            TipoPago="CONTADO"
+        )
 
+        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        self.assertIsNotNone(response.data.folio)
+        
+    def test_facturacion_individualV2_Boleta_bad_request_WhenSucursalInvalid(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.BoletaElectronica,
+                        FchEmis="2024-09-03",
+                        FchVenc="2024-09-03",
+                        IndServicio=IndicadorServicioEnum.BoletaVentasYServicios,
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSocEmisor="Chilesystems",
+                        GiroEmisor="Desarrollo de software",
+                        DirOrigen="Calle 7 numero 3",
+                        CmnaOrigen="Santiago"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="17096073-4",
+                        RznSocRecep="Proveedor Test",
+                        DirRecep="calle 12",
+                        CmnaRecep="Paine",
+                        CiudadRecep="Santiago",
+                        CorreoRecep="mercocha13@gmail.com",
+                    ),
+                    Totales=Totales(
+                        MntNeto="8320",
+                        IVA="1580",
+                        MntTotal="9900"
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet="1",
+                        DscItem="Desc1",
+                        NmbItem="Producto Test",
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="100",
+                        MontoItem="100",
+                        CdgItem=[]
+                    ),
+                    Detalle(
+                        NroLinDet="2",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="ALFA",
+                                VlrCodigo="123"
+                            )
+                        ],
+                        DscItem="Desc2",
+                        NmbItem="Producto Test",
+                        QtyItem="1",
+                        UnmdItem="un",
+                        PrcItem="100",
+                        MontoItem="100"
+                        
+                    )
+                ]
+            ),
+            Observaciones="NOTA AL PIE DE PAGINA",
+            Cajero="CAJERO",
+            TipoPago="CONTADO"
+        )
 
+        response = self.service.facturacion_individualV2_Boletas(solicitud, 1)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
+    def test_facturacion_individualV2_Boleta_bad_request(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=None, 
+                        FchEmis="2024-09-05",
+                        FmaPago=None,
+                        FchVenc=None
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="",
+                        RznSoc="",
+                        GiroEmis="",
+                        Telefono=[],
+                        CorreoEmisor="",
+                        Acteco=[],
+                        DirOrigen="",
+                        CmnaOrigen="",
+                        CiudadOrigen=""
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="",
+                        RznSocRecep="",
+                        GiroRecep="",
+                        CorreoRecep="",
+                        DirRecep="",
+                        CmnaRecep="",
+                        CiudadRecep=""
+                    ),
+                    Totales=Totales(
+                        MntNeto=None,
+                        TasaIVA=None,
+                        IVA=None,
+                        MntTotal=None
+                    )
+                ),
+                Detalle=[]
+            ),
+            Observaciones="",
+            TipoPago=""
+        )
 
+        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
+    def test_facturacion_individualV2_Boleta_serverError(self):
+        solicitud = RequestDTE(
+        )
 
-
+        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
 
 
 

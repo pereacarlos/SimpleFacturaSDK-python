@@ -124,19 +124,25 @@ class FacturacionService:
             data=None
         )
 
-    def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
+    def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
-            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+            return Response(
+                status=400,
+                message="El parámetro 'sucursal' debe ser un string.",
+                data=None
+            )
         url = f"{self.base_url}/invoiceV2/{sucursal}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text                
         if response.status_code == 200:
             deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
     
     def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> InvoiceData:
         if not isinstance(sucursal, str):
