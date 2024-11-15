@@ -226,10 +226,12 @@ class FacturacionService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def enviarCorreo(self, solicitud) -> bool:
         url = f"{self.base_url}/dte/enviar/mail"
@@ -238,10 +240,12 @@ class FacturacionService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[bool].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
         url = f"{self.base_url}/dte/consolidated/issued"
@@ -250,25 +254,38 @@ class FacturacionService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[ReporteDTE]].parse_raw(contenidoRespuesta)
-            return deserialized_response
+            return Response(status=200, data=deserialized_response.data)
         else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+           return Response(
+                status=response.status_code,
+                message=simplificar_errores(contenidoRespuesta),
+                data=None
+            )
 
     def ConciliarEmitidos(self, solicitud, mes, anio) -> Response[str]:
         url = f"{self.base_url}/documentsIssued/consolidate/{mes}/{anio}"
-        # deben de ser tipo número
         if not isinstance(mes, int):
-            raise ValueError("El parámetro 'mes' debe ser un número entero.")
+            return Response(
+                status=400,
+                message="El parámetro 'mes' debe ser un número entero.",
+                data=None
+            )
         if not isinstance(anio, int):
-            raise ValueError("El parámetro 'anio' debe ser un número entero.")
+            return Response(
+                status=400,
+                message="El parámetro 'anio' debe ser un número entero.",
+                data=None
+            )
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        
         if response.status_code == 200:
             deserialized_response = Response[str].parse_raw(contenidoRespuesta)
-            return deserialized_response
+            return Response(status=200, data=deserialized_response.data)
         else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            return Response(
+                status=response.status_code,
+                message=simplificar_errores(contenidoRespuesta),
+                data=None
+            )
             

@@ -11,7 +11,7 @@ from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 class ListaDteRequestEnt:
     #sacar credenciales de SolicitudPdfDte
     Credenciales: Credenciales
-    ambiente: AmbienteEnum
+    ambiente: Optional[AmbienteEnum] = None
     salida: Optional[TipoSalidaEnum] = None
     folio: Optional[float] = None
     codigoTipoDte: Optional[DTEType] = None
@@ -23,7 +23,7 @@ class ListaDteRequestEnt:
     def to_dict(self):
           return {
             "credenciales": self.Credenciales.to_dict(),
-            "ambiente": self.ambiente.value,
+            "ambiente": self.ambiente.value if self.ambiente else None,
             "folio": self.folio,
             "codigoTipoDte": self.codigoTipoDte.value if self.codigoTipoDte else None,
             "desde": self.desde.strftime("%Y-%m-%d") if self.desde else None,

@@ -2,6 +2,7 @@ import unittest
 from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
 import base64
 import json
+from unittest.mock import patch
 from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
@@ -27,11 +28,15 @@ from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
 from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.GetFactura.Referencia import Referencia
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+
 from datetime import datetime
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
@@ -1312,15 +1317,169 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
+    def test_ListadoDteEmitidos_ReturnOK(self):
+        fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="76269769-6",
+                rut_contribuyente="10422710-4",
+                nombre_sucursal="Casa Matriz"
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            folio=0,
+            codigoTipoDte=DTEType.NotSet,
+            desde=fecha_desde,
+            hasta=fecha_hasta
+        )
 
+        response = self.service.listadoDteEmitidos(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        for dte in response.data:
+            self.assertIsNotNone(dte.folio)
+            self.assertIsNotNone(dte.ambiente)
+            self.assertIsNotNone(dte.folioReutilizado)
 
+    def test_ListadoDteEmitidos_BadRequest_WhenDataIsInvalid(self):
+        fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="",
+                rut_contribuyente="",
+                nombre_sucursal=""
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            folio=0,
+            codigoTipoDte=DTEType.NotSet,
+            desde=fecha_desde,
+            hasta=fecha_hasta
+        )
 
+        response = self.service.listadoDteEmitidos(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
+    def test_enviarCorreo_ReturnOK(self):
+        solicitud = EnvioMailRequest(
+                RutEmpresa="76269769-6",
+                Dte= DteClass(folio=2149, tipoDTE=33),
+                Mail= MailClass(
+                    to=["contacto@chilesystems.com"],
+                    ccos=["correo@gmail.com"],
+                    ccs=["correo2@gmail.com"]
+                ),
+                Xml=True,
+                Pdf=True,
+                Comments="ESTO ES UN COMENTARIO"
+            )
 
+        response = self.service.enviarCorreo(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
 
+    def test_enviarCorreo_BadRequest_WhenDataIsInvalid(self):
+        solicitud = EnvioMailRequest(
+                RutEmpresa="",
+                Dte= DteClass(folio=None, tipoDTE=None),
+                Mail= MailClass(
+                    to=["contacto@chilesystems.com"],
+                    ccos=["correo@gmail.com"],
+                    ccs=["correo2@gmail.com"]
+                ),
+                Xml=True,
+                Pdf=True,
+                Comments="ESTO ES UN COMENTARIO"
+            )
 
+        response = self.service.enviarCorreo(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
+    def test_enviarCorreo_ServerError(self):
+        # Mock de solicitud vacía
+        solicitud = EnvioMailRequest(
+            RutEmpresa="",
+            Dte=DteClass(folio=None, tipoDTE=None),
+            Mail=MailClass(
+                to=[],
+                ccos=[],
+                ccs=[]
+            ),
+            Xml=False,
+            Pdf=False,
+            Comments=""
+        )
 
+        with patch('SimpleFacturaSDK.services.FacturaService.requests.Session.post') as mock_post:
+            mock_post.return_value.status_code = 500
+            mock_post.return_value.text = "Error interno del servidor"
+            response = self.service.enviarCorreo(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertIn("Error interno del servidor", response.message)
+
+    def test_consolidadoVentas_ReturnOK(self):
+        fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            desde=fecha_desde,
+            hasta=fecha_hasta
+        )
+
+        response = self.service.consolidadoVentas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        for dte in response.data:
+            self.assertIsNotNone(dte.total)
+            self.assertIsNotNone(dte.anulados)
+    
+    def test_consolidadoVentas_ServerError(self):
+        fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            desde=fecha_desde,
+            hasta=fecha_hasta
+        )
+
+        response = self.service.consolidadoVentas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
+
+    def test_conciliarEmitidos_ReturnOK(self):
+        solicitud =Credenciales(
+            rut_emisor="76269769-6"
+        )
+
+        response = self.service.ConciliarEmitidos(solicitud,5, 2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        
 
 if __name__ == '__main__':
     unittest.main()
