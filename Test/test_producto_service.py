@@ -129,3 +129,49 @@ class TestProductoService(unittest.TestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
             self.assertIn("Internal Server Error", response.message)
+
+
+    def test_listarProductos_ReturnOK(self):       
+        solicitud= Credenciales(
+            rut_emisor="76269769-6",
+            nombre_sucursal="Casa Matriz"
+        )
+
+        response = self.service.listarProductos(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, list)
+        for i, producto in enumerate(response.data):
+            if i >= 5:
+                break
+            self.assertIsNotNone(producto.nombre)
+
+    def test_listarProductos_BadRequest(self):
+        solicitud = Credenciales(
+            rut_emisor="",
+            nombre_sucursal=""
+        )
+
+        response = self.service.listarProductos(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)     
+
+    def test_listarProductos_ServerError(self):
+        solicitud = Credenciales(
+            rut_emisor="",
+            nombre_sucursal=""
+        )
+        with patch('SimpleFacturaSDK.services.ProductoService.requests.Session.post') as mock_post:
+            mock_post.return_value.status_code = 500
+            mock_post.return_value.text = "Internal Server Error"
+
+            response = self.service.listarProductos(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertIn("Internal Server Error", response.message)

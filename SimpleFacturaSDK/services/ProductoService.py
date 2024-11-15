@@ -34,7 +34,9 @@ class ProductoService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[ProductoExternoEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
