@@ -28,9 +28,8 @@ try:
     # Guardar PDF
     # Guardar Timbre como imagen PNG
     timbre_response = client_api.Facturacion.obtener_timbre(solicitud)
-    timbre_data = json.loads(timbre_response.data)
     with open("timbre.png", "wb") as f:
-        f.write(base64.b64decode(timbre_data["data"]))
+        f.write(base64.b64decode(timbre_response.data["data"]))
 
 
 except requests.exceptions.HTTPError as http_err:

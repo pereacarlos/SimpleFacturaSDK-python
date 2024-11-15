@@ -17,7 +17,7 @@ class Response(BaseModel, Generic[T]):
     def error(cls, status_code: int, message: str, errors: Optional[Any] = None) -> "Response[T]":
        
         return cls(status=status_code, data=None, message=message, errors=errors)
-    
+'''
     @classmethod
     def from_dict(cls, d: dict, data_type: Any) -> "Response":
         # Obtener data usando get() para manejar casos donde no existe
@@ -42,4 +42,4 @@ class Response(BaseModel, Generic[T]):
             message=d.get("message"),
             data=data,
             errors=d.get("errors")
-        )
+        )'''
