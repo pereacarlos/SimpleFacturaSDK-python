@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 from typing import List
 from requests_toolbelt import MultipartEncoder
 import requests
@@ -18,39 +19,33 @@ class FacturacionService:
         self.base_url = base_url
 
 
-    def obtener_pdf(self, solicitud, test=False):
+    def obtener_pdf(self, solicitud):
         url = f"{self.base_url}/dte/pdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            return {
-                "status_code": response.status_code,
-                "content": response.content,
-                "error": contenidoRespuesta if response.status_code != 200 else None
-            }
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message="Error en la solicitud",
+            data=None,
+            errors=[contenidoRespuesta]
+        )
 
-    def obtener_timbre(self, solicitud, test=False):
+    def obtener_timbre(self, solicitud):
         url = f"{self.base_url}/dte/timbre"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            return {
-                "status_code": response.status_code,
-                "content": response.content,
-                "error": contenidoRespuesta if response.status_code != 200 else None
-            }
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message="Error en la solicitud",
+            data=None,
+            errors=[contenidoRespuesta]
+        )
 
     def obtener_xml(self, solicitud, test=False):
         url = f"{self.base_url}/dte/xml"

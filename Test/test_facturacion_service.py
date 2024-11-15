@@ -42,7 +42,6 @@ class TestFacturacionService(unittest.TestCase):
         username = "demo@chilesystems.com"
         password = "Rv8Il4eV"
         
-        # Usa `ClientSimpleFactura` para configurar la autenticación correctamente
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Facturacion
 
@@ -58,14 +57,13 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_pdf(solicitud, test=True)
-        
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], bytes)
-            self.assertGreater(len(response["content"]), 0, "El PDF no debe estar vacío")
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+
+        response = self.service.obtener_pdf(solicitud)
+
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, bytes)
+        self.assertGreater(len(response.data), 0)
 
     def test_obtener_pdf_bad_request(self):
         solicitud = SolicitudPdfDte(
@@ -79,9 +77,11 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_pdf(solicitud, test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_pdf(solicitud)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.errors)
+        self.assertIn("validation errors", response.errors[0])
 
     def test_obtener_timbre_returnOK(self):
         solicitud = SolicitudPdfDte(
@@ -94,14 +94,13 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_timbre(solicitud, test=True)
+        response = self.service.obtener_timbre(solicitud)
         
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], bytes)
-            self.assertGreater(len(response["content"]), 0, "El Timbre no debe estar vacío")
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, bytes)
+        self.assertGreater(len(response.data), 0)
+        self.assertIsNotNone(response.data)
 
     def test_obtener_timbre_bad_request(self):
         solicitud = SolicitudPdfDte(
@@ -115,9 +114,12 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_timbre(solicitud, test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_timbre(solicitud)
+
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.errors)
+        self.assertIn("validation errors", response.errors[0])
 
     def test_obtener_xml_returnOK(self):
         solicitud = SolicitudPdfDte(
