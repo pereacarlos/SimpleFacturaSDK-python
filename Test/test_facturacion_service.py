@@ -208,14 +208,14 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,0, test=True)
+        response = self.service.obtener_sobreXml(solicitud,0)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, bytes)
+        self.assertGreater(len(response.data), 0)
         
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], bytes)
-            self.assertGreater(len(response["content"]), 0, "El sobre no debe estar vacío")
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
+        
+
     
     def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
         solicitud = SolicitudPdfDte(

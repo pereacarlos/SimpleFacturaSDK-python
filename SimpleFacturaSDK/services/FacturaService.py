@@ -75,28 +75,12 @@ class FacturacionService:
 
     def obtener_sobreXml(self, solicitud, sobre, test=False) -> bytes:
         if isinstance(sobre, int):
-            try:
                 sobre_enum = TipoSobreEnvio(sobre)
                 sobre_value = sobre_enum.value
             except ValueError:
                 allowed_values = [e.value for e in TipoSobreEnvio]
-                error_message = f"El valor numérico de 'sobre' debe ser uno de {allowed_values}, no '{sobre}'"
-                if test:
-                    return {
-                        "status_code": 400,
-                        "content": None,
-                        "error": error_message
-                    }
-                else:
-                    raise ValueError(error_message)
         else:
             error_message = "El parámetro 'sobre' debe ser un número entero."
-            if test:
-                return {
-                    "status_code": 400,
-                    "content": None,
-                    "error": error_message
-                }
             else:
                 raise ValueError(error_message)
 
