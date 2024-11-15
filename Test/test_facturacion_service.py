@@ -314,6 +314,65 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsInstance(response.data, InvoiceData)
         self.assertIsNotNone(response.data.folio) 
        
+    def test_facturacion_individualV2_dte_bad_request(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=None, 
+                        FchEmis="2024-09-05",
+                        FmaPago=None,
+                        FchVenc=None
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="",
+                        RznSoc="",
+                        GiroEmis="",
+                        Telefono=[],
+                        CorreoEmisor="",
+                        Acteco=[],
+                        DirOrigen="",
+                        CmnaOrigen="",
+                        CiudadOrigen=""
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="",
+                        RznSocRecep="",
+                        GiroRecep="",
+                        CorreoRecep="",
+                        DirRecep="",
+                        CmnaRecep="",
+                        CiudadRecep=""
+                    ),
+                    Totales=Totales(
+                        MntNeto=None,
+                        TasaIVA=None,
+                        IVA=None,
+                        MntTotal=None
+                    )
+                ),
+                Detalle=[]
+            ),
+            Observaciones="",
+            TipoPago=""
+        )
+        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)    
+    
+    def test_facturacion_individualV2_dte_serverError(self):
+        solicitud = RequestDTE(
+        )
+
+        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
+
 
 
 
