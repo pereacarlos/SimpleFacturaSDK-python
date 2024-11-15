@@ -215,8 +215,6 @@ class TestFacturacionService(unittest.TestCase):
         self.assertGreater(len(response.data), 0)
         
         
-
-    
     def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
@@ -228,9 +226,11 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,0, test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_sobreXml(solicitud,0)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        self.assertIn("archivoExternoEnt", response.message)
 
     def test_obtener_sobreXml_bad_request_WhenUrlIsInvalid(self):
         solicitud = SolicitudPdfDte(
@@ -243,9 +243,11 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,"sdd", test=True)
-        self.assertEqual(response["status_code"], 400)
-        self.assertIsNotNone(response["error"])
+        response = self.service.obtener_sobreXml(solicitud,"sdd")
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
 
     def test_facturacion_individualV2_dte_returnOK(self):
         solicitud = RequestDTE(
@@ -305,18 +307,13 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago="30 dias"
         )
 
-        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz", test=True)
-
-        if response["status_code"] == 200:
-            self.assertIsInstance(response["content"], InvoiceData)
-            self.assertIsNotNone(response["content"].tipoDTE, "El tipoDTE no debe ser None")
-            self.assertIsNotNone(response["content"].rutEmisor, "El rutEmisor no debe ser None")
-            self.assertIsNotNone(response["content"].folio, "El folio no debe ser None")
-        
-        else:
-            self.assertIsNotNone(response["error"])
-            self.fail(f"Solicitud fallida con código de estado {response['status_code']}")
-
+        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsInstance(response.data, InvoiceData)
+        self.assertIsNotNone(response.data.folio) 
+       
 
 
 

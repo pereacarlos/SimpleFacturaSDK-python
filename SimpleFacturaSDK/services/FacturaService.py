@@ -73,66 +73,56 @@ class FacturacionService:
             data=None
         )
 
-    def obtener_sobreXml(self, solicitud, sobre, test=False) -> bytes:
+    def obtener_sobreXml(self, solicitud, sobre) -> bytes:
         if isinstance(sobre, int):
+            try:
                 sobre_enum = TipoSobreEnvio(sobre)
                 sobre_value = sobre_enum.value
             except ValueError:
                 allowed_values = [e.value for e in TipoSobreEnvio]
+                return Response(
+                    status=400,
+                    message=f"El parámetro 'sobre' debe ser uno de los siguientes valores: {allowed_values}",
+                    data=None
+                )
         else:
-            error_message = "El parámetro 'sobre' debe ser un número entero."
-            else:
-                raise ValueError(error_message)
+            return Response(
+                status=400,
+                message="El parámetro 'sobre' debe ser un número entero.",
+                data=None
+            )
 
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            return {
-                "status_code": response.status_code,
-                "content": response.content,
-                "error": contenidoRespuesta if response.status_code != 200 else None
-            }
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
-    def facturacion_individualV2_Dte(self, solicitud, sucursal, test=False) -> Response[InvoiceData]:
+    def facturacion_individualV2_Dte(self, solicitud, sucursal) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
-            error_message = "El parámetro 'sucursal' debe ser un string."
-            if test:
-                return {
-                    "status_code": 400,
-                    "content": None,
-                    "error": error_message
-                }
-            else:
-                raise ValueError(error_message)
+            return Response(
+                status=400,
+                message="El parámetro 'sucursal' debe ser un string.",
+                data=None
+            )
         url = f"{self.base_url}/invoiceV2/{sucursal}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
-        if test:
-            if response.status_code == 200:
-                deserialized_content = Response[InvoiceData].parse_raw(contenidoRespuesta).data
-                return {
-                    "status_code": 200,
-                    "content": deserialized_content,
-                    "error": None
-                }
-            else:
-                return {
-                    "status_code": response.status_code,
-                    "content": None,
-                    "error": contenidoRespuesta
-                }
         if response.status_code == 200:
             deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> InvoiceData:
         if not isinstance(sucursal, str):
