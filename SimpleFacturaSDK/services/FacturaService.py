@@ -192,22 +192,32 @@ class FacturacionService:
             data=None
         )
 
-    def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> InvoiceData:
+    def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
-            raise ValueError("El parámetro 'sucursal' debe ser un string.")
+           return Response(
+                status=400,
+                message="El parámetro 'sucursal' debe ser un string.",
+                data=None
+            )
 
         if not isinstance(motivo, int):
-            raise ValueError("El parámetro 'motivo' debe ser un número entero.")
+            return Response(
+                status=400,
+                message="El parámetro 'motivo' debe ser un número entero.",
+                data=None
+            )
         url = f"{self.base_url}/invoiceCreditDebitNotesV2/{sucursal}/{motivo}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def listadoDteEmitidos(self, solicitud) -> Response[List[Dte]]:
         url = f"{self.base_url}/documentsIssued"

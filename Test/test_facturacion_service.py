@@ -1008,6 +1008,318 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
+    def test_EmisionNC_ND_V2_ReturnOK(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.NotaDebitoElectronica,
+                        FchEmis="2024-08-13",
+                        FmaPago=2,
+                        FchVenc="2024-08-13"
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="felipe.anzola@erke.cl",
+                        Acteco=[620900],
+                        DirOrigen="Chile",
+                        CmnaOrigen="Chile",
+                        CiudadOrigen="Chile"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="77225200-5",
+                        RznSocRecep="ARRENDADORA DE VEHÍCULOS S.A.",
+                        GiroRecep="451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                        CorreoRecep="terceros-77225200@dte.iconstruye.com",
+                        DirRecep="Rondizzoni 2130",
+                        CmnaRecep="SANTIAGO",
+                        CiudadRecep="SANTIAGO"
+                    ),
+                    Totales=Totales(
+                        MntNeto=6930000.0,
+                        TasaIVA=19,
+                        IVA=1316700,
+                        MntTotal=8246700.0
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet=1,
+                        NmbItem="CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="4",
+                                VlrCodigo="EVO_2"
+                            )
+                        ],
+                        QtyItem=42.0,
+                        UnmdItem="unid",
+                        PrcItem=319166.0,
+                        MontoItem=6930000
+                    )
+                ],
+                Referencia=[
+                    Referencia(
+                        NroLinRef=1,
+                        TpoDocRef="61",
+                        FolioRef="1268",
+                        FchRef=fecha_referencia,
+                        CodRef=1,
+                        RazonRef="Anular"
+                    )
+                ]
+            )
+        )
+        motivo = ReasonTypeEnum.Otros.value
+
+        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        self.assertIsNotNone(response.data.folio)
+
+    def test_EmisionNC_ND_V2_BadRequest_WhenSucursalIsInavlid(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.NotaDebitoElectronica,
+                        FchEmis="2024-08-13",
+                        FmaPago=2,
+                        FchVenc="2024-08-13"
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="felipe.anzola@erke.cl",
+                        Acteco=[620900],
+                        DirOrigen="Chile",
+                        CmnaOrigen="Chile",
+                        CiudadOrigen="Chile"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="77225200-5",
+                        RznSocRecep="ARRENDADORA DE VEHÍCULOS S.A.",
+                        GiroRecep="451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                        CorreoRecep="terceros-77225200@dte.iconstruye.com",
+                        DirRecep="Rondizzoni 2130",
+                        CmnaRecep="SANTIAGO",
+                        CiudadRecep="SANTIAGO"
+                    ),
+                    Totales=Totales(
+                        MntNeto=6930000.0,
+                        TasaIVA=19,
+                        IVA=1316700,
+                        MntTotal=8246700.0
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet=1,
+                        NmbItem="CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="4",
+                                VlrCodigo="EVO_2"
+                            )
+                        ],
+                        QtyItem=42.0,
+                        UnmdItem="unid",
+                        PrcItem=319166.0,
+                        MontoItem=6930000
+                    )
+                ],
+                Referencia=[
+                    Referencia(
+                        NroLinRef=1,
+                        TpoDocRef="61",
+                        FolioRef="1268",
+                        FchRef=fecha_referencia,
+                        CodRef=1,
+                        RazonRef="Anular"
+                    )
+                ]
+            )
+        )
+        motivo = ReasonTypeEnum.Otros.value
+
+        response = self.service.EmisionNC_ND_V2(solicitud, 1, motivo)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    def test_EmisionNC_ND_V2_BadRequest_WhenMotivoIsInvalid(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=DTEType.NotaDebitoElectronica,
+                        FchEmis="2024-08-13",
+                        FmaPago=2,
+                        FchVenc="2024-08-13"
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="felipe.anzola@erke.cl",
+                        Acteco=[620900],
+                        DirOrigen="Chile",
+                        CmnaOrigen="Chile",
+                        CiudadOrigen="Chile"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="77225200-5",
+                        RznSocRecep="ARRENDADORA DE VEHÍCULOS S.A.",
+                        GiroRecep="451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                        CorreoRecep="terceros-77225200@dte.iconstruye.com",
+                        DirRecep="Rondizzoni 2130",
+                        CmnaRecep="SANTIAGO",
+                        CiudadRecep="SANTIAGO"
+                    ),
+                    Totales=Totales(
+                        MntNeto=6930000.0,
+                        TasaIVA=19,
+                        IVA=1316700,
+                        MntTotal=8246700.0
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet=1,
+                        NmbItem="CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="4",
+                                VlrCodigo="EVO_2"
+                            )
+                        ],
+                        QtyItem=42.0,
+                        UnmdItem="unid",
+                        PrcItem=319166.0,
+                        MontoItem=6930000
+                    )
+                ],
+                Referencia=[
+                    Referencia(
+                        NroLinRef=1,
+                        TpoDocRef="61",
+                        FolioRef="1268",
+                        FchRef=fecha_referencia,
+                        CodRef=1,
+                        RazonRef="Anular"
+                    )
+                ]
+            )
+        )
+        motivo = ReasonTypeEnum.Otros.value
+
+        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", "Motivo")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    def test_EmisionNC_ND_V2_BadRequest_WhenDataIsInvalid(self):
+        solicitud = RequestDTE(
+            Documento=Documento(
+                Encabezado=Encabezado(
+                    IdDoc=IdDoc(
+                        TipoDTE=None,
+                        FchEmis="",
+                        FmaPago=2,
+                        FchVenc=""
+                    ),
+                    Emisor=Emisor(
+                        RUTEmisor="76269769-6",
+                        RznSoc="SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                        GiroEmis="Desarrollo de software",
+                        Telefono=["912345678"],
+                        CorreoEmisor="felipe.anzola@erke.cl",
+                        Acteco=[620900],
+                        DirOrigen="Chile",
+                        CmnaOrigen="Chile",
+                        CiudadOrigen="Chile"
+                    ),
+                    Receptor=Receptor(
+                        RUTRecep="77225200-5",
+                        RznSocRecep="ARRENDADORA DE VEHÍCULOS S.A.",
+                        GiroRecep="451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                        CorreoRecep="terceros-77225200@dte.iconstruye.com",
+                        DirRecep="Rondizzoni 2130",
+                        CmnaRecep="SANTIAGO",
+                        CiudadRecep="SANTIAGO"
+                    ),
+                    Totales=Totales(
+                        MntNeto=6930000.0,
+                        TasaIVA=19,
+                        IVA=1316700,
+                        MntTotal=8246700.0
+                    )
+                ),
+                Detalle=[
+                    Detalle(
+                        NroLinDet=1,
+                        NmbItem="CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                        CdgItem=[
+                            CdgItem(
+                                TpoCodigo="4",
+                                VlrCodigo="EVO_2"
+                            )
+                        ],
+                        QtyItem=42.0,
+                        UnmdItem="unid",
+                        PrcItem=319166.0,
+                        MontoItem=6930000
+                    )
+                ],
+                Referencia=[
+                    Referencia(
+                        NroLinRef=1,
+                        TpoDocRef="61",
+                        FolioRef="1268",
+                        FchRef=fecha_referencia,
+                        CodRef=1,
+                        RazonRef="Anular"
+                    )
+                ]
+            )
+        )
+        motivo = ReasonTypeEnum.Otros.value
+
+        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    def test_EmisionNC_ND_V2_ServerError(self):
+        solicitud = RequestDTE(
+        )
+        motivo = ReasonTypeEnum.Otros.value
+
+        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNotNone(response.message)
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
