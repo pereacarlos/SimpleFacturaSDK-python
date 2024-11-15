@@ -2,6 +2,8 @@ import unittest
 from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
 import base64
 import json
+from dotenv import load_dotenv
+import os
 from unittest.mock import patch
 from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -45,11 +47,11 @@ import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 
-
+load_dotenv()
 class TestFacturacionService(unittest.TestCase):
     def setUp(self):
-        username = "demo@chilesystems.com"
-        password = "Rv8Il4eV"
+        username = os.getenv("USERNAME")
+        password = os.getenv("PASSWORD")
         
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Facturacion
@@ -1323,7 +1325,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
-    #correguir
+
     def test_EmisionNC_ND_V2_ServerError(self):
         solicitud = RequestDTE(
         )
