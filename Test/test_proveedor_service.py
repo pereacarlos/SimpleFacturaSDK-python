@@ -135,3 +135,100 @@ class TestProveedorService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
+
+    def test_obtener_pdf_ReturnOK(self):
+        solicitud=ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="76269769-6",
+                rut_contribuyente="76269769-6"
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            folio= 2232,
+            codigoTipoDte=DTEType.FacturaElectronica
+        )
+        response = self.service.obtener_pdf(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        self.assertIsInstance(response.data, bytes)
+
+    def test_obtener_pdf_BadRequest_WhenDataISInvalid(self):
+        solicitud=ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="76269769-6",
+                rut_contribuyente="76269769-6"
+            )
+        )
+        response = self.service.obtener_pdf(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)
+
+    def test_obtener_pdf_ServerError(self):
+        solicitud=ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="",
+                rut_contribuyente=""
+            ),
+            ambiente=AmbienteEnum.Produccion,
+            folio= 0,
+            codigoTipoDte=None
+        )
+        response = self.service.obtener_pdf(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)
+
+    def test_ConciliarRecibidos_ReturnOK(self):
+        solicitud=Credenciales(rut_emisor="76269769-6")
+
+        response = self.service.ConciliarRecibidos(solicitud,5,2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+        self.assertIsInstance(response.data, str)
+
+    def test_ConciliarRecibidos_BadRequest_WhenMesISInvalid(self):
+        solicitud=Credenciales(rut_emisor="76269769-6")
+
+        response = self.service.ConciliarRecibidos(solicitud,"5",2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)
+
+    def test_ConciliarRecibidos_BadRequest_WhenAnioISInvalid(self):
+        solicitud=Credenciales(rut_emisor="76269769-6")
+
+        response = self.service.ConciliarRecibidos(solicitud,5,"2024")
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)
+
+    def test_ConciliarRecibidos_ServerError(self):
+        solicitud=Credenciales(rut_emisor="76269769-k")
+
+        response = self.service.ConciliarRecibidos(solicitud,5,2024)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNone(response.data)
+        self.assertIsNotNone(response.message)
+
+
+
+
+
+
+
+
+

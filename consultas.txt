@@ -249,7 +249,7 @@
     ObtenerPdf = client_api.Proveedores.obtener_pdf(solicitud)
     ruta = "pdf.pdf"
     with open(ruta, "wb") as file:
-        file.write(ObtenerPdf)
+        file.write(ObtenerPdf.data)
     print(f"PDF guardado en {ruta}")
 
 

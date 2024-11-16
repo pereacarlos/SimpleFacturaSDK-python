@@ -45,25 +45,36 @@ class ProveedorService:
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
         url = f"{self.base_url}/documentsReceived/consolidate/{mes}/{anio}"
-        # deben de ser tipo número
         if not isinstance(mes, int):
-            raise ValueError("El parámetro 'mes' debe ser un número entero.")
+            return Response(
+                status=400,
+                message="El parámetro 'mes' debe ser un número entero.",
+                data=None
+            )
         if not isinstance(anio, int):
-            raise ValueError("El parámetro 'anio' debe ser un número entero.")
+            return Response(
+                status=400,
+                message="El parámetro 'anio' debe ser un número entero.",
+                data=None
+            )
         
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialize_response = Response[str].parse_raw(contenidoRespuesta)
-            return deserialize_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialize_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
