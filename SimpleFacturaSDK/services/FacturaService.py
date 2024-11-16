@@ -39,8 +39,8 @@ class FacturacionService:
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            timbre_data = json.loads(response.content)
-            return Response(status=200, data=timbre_data)
+            #timbre_data = json.loads(response.content)
+            return Response(status=200, data=response.content)
         return Response(
             status=response.status_code,
             message=simplificar_errores(contenidoRespuesta),
