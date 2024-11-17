@@ -6,6 +6,7 @@ from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
 from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
 import json
+#from requests.auth import HTTPBasicAuth
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.Sucursal import Sucursal
 from datetime import datetime
@@ -14,18 +15,24 @@ fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
 username = "demo@chilesystems.com"
 password = "Rv8Il4eV"
 client_api = APIClient(username, password)
-solicitud= BHERequest(
+solicitud= ListaBHERequest(
     credenciales=Credenciales(
         rut_emisor="76269769-6",
-        rut_contribuyente= "17096073-4"
+        nombre_sucursal="Casa Matriz"
     ),
-    Folio=2
+    Folio=None,
+    Desde=fecha_desde,
+    Hasta=fecha_hasta
 )
 try:
-    ObtenerPdfRecibida = client_api.BoletaHonorarioService.ObtenerPdfBoletaRecibida(solicitud)
-    ruta = "BoletaHonorarioRecibida.pdf"
-    with open(ruta, "wb") as archivo:
-        archivo.write(ObtenerPdfRecibida)
+    ListadoBHERecibido = client_api.BoletaHonorarioService.ListadoBHERecibido(solicitud)
+    print("\nDatos de la Respuesta:")
+    print(f"Status: {ListadoBHERecibido.status}")
+    print(f"Message: {ListadoBHERecibido.message}")
+    for cliente in ListadoBHERecibido.data:
+        print(f"fOLIO: {cliente.folio}")
+        print(f"FECHAEMISION: {cliente.fechaEmision}")
+        print("\n")     
 
 except requests.exceptions.HTTPError as http_err:
     print(f"Error HTTP: {http_err}")
