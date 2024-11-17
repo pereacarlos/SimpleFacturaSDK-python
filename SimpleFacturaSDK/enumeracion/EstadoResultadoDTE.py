@@ -5,15 +5,13 @@ class EstadoResultadoDTEEnum(Enum):
     AceptadoReparos = 1
     Rechazo = 2
 
-    @property
-    def xml_enum(self):
-        return self.value[0]
-
-    @property
     def description(self):
-        return self.value[1]
-
-
+        descriptions = {
+            0: "",
+            1: "1",
+            2: "2"
+        }
+        return descriptions(self.value,"")
 Motivo = ""
 
 @staticmethod
