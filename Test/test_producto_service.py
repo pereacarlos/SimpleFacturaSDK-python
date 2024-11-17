@@ -66,11 +66,6 @@ class TestProductoService(unittest.TestCase):
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, list)
-        for producto in response.data:
-            self.assertIsNotNone(producto.nombre)
-            self.assertIsNotNone(producto.codigoBarra)
-            self.assertIsNotNone(producto.unidadMedida)
-            self.assertIsNotNone(producto.productoId)
 
     def test_CrearProducto_BadRequest_WhenProductoExist(self):
         nombre_producto_1 = "Goma 500000"

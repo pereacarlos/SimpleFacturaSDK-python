@@ -252,7 +252,6 @@
         file.write(ObtenerPdf.data)
     print(f"PDF guardado en {ruta}")
 
-
 ---------ConciliarRecibidos------------
 
     Obtener_pdf = client_api.Proveedores.ConciliarRecibidos(solicitud,5,2024)
