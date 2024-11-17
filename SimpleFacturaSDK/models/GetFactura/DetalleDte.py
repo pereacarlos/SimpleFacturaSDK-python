@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from enumeracion.TipoDTE import DTEType
 
 @dataclass
 class DetalleDte:

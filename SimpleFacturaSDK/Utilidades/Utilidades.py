@@ -1,5 +1,5 @@
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.enumeracion.FormaPago import FormaPagoEnum
+from enumeracion.TipoDTE import DTEType
+from enumeracion.FormaPago import FormaPagoEnum
 from dataclasses import dataclass, field, asdict
 import base64
 import xml.etree.ElementTree as ET

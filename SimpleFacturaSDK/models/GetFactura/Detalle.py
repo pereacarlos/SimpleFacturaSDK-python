@@ -1,7 +1,7 @@
 from dataclasses import dataclass, asdict
 from typing import List, Optional
-from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
-from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
+from models.GetFactura.CodigoItem import CdgItem
+from enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
 
 @dataclass
 class Detalle:

@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import Optional
 from dataclasses import dataclass, field, asdict
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.enumeracion.TipoSalida import TipoSalidaEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from enumeracion.Ambiente import AmbienteEnum
+from models.GetFactura.Credenciales import Credenciales
+from enumeracion.TipoSalida import TipoSalidaEnum
+from enumeracion.TipoDTE import DTEType
+from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 
 @dataclass
 class ListaDteRequestEnt:

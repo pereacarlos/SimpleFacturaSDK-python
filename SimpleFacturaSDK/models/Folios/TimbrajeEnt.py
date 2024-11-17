@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from uuid import UUID
 from datetime import datetime
-from SimpleFacturaSDK.Utilidades.Utilidades import Utilidades
+from Utilidades.Utilidades import Utilidades
 @dataclass
 class TimbrajeEnt:
     TimbrajeId: UUID

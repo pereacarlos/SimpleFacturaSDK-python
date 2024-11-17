@@ -1,11 +1,11 @@
 from typing import List, Optional
-from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
-from SimpleFacturaSDK.models.BoletaHonorarios.BHEEnt import BHEEnt
-from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from models.BoletaHonorarios.BHERequest import BHERequest
+from models.BoletaHonorarios.BHEEnt import BHEEnt
+from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from models.ResponseDTE import Response
+from Utilidades.Simplificar_error import simplificar_errores
 import requests
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 
 class BoletaHonorarioService:

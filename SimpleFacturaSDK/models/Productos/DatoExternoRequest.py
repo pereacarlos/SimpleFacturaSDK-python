@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
-from SimpleFacturaSDK.models.GetFactura import Credenciales
-from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
+from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from models.GetFactura import Credenciales
+from models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 
 @dataclass
 class DatoExternoRequest:

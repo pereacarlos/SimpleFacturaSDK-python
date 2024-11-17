@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, List
-from SimpleFacturaSDK.enumeracion.CodigosAduana import Moneda
-from SimpleFacturaSDK.models.GetFactura.ImpuestosRetencionesOtraMoneda import ImpuestosRetencionesOtraMoneda
+from enumeracion.CodigosAduana import Moneda
+from models.GetFactura.ImpuestosRetencionesOtraMoneda import ImpuestosRetencionesOtraMoneda
 
 @dataclass
 class OtraMoneda:

@@ -1,14 +1,14 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from datetime import datetime
-from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
-from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
-from SimpleFacturaSDK.models.GetFactura.Retenedor import Retenedor
-from SimpleFacturaSDK.models.GetFactura.Subcantidad import SubCantidad
-from SimpleFacturaSDK.models.GetFactura.OtraMonedaDetalle import OtraMonedaDetalle
-from SimpleFacturaSDK.models.GetFactura.SubDescuento import SubDescuento
-from SimpleFacturaSDK.models.GetFactura.SubRecargo import SubRecargo
-from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
+from models.GetFactura.CodigoItem import CdgItem
+from enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
+from models.GetFactura.Retenedor import Retenedor
+from models.GetFactura.Subcantidad import SubCantidad
+from models.GetFactura.OtraMonedaDetalle import OtraMonedaDetalle
+from models.GetFactura.SubDescuento import SubDescuento
+from models.GetFactura.SubRecargo import SubRecargo
+from enumeracion.TipoImpuesto import TipoImpuestoEnum
 
 @dataclass
 class DetalleExportacion:

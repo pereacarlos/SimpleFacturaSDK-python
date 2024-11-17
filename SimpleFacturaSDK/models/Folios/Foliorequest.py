@@ -1,7 +1,7 @@
 from typing import Optional
 from dataclasses import dataclass
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from models.GetFactura.Credenciales import Credenciales
+from enumeracion.TipoDTE import DTEType
 
 @dataclass
 class FolioRequest:
