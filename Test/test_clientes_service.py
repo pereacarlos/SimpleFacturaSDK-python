@@ -9,7 +9,6 @@ from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 import json
 from dotenv import load_dotenv
 from unittest.mock import patch
-
 import os
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest

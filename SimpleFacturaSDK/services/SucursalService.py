@@ -1,7 +1,8 @@
-
+import requests
 from typing import List,Optional
 from SimpleFacturaSDK.models.Sucursal import Sucursal
 from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 
@@ -17,7 +18,9 @@ class SucursalService:
         contenidoRespuesta = response.text                
         if response.status_code == 200:
             resultado = Response[List[Sucursal]].parse_raw(contenidoRespuesta)
-            return resultado
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=resultado.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
