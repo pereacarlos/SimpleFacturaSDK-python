@@ -21,11 +21,12 @@ class FolioService:
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[int].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
-            
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def SolicitarFolios(self, solicitudFolio) -> Optional[TimbrajeApiEnt]:
         url = f"{self.base_url}/folios/solicitar"
@@ -48,10 +49,12 @@ class FolioService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[TimbrajeApiEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
         url = f"{self.base_url}/folios/consultar/sin-uso"
@@ -60,7 +63,9 @@ class FolioService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[FoliosAnulablesEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
