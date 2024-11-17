@@ -4,6 +4,7 @@ from SimpleFacturaSDK.models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
 from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
 from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
 from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
@@ -20,23 +21,26 @@ class FolioService:
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[int].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
-            
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
-    def SolicitarFolios(self, solicitud) -> Optional[TimbrajeApiEnt]:
+    def SolicitarFolios(self, solicitudFolio) -> Optional[TimbrajeApiEnt]:
         url = f"{self.base_url}/folios/solicitar"
-        solicitud_dict = serializar_solicitud_dict(solicitud)
+        solicitud_dict = serializar_solicitud_dict(solicitudFolio)
         response = self.session.post(url, json=solicitud_dict)
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[TimbrajeApiEnt].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def ConsultarFolios(self, solicitud) -> Optional[Response[List[TimbrajeApiEnt]]]:
         url = f"{self.base_url}/folios/consultar"
@@ -45,10 +49,12 @@ class FolioService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[TimbrajeApiEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
         url = f"{self.base_url}/folios/consultar/sin-uso"
@@ -57,7 +63,9 @@ class FolioService:
         contenidoRespuesta = response.text
         if response.status_code == 200:
             deserialized_response = Response[List[FoliosAnulablesEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )

@@ -12,7 +12,9 @@ from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioServ
 import requests
 import base64
 
-BASE_URL = "https://api.simplefactura.cl"
+#BASE_URL = "https://api.simplefactura.cl"
+
+BASE_URL = "https://backend-qa.simplefactura.cl"
 
 class ClientSimpleFactura:
     def __init__(self, username, password):

@@ -1,31 +1,22 @@
 '''Obtener PDF y timbre
 
-     # Obtener PDF
     pdf = client_api.Facturacion.obtener_pdf(solicitud)
-    # Guardar PDF
+    
     with open("factura.pdf", "wb") as file:
-        file.write(pdf)
+        file.write(pdf.data)
     print("PDF guardado exitosamente", pdf)
 
 -----------Timbre--------------------
-        # Obtener timbre
-    Timbre = client_api.Facturacion.obtener_timbre(solicitud)
-    Timbre_data = json.loads(Timbre)
-    if 'data' in Timbre_data:
-        timbre_base64 = Timbre_data['data']
-        timbre = base64.b64decode(timbre_base64)
-        with open("timbre.png", "wb") as file:
-            file.write(timbre)
-        print("Timbre obtenido correctamente", timbre_base64)   
-    else:
-        print("Error al obtener timbre")
+    timbre_response = client_api.Facturacion.obtener_timbre(solicitud)
+    with open("timbre.png", "wb") as f:
+        f.write(base64.b64decode(timbre_response.data["data"]))
 
 -------------------Obtener XML-------------------
  #OBTENER XML
     xml = client_api.Facturacion.obtener_xml(solicitud)
     ruta = "xml.xml"
     with open(ruta, "wb") as file:
-        file.write(xml)
+        file.write(xml.data)
     print("XML guardado en:", ruta)
 
 
@@ -45,7 +36,7 @@
     sobre_xml_bytes = client_api.Facturacion.obtener_sobreXml(solicitud, 0)
     ruta = "sobre.xml"  # Ruta donde se guardará el sobre XML
     with open(ruta, "wb") as f:
-        f.write(sobre_xml_bytes)
+        f.write(sobre_xml_bytes.data)
     print("El sobre XML se ha descargado correctamente.")
 
 
@@ -100,9 +91,7 @@
 ----------------Facturacion masiva-----------------------
     factura = client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
     print("\nDatos de la Respuesta:")
-    print(f"Status: {factura.get('status')}")
-    print(f"Message: {factura.get('message')}")
-    print(f"Data: {factura.get('data')}")
+    print(factura.data)
 
 ----------EmisioNCND-------------
    Emision = client_api.Facturacion.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
@@ -260,9 +249,8 @@
     ObtenerPdf = client_api.Proveedores.obtener_pdf(solicitud)
     ruta = "pdf.pdf"
     with open(ruta, "wb") as file:
-        file.write(ObtenerPdf)
+        file.write(ObtenerPdf.data)
     print(f"PDF guardado en {ruta}")
-
 
 ---------ConciliarRecibidos------------
 
