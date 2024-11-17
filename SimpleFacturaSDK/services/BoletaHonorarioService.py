@@ -3,6 +3,7 @@ from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
 from SimpleFacturaSDK.models.BoletaHonorarios.BHEEnt import BHEEnt
 from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
 from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
@@ -12,16 +13,18 @@ class BoletaHonorarioService:
         self.session = session
         self.base_url = base_url
 
-    def ObtenerPdf(self, solicitud) -> bytes:
+    def ObtenerPdf(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/bhe/pdfIssuied"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         response = self.session.post(url, json=solicitud_dict) 
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def ListadoBHEEmitidos(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesIssued"
@@ -30,10 +33,12 @@ class BoletaHonorarioService:
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[List[BHEEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def ObtenerPdfBoletaRecibida(self, solicitud) -> bytes:
         url = f"{self.base_url}/bhe/pdfReceived"
@@ -41,10 +46,12 @@ class BoletaHonorarioService:
         response = self.session.post(url, json=solicitud_dict) 
         contenidoRespuesta = response.text
         if response.status_code == 200:
-            return response.content
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")
-            response.raise_for_status()
+            return Response(status=200, data=response.content)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
 
     def ListadoBHERecibido(self, solicitud) -> Optional[list[BHEEnt]]:
         url = f"{self.base_url}/bhesReceived"
@@ -53,7 +60,9 @@ class BoletaHonorarioService:
         contenidoRespuesta = response.text        
         if response.status_code == 200:
             deserialized_response = Response[List[BHEEnt]].parse_raw(contenidoRespuesta)
-            return deserialized_response
-        else:
-            raise Exception(f"Error en la petición: {contenidoRespuesta}")       
-            response.raise_for_status()
+            return Response(status=200, data=deserialized_response.data)
+        return Response(
+            status=response.status_code,
+            message=simplificar_errores(contenidoRespuesta),
+            data=None
+        )
