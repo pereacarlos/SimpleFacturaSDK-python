@@ -2,13 +2,12 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./Test",
+        "./SimpleFacturaSDK",
         "-p",
         "test_*.py"
     ],
     "python.envFile": "${workspaceFolder}/.env",
     "python.testing.unittestEnabled": true,
-    "python.testing.pytestEnabled": false,
     "python.autoComplete.extraPaths": [
         "${workspaceFolder}/SimpleFacturaSDK"
     ],
@@ -17,5 +16,6 @@
     },
     "terminal.integrated.env.windows": {
         "PYTHONPATH": "${workspaceFolder}\\SimpleFacturaSDK"
-    }
+    },
+    "python.testing.pytestEnabled": false
 }
