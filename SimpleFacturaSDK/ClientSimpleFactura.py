@@ -8,10 +8,6 @@ from services.SucursalService import SucursalService
 from services.FolioService import FolioService
 from services.ConfiguracionService import ConfiguracionService
 from services.BoletaHonorarioService import BoletaHonorarioService
-
-
-
-
 import requests
 import base64
 

@@ -1,19 +1,19 @@
 import unittest
-from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
+from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from models.ResponseDTE import Response
+from models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from enumeracion.Ambiente import AmbienteEnum
+from enumeracion.TipoDTE import DTEType
 import json
 from dotenv import load_dotenv
 from unittest.mock import patch
 import os
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
-from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
-from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
+from models.GetFactura.Credenciales import Credenciales
+from models.Productos.DatoExternoRequest import DatoExternoRequest
+from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 load_dotenv()
 
 class TestClientesService(unittest.TestCase):

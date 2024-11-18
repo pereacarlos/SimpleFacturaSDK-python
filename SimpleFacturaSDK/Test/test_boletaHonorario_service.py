@@ -3,7 +3,6 @@ import base64
 import requests
 import json
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../SimpleFacturaSDK')))
 import unittest
 from models.ResponseDTE import Response
 from models.GetFactura.Credenciales import Credenciales
@@ -16,7 +15,7 @@ from unittest.mock import patch
 import os
 load_dotenv()
 
-class TestConfiguracionService(unittest.TestCase):
+class TestBoletahonorarioService(unittest.TestCase):
     def setUp(self):
         username = os.getenv("USERNAME")
         password = os.getenv("PASSWORD")

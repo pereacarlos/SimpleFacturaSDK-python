@@ -2,17 +2,17 @@
 from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
-from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
-from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
+from models.ResponseDTE import Response
+from models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from enumeracion.Ambiente import AmbienteEnum
+from enumeracion.TipoDTE import DTEType
+from models.Folios.TimbrajeEnt import TimbrajeEnt
+from models.Folios.Foliorequest import FolioRequest
+from models.Folios.SolicitudFolios import SolicitudFolios
 import json
 import unittest
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.Sucursal import Sucursal
+from models.GetFactura.Credenciales import Credenciales
+from models.Sucursal import Sucursal
 from dotenv import load_dotenv
 from unittest.mock import patch
 import os

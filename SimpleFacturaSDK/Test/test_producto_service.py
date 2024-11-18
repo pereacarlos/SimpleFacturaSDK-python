@@ -1,5 +1,5 @@
 import unittest
-from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
+from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
 from SimpleFacturaSDK.models.ResponseDTE import Response
@@ -8,10 +8,10 @@ from typing import List
 from unittest.mock import patch
 from datetime import datetime
 import requests_mock
-from SimpleFacturaSDK.models.Productos.ProductoEnt import ProductoEnt
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
-from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from models.Productos.ProductoEnt import ProductoEnt
+from models.GetFactura.Credenciales import Credenciales
+from models.Productos.DatoExternoRequest import DatoExternoRequest
+from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
 from dotenv import load_dotenv
 import os
 import random
