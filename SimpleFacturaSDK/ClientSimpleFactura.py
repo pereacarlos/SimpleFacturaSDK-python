@@ -1,5 +1,3 @@
-# Base.py
-
 from services.FacturaService import FacturacionService
 from services.ProductoService import ProductoService
 from services.ProveedorService import ProveedorService
@@ -10,34 +8,38 @@ from services.ConfiguracionService import ConfiguracionService
 from services.BoletaHonorarioService import BoletaHonorarioService
 import requests
 import base64
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 
 #BASE_URL = "https://api.simplefactura.cl"
 
-BASE_URL = "https://backend-qa.simplefactura.cl"
+BASE_URL = os.getenv("BASE_URL")
 
 class ClientSimpleFactura:
     def __init__(self, username, password):
-        # Configure the HTTP client
         self.session = requests.Session()
         self.base_url = BASE_URL
-        
-        # Configure basic authentication
+    
         auth_token = f"{username}:{password}".encode("ascii")
         base64_auth_token = base64.b64encode(auth_token).decode("ascii")
-        
-        # Set headers for the session
         self.session.headers.update({
             'Authorization': f'Basic {base64_auth_token}',
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         })
         
-        # Initialize services
-        self.Facturacion = FacturacionService(self.session, self.base_url)
-        self.Productos = ProductoService(self.session, self.base_url)
-        self.Proveedores = ProveedorService(self.session, self.base_url)
-        self.Clientes = ClientesService(self.session, self.base_url)
-        self.Sucursales = SucursalService(self.session, self.base_url)
-        self.Folios = FolioService(self.session, self.base_url)
-        self.ConfiguracionService = ConfiguracionService(self.session, self.base_url)
-        self.BoletaHonorarioService = BoletaHonorarioService(self.session, self.base_url)
+        services = [
+            ("Facturacion", FacturacionService),
+            ("Productos", ProductoService),
+            ("Proveedores", ProveedorService),
+            ("Clientes", ClientesService),
+            ("Sucursales", SucursalService),
+            ("Folios", FolioService),
+            ("ConfiguracionService", ConfiguracionService),
+            ("BoletaHonorarioService", BoletaHonorarioService)
+        ]
+
+        for service_name, service_class in services:
+            setattr(self, service_name, service_class(self.session, self.base_url))
