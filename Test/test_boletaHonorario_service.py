@@ -7,6 +7,7 @@ from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
 from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
 from datetime import datetime
 from dotenv import load_dotenv
 from unittest.mock import patch
@@ -19,7 +20,7 @@ class TestConfiguracionService(unittest.TestCase):
         password = os.getenv("PASSWORD")
         
         self.client_api = ClientSimpleFactura(username, password)
-        self.service = self.client_api.BoletaHonorarioService
+        self.service = BoletaHonorarioService
 
     def test_ObtenerPdf_ReturnOK(self):
         solicitud= BHERequest(

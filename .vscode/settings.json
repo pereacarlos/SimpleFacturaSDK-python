@@ -6,6 +6,19 @@
         "-p",
         "test_*.py"
     ],
+    "python.envFile": "${workspaceFolder}/.env",
     "python.testing.pytestEnabled": false,
-    "python.testing.unittestEnabled": true
+    "python.testing.unittestEnabled": true,
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/SimpleFacturaSDK"
+    ],
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}/SimpleFacturaSDK"
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}\\SimpleFacturaSDK"
+    },
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/SimpleFacturaSDK"
+    ]
 }
