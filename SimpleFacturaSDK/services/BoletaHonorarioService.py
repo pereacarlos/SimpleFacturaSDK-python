@@ -1,7 +1,6 @@
 from typing import List, Optional
 from models.BoletaHonorarios.BHERequest import BHERequest
 from models.BoletaHonorarios.BHEEnt import BHEEnt
-from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
 from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores
 import requests

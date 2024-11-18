@@ -14,7 +14,7 @@ class DetalleDte:
     TotalImpuestos: Optional[float] = None
     Total: Optional[float] = None
     Fecha: Optional[datetime] = None
-    CodigoSii: Optional[DTEType] = None  # Cambiado a Optional[DTEType]
+    CodigoSii: Optional[DTEType] = None
     TipoDTE: Optional[str] = None
     CantidadEmitidos: Optional[int] = None
     CantidadAnulados: Optional[int] = None

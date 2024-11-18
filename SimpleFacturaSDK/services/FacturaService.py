@@ -1,6 +1,5 @@
 import os
 import json
-import logging
 from typing import List
 from Utilidades.Simplificar_error import simplificar_errores
 from requests_toolbelt import MultipartEncoder

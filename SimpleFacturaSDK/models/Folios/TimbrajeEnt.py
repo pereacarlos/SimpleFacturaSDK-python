@@ -13,8 +13,6 @@ class TimbrajeEnt:
     EmisorId: UUID
     UsuarioId: UUID
     fechaVencimiento: datetime
-
-    # Campos opcionales o con valores predeterminados
     desde: int = 0
     hasta: int = 0
     Activo: bool = False
@@ -43,7 +41,6 @@ class TimbrajeApiEnt:
     fechaVencimiento: Optional[datetime] = None
     fechaIngreso: Optional[datetime] = None
 
-    # Constructor alternativo para inicializar a partir de TimbrajeEnt
     @classmethod
     def from_timbraje_ent(cls, ent: Optional[TimbrajeEnt]) -> "TimbrajeApiEnt":
         if ent:

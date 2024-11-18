@@ -1,7 +1,5 @@
 from typing import List, Optional
-from models.Folios.Foliorequest import FolioRequest
 from models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
-from models.Folios.SolicitudFolios import SolicitudFolios
 from models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
 from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores

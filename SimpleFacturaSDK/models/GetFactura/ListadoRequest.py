@@ -9,7 +9,6 @@ from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 
 @dataclass
 class ListaDteRequestEnt:
-    #sacar credenciales de SolicitudPdfDte
     Credenciales: Credenciales
     ambiente: Optional[AmbienteEnum] = None
     salida: Optional[TipoSalidaEnum] = None
