@@ -1016,6 +1016,14 @@ class TestFacturacionService(unittest.TestCase):
 
     def test_EmisionNC_ND_V2_ReturnOK(self):
 
+        #solicitudFolio= FolioRequest(
+        #    credenciales=Credenciales(
+        #        rut_emisor = "76269769-6",
+        #        nombre_sucursal = "Casa Matriz"
+        #    ),
+        #    Cantidad= 1,
+        #    CodigoTipoDte=61
+        #)
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1081,16 +1089,9 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
         motivo = ReasonTypeEnum.Otros.value
-        solicitudFolio= FolioRequest(
-            credenciales=Credenciales(
-                rut_emisor = "76269769-6",
-                nombre_sucursal = "Casa Matriz"
-            ),
-            Cantidad= 1,
-            CodigoTipoDte=61
-        )
+        
 
-        responseFolio = self.service_folios.SolicitarFolios(solicitudFolio)
+        #responseFolio = self.service_folios.SolicitarFolios(solicitudFolio)
         response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
         print(response.message)
         self.assertIsNotNone(response)
@@ -1486,7 +1487,6 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
-    #consultar
     def test_conciliarEmitidos_ReturnOK(self):
         solicitud =Credenciales(
             rut_emisor="76269769-6"
