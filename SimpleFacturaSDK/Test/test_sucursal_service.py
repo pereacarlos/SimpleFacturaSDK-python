@@ -22,7 +22,6 @@ class TestSucursalService(unittest.TestCase):
             rut_emisor="76269769-6"
         )
         response = self.service.ListarSucursales(solicitud)
-        
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)

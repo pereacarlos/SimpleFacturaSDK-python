@@ -1,11 +1,11 @@
 from typing import List
-from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest, ProductoExternoEnt
-from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
-from SimpleFacturaSDK.models.Productos.ProductoEnt import ProductoEnt
-from SimpleFacturaSDK.models.ResponseDTE import Response
+from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest, ProductoExternoEnt
+from models.Productos.DatoExternoRequest import DatoExternoRequest
+from models.Productos.ProductoEnt import ProductoEnt
+from models.ResponseDTE import Response
 import requests
-from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from Utilidades.Simplificar_error import simplificar_errores
+from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 
 class ProductoService:

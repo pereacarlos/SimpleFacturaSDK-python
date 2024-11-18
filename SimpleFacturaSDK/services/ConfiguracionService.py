@@ -1,9 +1,9 @@
 from typing import List, Optional
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.EmisorApiEnt import EmisorAapiEnt
-from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from models.ResponseDTE import Response
+from models.EmisorApiEnt import EmisorAapiEnt
+from Utilidades.Simplificar_error import simplificar_errores
 import requests
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 
 class ConfiguracionService:

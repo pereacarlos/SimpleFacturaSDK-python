@@ -1,12 +1,15 @@
-from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
+from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
 import json
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../SimpleFacturaSDK')))
 import unittest
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
-from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from models.ResponseDTE import Response
+from models.GetFactura.Credenciales import Credenciales
+from models.BoletaHonorarios.BHERequest import BHERequest
+from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from services.BoletaHonorarioService import BoletaHonorarioService
 from datetime import datetime
 from dotenv import load_dotenv
 from unittest.mock import patch
@@ -20,6 +23,7 @@ class TestConfiguracionService(unittest.TestCase):
         
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.BoletaHonorarioService
+
 
     def test_ObtenerPdf_ReturnOK(self):
         solicitud= BHERequest(

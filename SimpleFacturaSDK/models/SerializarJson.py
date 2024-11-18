@@ -1,5 +1,5 @@
 from typing import Type, TypeVar, Any, Optional
-from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from models.GetFactura.RequestDTE import RequestDTE
 from dataclasses import asdict,is_dataclass,fields
 import json
 from enum import Enum

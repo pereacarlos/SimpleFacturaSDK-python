@@ -1,10 +1,10 @@
 from typing import List, Optional
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Dte import Dte
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from models.ResponseDTE import Response
+from models.GetFactura.Dte import Dte
+from models.GetFactura.Credenciales import Credenciales
+from Utilidades.Simplificar_error import simplificar_errores
 import requests
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 
 class ProveedorService:

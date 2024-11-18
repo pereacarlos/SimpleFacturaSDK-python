@@ -1,12 +1,12 @@
 from typing import List, Optional
-from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
-from SimpleFacturaSDK.models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
-from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
-from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from models.Folios.Foliorequest import FolioRequest
+from models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
+from models.Folios.SolicitudFolios import SolicitudFolios
+from models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
+from models.ResponseDTE import Response
+from Utilidades.Simplificar_error import simplificar_errores
 import requests
-from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 
 
 class FolioService:
