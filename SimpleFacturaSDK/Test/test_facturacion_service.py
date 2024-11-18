@@ -41,10 +41,9 @@ from models.GetFactura.ListadoRequest import ListaDteRequestEnt
 from models.Folios.SolicitudFolios import SolicitudFolios
 from models.Folios.TimbrajeEnt import TimbrajeEnt
 from models.Folios.Foliorequest import FolioRequest
-
 from datetime import datetime
 import requests
-from SimpleFacturaSDK.models.ResponseDTE import Response
+from models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 
 load_dotenv()
@@ -1488,6 +1487,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
+    #consultar
     def test_conciliarEmitidos_ReturnOK(self):
         solicitud =Credenciales(
             rut_emisor="76269769-6"
@@ -1531,7 +1531,3 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
-
-
-if __name__ == '__main__':
-    unittest.main()

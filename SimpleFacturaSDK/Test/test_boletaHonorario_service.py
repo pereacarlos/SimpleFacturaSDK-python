@@ -126,7 +126,7 @@ class TestBoletahonorarioService(unittest.TestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
-
+    #preguntar
     def test_ObtenerPdfBoletaRecibida_ReturnOK(self):
         solicitud= BHERequest(
             credenciales=Credenciales(

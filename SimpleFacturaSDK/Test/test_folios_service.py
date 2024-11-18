@@ -1,5 +1,5 @@
 
-from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
+from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
 from models.ResponseDTE import Response

@@ -1,9 +1,9 @@
 import unittest
-from SimpleFacturaSDK.ClientSimpleFactura import ClientSimpleFactura
+from ClientSimpleFactura import ClientSimpleFactura
 import requests
 import base64
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from models.ResponseDTE import Response
+from models.GetFactura.Credenciales import Credenciales
 from dotenv import load_dotenv
 from unittest.mock import patch
 import os

@@ -2,7 +2,7 @@ import unittest
 from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
-from SimpleFacturaSDK.models.ResponseDTE import Response
+from models.ResponseDTE import Response
 import json
 from typing import List
 from unittest.mock import patch

@@ -184,6 +184,7 @@ class TestProveedorService(unittest.TestCase):
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
 
+    #pREGUNTAR
     def test_ConciliarRecibidos_ReturnOK(self):
         solicitud=Credenciales(rut_emisor="76269769-6")
 
@@ -193,7 +194,7 @@ class TestProveedorService(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsInstance(response.data, str)
-
+        
     def test_ConciliarRecibidos_BadRequest_WhenMesISInvalid(self):
         solicitud=Credenciales(rut_emisor="76269769-6")
 
