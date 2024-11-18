@@ -1,6 +1,5 @@
 from typing import List
 from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest, ProductoExternoEnt
-from models.Productos.DatoExternoRequest import DatoExternoRequest
 from models.Productos.ProductoEnt import ProductoEnt
 from models.ResponseDTE import Response
 import requests

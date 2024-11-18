@@ -1,7 +1,6 @@
 from typing import List, Optional
 from models.ResponseDTE import Response
 from models.GetFactura.Dte import Dte
-from models.GetFactura.Credenciales import Credenciales
 from Utilidades.Simplificar_error import simplificar_errores
 import requests
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict

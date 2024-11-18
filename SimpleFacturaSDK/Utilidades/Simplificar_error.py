@@ -1,9 +1,6 @@
 import json
 
 def simplificar_errores(contenido_respuesta: str) -> str:
-    """
-    Procesa errores JSON para simplificar la salida.
-    """
     try:
         error_json = json.loads(contenido_respuesta)
         if "errors" in error_json:
