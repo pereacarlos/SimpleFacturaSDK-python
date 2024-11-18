@@ -20,7 +20,8 @@ class TestConfiguracionService(unittest.TestCase):
         password = os.getenv("PASSWORD")
         
         self.client_api = ClientSimpleFactura(username, password)
-        self.service = BoletaHonorarioService
+        self.service = self.client_api.BoletaHonorarioService
+
 
     def test_ObtenerPdf_ReturnOK(self):
         solicitud= BHERequest(
