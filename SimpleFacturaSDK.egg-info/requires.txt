@@ -1,0 +1,9 @@
+requests
+cryptography
+pyOpenSSL
+requests-toolbelt
+pydantic
+aiohttp
+pytest
+requests-mock
+python-dotenv

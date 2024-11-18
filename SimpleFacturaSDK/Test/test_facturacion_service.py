@@ -1014,14 +1014,13 @@ class TestFacturacionService(unittest.TestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
-    #preguntar
     def test_EmisionNC_ND_V2_ReturnOK(self):
 
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
                     IdDoc=IdDoc(
-                        TipoDTE=DTEType.NotaDebitoElectronica,
+                        TipoDTE=DTEType.NotaCreditoElectronica,
                         FchEmis="2024-08-13",
                         FmaPago=2,
                         FchVenc="2024-08-13"
@@ -1088,7 +1087,7 @@ class TestFacturacionService(unittest.TestCase):
                 nombre_sucursal = "Casa Matriz"
             ),
             Cantidad= 1,
-            CodigoTipoDte= 56
+            CodigoTipoDte=61
         )
 
         responseFolio = self.service_folios.SolicitarFolios(solicitudFolio)
