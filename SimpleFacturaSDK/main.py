@@ -1,39 +1,29 @@
-
+import asyncio
+import httpx
 from ClientSimpleFactura import ClientSimpleFactura
-import base64
 import requests
-from models.ResponseDTE import Response
 from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
-from enumeracion.TipoDTE import DTEType
-import json
-from datetime import datetime
-fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
-fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
-username = "demo@chilesystems.com"
-password = "Rv8Il4eV"
-client_api = ClientSimpleFactura(username, password)
-solicitud= SolicitudPdfDte(
-    credenciales=Credenciales(
-        rut_emisor="76269769-6",
-        nombre_sucursal="Casa Matriz"
-    ),
-    dte_referenciado_externo=DteReferenciadoExterno(
-        folio=4117,
-        codigoTipoDte=33,
-        ambiente=0
+async def main():
+    username = "demo@chilesystems.com"
+    password = "Rv8Il4eV"
+    client_api = ClientSimpleFactura(username, password)
+    solicitud =Credenciales(
+        rut_emisor="76269769-6"
     )
-)
-try:
-    
-    pdf = client_api.Facturacion.obtener_pdf(solicitud)
-    
-    with open("factura.pdf", "wb") as file:
-        file.write(pdf.data)
-    print("PDF guardado exitosamente", pdf)
-except requests.exceptions.HTTPError as http_err:
-    print(f"Error HTTP: {http_err}")
-    print("Detalle del error:", http_err.response.text)
-except Exception as err:
-    print(f"Error: {err}")
+
+    try:
+        Conciliar = await client_api.Facturacion.ConciliarEmitidos(solicitud,5,2024)
+        print("\nDatos de la Respuesta:")
+        print(f"Status: {Conciliar.status}")
+        print(f"Message: {Conciliar.message}")
+        print(f"Data: {Conciliar.data}")
+
+
+    except httpx.HTTPStatusError as err:
+        print(f"Error: {err}")
+
+    except Exception as err:
+        print(f"Error: {err}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
