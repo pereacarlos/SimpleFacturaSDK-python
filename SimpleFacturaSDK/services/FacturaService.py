@@ -293,7 +293,6 @@ class FacturacionService:
                 data=None
             )
 
-    
     async def enviarCorreo(self, solicitud) -> Response[bool]:
         url = f"{self.base_url}/dte/enviar/mail"
         solicitud_dict = serializar_solicitud_dict(solicitud)
