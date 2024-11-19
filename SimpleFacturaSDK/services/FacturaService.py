@@ -1,5 +1,7 @@
 import os
 import json
+import aiohttp
+import asyncio
 from typing import List
 from Utilidades.Simplificar_error import simplificar_errores
 from requests_toolbelt import MultipartEncoder
