@@ -1,36 +1,24 @@
-
 import asyncio
-import httpx
 from ClientSimpleFactura import ClientSimpleFactura
-import requests
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
+from models.GetFactura.Credenciales import Credenciales
 async def main():
     username = "demo@chilesystems.com"
     password = "Rv8Il4eV"
     client_api = ClientSimpleFactura(username, password)
-    solicitud = EnvioMailRequest(
-        RutEmpresa="76269769-6",
-        Dte= DteClass(folio=2149, tipoDTE=33),
-        Mail= MailClass(
-            to=["contacto@chilesystems.com"],
-            ccos=["correo@gmail.com"],
-            ccs=["correo2@gmail.com"]
-        ),
-        Xml=True,
-        Pdf=True,
-        Comments="ESTO ES UN COMENTARIO"
+    credenciales = Credenciales(
+        rut_emisor="76269769-6",
+        nombre_sucursal="Casa Matriz"
     )
-
+    path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
     try:
-        enviarCorreo = await client_api.Facturacion.enviarCorreo(solicitud)
+        factura = await client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
         print("\nDatos de la Respuesta:")
-        print(f"Status: {enviarCorreo.status}")
-        print(f"Message: {enviarCorreo.message}")
-        print(f"Data: {enviarCorreo.data}")
-    except httpx.HTTPStatusError as err:
-        print(f"Error: {err}")
+        print(factura.data)
+        print("Status Code:", factura.status)
+        print("Message:", factura.message)
     except Exception as err:
         print(f"Error: {err}")
+    finally:
+        await client_api.Facturacion.close()
 if __name__ == "__main__":
     asyncio.run(main())

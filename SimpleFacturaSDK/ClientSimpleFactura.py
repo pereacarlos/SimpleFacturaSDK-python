@@ -24,7 +24,7 @@ class ClientSimpleFactura:
         self.headers = {
             'Authorization': f'Basic {base64_auth_token}',
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            #'Content-Type': 'application/json'
         }
         self.session.headers.update(self.headers)
         services = [

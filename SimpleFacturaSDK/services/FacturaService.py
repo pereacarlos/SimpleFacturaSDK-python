@@ -25,25 +25,25 @@ class FacturacionService:
     def __init__(self, base_url, headers):
         self.base_url = base_url
         self.headers = headers
-        self.session = httpx.AsyncClient(base_url=base_url, headers=headers)
+        self.session = aiohttp.ClientSession(headers=self.headers)
 
     async def _post_and_response_facturacion(self, url: str, solicitud_dict: dict) -> Response[InvoiceData]:
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener Facturacion",
+                message="Error al obtener Facturación",
                 data=None
             )
 
@@ -51,81 +51,84 @@ class FacturacionService:
         url = f"{self.base_url}/dte/pdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                return Response(status=200, data=response.content)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.read()
+                if response.status == 200:
+                    return Response(status=200, data=contenidoRespuesta)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
                 message="Error al obtener PDF",
                 data=None
             )
+    
     async def obtener_timbre(self, solicitud):
         url = f"{self.base_url}/dte/timbre"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                return Response(status=200, data=response.content)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.read()
+                if response.status == 200:
+                    return Response(status=200, data=contenidoRespuesta)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener timbre",
+                message="Error al obtener Timbre",
                 data=None
             )
+    
     async def obtener_xml(self, solicitud):
         url = f"{self.base_url}/dte/xml"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                return Response(status=200, data=response.content)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.read()
+                if response.status == 200:
+                    return Response(status=200, data=contenidoRespuesta)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
                 message="Error al obtener XML",
                 data=None
             )
+
     async def obtener_dte(self, solicitud) -> Response[Dte]:
         url = f"{self.base_url}/documentIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[Dte].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener XML",
+                message="Error al obtener DTE",
                 data=None
             )
         
@@ -150,20 +153,20 @@ class FacturacionService:
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                return Response(status=200, data=response.content)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+           async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.read()
+                if response.status == 200:
+                    return Response(status=200, data=contenidoRespuesta)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener XML",
+                message="Error al obtener Sobre XML",
                 data=None
             )
    
@@ -209,34 +212,33 @@ class FacturacionService:
         solicitud_json = json.dumps(solicitud_dict)
 
         try:
-            async with aiohttp.ClientSession(headers=self.headers) as session:
-                data = aiohttp.FormData()
-                data.add_field('data', solicitud_json, content_type='application/json')
+            data = aiohttp.FormData()
+            data.add_field('data', solicitud_json, content_type='application/json')
 
-                with open(path_csv, 'rb') as f:
-                    data.add_field('input', f, filename='archivo.csv', content_type='text/csv')
+            with open(path_csv, 'rb') as f:
+                data.add_field('input', f, filename='archivo.csv', content_type='text/csv')
 
-                    async with session.post(url, data=data) as response:
-                        contenidoRespuesta = await response.text()
+                async with self.session.post(url, data=data) as response:
+                    contenidoRespuesta = await response.text()
 
-                        if response.status == 200:
-                            print("Response Content:", contenidoRespuesta)
-                            return Response(status=200, data=contenidoRespuesta)
-                        else:
-                            return Response(
-                                status=response.status,
-                                message=simplificar_errores(contenidoRespuesta),
-                                data=None
-                            )
-        except Exception as e:
-            print(f"An exception occurred: {e}")
-            traceback.print_exc()
+                    if response.status == 200:
+                        print("Response Content:", contenidoRespuesta)
+                        return Response(status=200, data=contenidoRespuesta)
+                    else:
+                        return Response(
+                            status=response.status,
+                            message=simplificar_errores(contenidoRespuesta),
+                            data=None
+                        )
+
+        except aiohttp.ClientError as http_err:
+            print(f"Ocurrio un Error Http: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener Facturación",
+                message="Error al obtener Facturación Masiva",
                 data=None
             )
-
+    
     async def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> Response[InvoiceData]:
         if not isinstance(sucursal, str):
            return Response(
@@ -253,39 +255,40 @@ class FacturacionService:
         url = f"{self.base_url}/invoiceCreditDebitNotesV2/{sucursal}/{motivo}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[InvoiceData].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
                 message="Error al obtener Emision",
                 data=None
             )
-
+    
     async def listadoDteEmitidos(self, solicitud) -> Response[List[Dte]]:
         url = f"{self.base_url}/documentsIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+           async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
@@ -296,43 +299,39 @@ class FacturacionService:
     async def enviarCorreo(self, solicitud) -> Response[bool]:
         url = f"{self.base_url}/dte/enviar/mail"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        print(solicitud_dict)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            print(response)
-            contenidoRespuesta = response.text
-            print(contenidoRespuesta)
-            if response.status_code == 200:
-                deserialized_response = Response[bool].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=False
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
                 message="Error al enviar Correo",
-                data=None
+                data=False
             )
         
     async def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
         url = f"{self.base_url}/dte/consolidated/issued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[List[ReporteDTE]].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[ReporteDTE]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
@@ -357,24 +356,23 @@ class FacturacionService:
         solicitud_dict = serializar_solicitud_dict(solicitud)
         print(solicitud_dict)
         try:
-            response = await self.session.post(url, json=solicitud_dict)
-            print(response)
-            contenidoRespuesta = response.text
-            if response.status_code == 200:
-                deserialized_response = Response[str].parse_raw(contenidoRespuesta)
-                return Response(status=200, data=deserialized_response.data)
-            return Response(
-                status=response.status_code,
-                message=simplificar_errores(contenidoRespuesta),
-                data=None
-            )
-        except httpx.HTTPError as http_err:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except aiohttp.ClientError as http_err:
             print(f"HTTP error occurred: {http_err}")
             return Response(
                 status=500,
-                message="Error al obtener Conciliar",
+                message="Error al conciliar Emitidos",
                 data=None
             )
             
     async def close(self):
-        await self.session.aclose()
+        await self.session.close()
