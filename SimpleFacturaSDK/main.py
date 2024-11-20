@@ -11,32 +11,20 @@ async def main():
 
 
     try:
-        ListClient = await client_api.Clientes.ListarClientes(solicitud)
+        ListSucursal = await client_api.Sucursales.ListarSucursales(solicitud)
         print("\nDatos de la Respuesta:")
-        print(f"Status: {ListClient.status}")
-        print(f"Message: {ListClient.message}")
-        for cliente in ListClient.data:
-            print(f"ReceptorId: {cliente.receptorId}")
-            print(f"EmisorId: {cliente.emisorId}")
-            print(f"RUT: {cliente.rut}")
-            print(f"Dv: {cliente.dv}")
-            print(f"RutFormateado: {cliente.rutFormateado}")
-            print(f"RazonSocial: {cliente.razonSocial}")
-            print(f"NombreFantasia: {cliente.nombreFantasia}")
-            print(f"Giro: {cliente.giro}")
-            print(f"DirPart: {cliente.dirPart}")
-            print(f"DirFact: {cliente.dirFact}")
-            print(f"CorreoPar: {cliente.correoPar}")
-            print(f"CorreoFact: {cliente.correoFact}")
-            print(f"Ciudad: {cliente.ciudad}")
-            print(f"Comuna: {cliente.comuna}")
-            print(f"Activo: {cliente.activo}")
+        print(f"Status: {ListSucursal.status}")
+        print(f"Message: {ListSucursal.message}")
+        for cliente in ListSucursal.data:
+            print(f"Nombre: {cliente.nombre}")
+            print(f"Direccion: {cliente.direccion}")
             print("\n")
+
 
     except Exception as err:
         print(f"Error: {err}")
     finally:
-        await client_api.Clientes.close()
+        await client_api.Sucursales.close()
        
 if __name__ == "__main__":
     asyncio.run(main())
