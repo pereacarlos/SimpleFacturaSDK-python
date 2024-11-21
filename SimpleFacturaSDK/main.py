@@ -1,33 +1,30 @@
 import asyncio
 
 from ClientSimpleFactura import ClientSimpleFactura
-from models.Folios.SolicitudFolios import SolicitudFolios
+from models.GetFactura.Credenciales import Credenciales
 
 async def main():
     username = "demo@chilesystems.com"
     password = "Rv8Il4eV"
     client_api = ClientSimpleFactura(username, password)
-    solicitud= SolicitudFolios(
-        RutEmpresa = "76269769-6",
-        TipoDTE = 33,
-        Ambiente = 0
+    solicitud= Credenciales(
+        rut_emisor="76269769-6"
     )
+
     try:
-        FolioSinUsar = await client_api.Folios.Folios_Sin_Uso(solicitud)
+        DatosEmpresa = await client_api.ConfiguracionService.datos_empresa(solicitud)
         print("\nDatos de la Respuesta:")
-        print(f"Status: {FolioSinUsar.status}")
-        print(f"Message: {FolioSinUsar.message}")
-        print(f"Data: {FolioSinUsar.data}")
-        for data in FolioSinUsar.data:
-            print(f"desde: {data.desde}")
-            print(f"hasta: {data.hasta}")
-            print(f"Cantidad: {data.cantidad}")
-
-
+        print(f"Status: {DatosEmpresa.status}")
+        print(f"Message: {DatosEmpresa.message}")
+        print(f"Data: {DatosEmpresa.data}")
+        print(f"rut: {DatosEmpresa.data.rut}")
+        print(f"razonSocial: {DatosEmpresa.data.razonSocial}")
+        print(f"giro: {DatosEmpresa.data.giro}")
+   
     except Exception as err:
         print(f"Error: {err}")
     finally:
-        await client_api.Folios.close()
+        await client_api.ConfiguracionService.close()
        
 if __name__ == "__main__":
     asyncio.run(main())
