@@ -4,7 +4,7 @@ import base64
 import json
 from dotenv import load_dotenv
 import os
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 from requests.auth import HTTPBasicAuth
 from models.GetFactura.Credenciales import Credenciales
 from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
@@ -47,8 +47,8 @@ from models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 
 load_dotenv()
-class TestFacturacionService(unittest.TestCase):
-    def setUp(self):
+class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
         username = os.getenv("USERNAME")
         password = os.getenv("PASSWORD")
         
@@ -56,7 +56,10 @@ class TestFacturacionService(unittest.TestCase):
         self.service = self.client_api.Facturacion
         self.service_folios = self.client_api.Folios
 
-    def test_obtener_pdf_returnOK(self):
+    async def asyncTearDown(self):
+        await self.client_api.Facturacion.close()
+
+    async  def test_obtener_pdf_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -69,12 +72,29 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
 
-        response = self.service.obtener_pdf(solicitud)
+        response = await  self.service.obtener_pdf(solicitud)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, bytes)
         self.assertGreater(len(response.data), 0)
+
+    def test_obtener_pdf_bad_request(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                nombre_sucursal="Casa Matriz"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None, 
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = self.service.obtener_pdf(solicitud)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
 
     def test_obtener_pdf_bad_request(self):
         solicitud = SolicitudPdfDte(
