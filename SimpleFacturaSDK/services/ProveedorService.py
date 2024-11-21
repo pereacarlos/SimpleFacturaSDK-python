@@ -27,10 +27,10 @@ class ProveedorService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al listar DteRecibidos",
                 data=None
             )
 
@@ -47,10 +47,10 @@ class ProveedorService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al obtener Xml",
                 data=None
             )
     
@@ -68,10 +68,10 @@ class ProveedorService:
                     data=None
                 )
 
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al obtener PDF",
                 data=None
             )
 
@@ -102,10 +102,10 @@ class ProveedorService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ConciliarRecibidos",
                 data=None
             )
 
