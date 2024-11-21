@@ -27,10 +27,10 @@ class BoletaHonorarioService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ObtenPdf",
                 data=None
             )
 
@@ -48,10 +48,10 @@ class BoletaHonorarioService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ListadoBHEEmitidos",
                 data=None
             )
 
@@ -68,10 +68,10 @@ class BoletaHonorarioService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ObtenerPdfBoletaRecibida",
                 data=None
             )
 
@@ -89,10 +89,10 @@ class BoletaHonorarioService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ListadoBHERecibido",
                 data=None
             )
 
