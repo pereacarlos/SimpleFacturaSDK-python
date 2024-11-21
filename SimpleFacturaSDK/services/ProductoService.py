@@ -27,10 +27,10 @@ class ProductoService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al Crear Producto",
                 data=None
             )
 
@@ -49,10 +49,10 @@ class ProductoService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al listar Productos",
                 data=None
             )
 
