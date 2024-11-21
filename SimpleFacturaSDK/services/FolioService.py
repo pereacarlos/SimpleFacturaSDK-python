@@ -98,5 +98,5 @@ class FolioService:
             )
 
     async def close(self):
-        if not self.session.closed:
+        if self.session and not self.session.closed:
             await self.session.close()
