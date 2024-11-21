@@ -28,10 +28,10 @@ class ConfiguracionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al ObtenerDatos de la Empresa",
                 data=None
             )
 
