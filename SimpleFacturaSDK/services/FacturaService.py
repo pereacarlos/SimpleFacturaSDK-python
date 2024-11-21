@@ -40,13 +40,13 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Facturación",
+                message="Error al obtener Facturacion",
                 data=None
             )
+    
 
     async def obtener_pdf(self, solicitud):
         url = f"{self.base_url}/dte/pdf"
@@ -61,8 +61,7 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al obtener PDF",
@@ -82,8 +81,7 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al obtener Timbre",
@@ -103,8 +101,7 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al obtener XML",
@@ -125,8 +122,7 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al obtener DTE",
@@ -163,8 +159,7 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al obtener Sobre XML",
@@ -232,11 +227,10 @@ class FacturacionService:
                             data=None
                         )
 
-        except aiohttp.ClientError as http_err:
-            print(f"Ocurrio un Error Http: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Facturación Masiva",
+                message="Error al obtener Facturacion Masiva",
                 data=None
             )
     
@@ -267,11 +261,10 @@ class FacturacionService:
                     data=None
                 )
 
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Emision",
+                message="Error al obtener EmisionNC_ND_V2",
                 data=None
             )
     
@@ -289,11 +282,10 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Listado",
+                message="Error al obtener ListadoDteEmitidos",
                 data=None
             )
 
@@ -310,12 +302,11 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=False
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
                 message="Error al enviar Correo",
-                data=False
+                data=None
             )
         
     async def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
@@ -332,11 +323,10 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Consolidado",
+                message="Error al obtener ConsolidadoVentas",
                 data=None
             )
     
@@ -367,11 +357,10 @@ class FacturacionService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as http_err:
-            print(f"HTTP error occurred: {http_err}")
+        except Exception as error:
             return Response(
                 status=500,
-                message="Error al conciliar Emitidos",
+                message="Error al Conciliar Emitidos",
                 data=None
             )
             
