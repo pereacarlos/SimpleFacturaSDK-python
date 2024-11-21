@@ -5,6 +5,7 @@ from typing import List
 from Utilidades.Simplificar_error import simplificar_errores
 from requests_toolbelt import MultipartEncoder
 import aiofiles
+import asyncio
 import requests
 from models.GetFactura.Dte import Dte
 from models.GetFactura.ReporteDTE import ReporteDTE
@@ -375,4 +376,9 @@ class FacturacionService:
             )
             
     async def close(self):
-        await self.session.close()
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())

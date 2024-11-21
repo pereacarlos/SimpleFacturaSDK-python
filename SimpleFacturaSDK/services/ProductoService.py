@@ -5,6 +5,7 @@ from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
+import asyncio
 
 class ProductoService:
     def __init__(self, base_url, headers):
@@ -56,4 +57,9 @@ class ProductoService:
             )
 
     async def close(self):
-        await self.session.close()
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())

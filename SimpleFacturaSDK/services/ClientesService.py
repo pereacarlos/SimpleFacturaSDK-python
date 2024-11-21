@@ -3,6 +3,7 @@ from models.Clientes.NuevoReceptorExternoRequest import ReceptorExternoEnt
 from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores
 import requests
+import asyncio
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 
@@ -55,4 +56,9 @@ class ClientesService:
             )
 
     async def close(self):
-        await self.session.close()
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())

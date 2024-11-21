@@ -6,6 +6,7 @@ from Utilidades.Simplificar_error import simplificar_errores
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from models.GetFactura.Credenciales import Credenciales
 import aiohttp
+import asyncio
 class SucursalService:
     def __init__(self, base_url, headers):
         self.base_url = base_url
@@ -34,7 +35,11 @@ class SucursalService:
             )
 
     async def close(self):
-        if self.session and not self.session.closed:
+        if not self.session.closed:
             await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())
 
     

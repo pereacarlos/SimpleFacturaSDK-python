@@ -5,6 +5,7 @@ from Utilidades.Simplificar_error import simplificar_errores
 import requests
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
+import asyncio
 
 class ConfiguracionService:
     def __init__(self, base_url, headers):
@@ -37,3 +38,7 @@ class ConfiguracionService:
     async def close(self):
         if not self.session.closed:
             await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())
