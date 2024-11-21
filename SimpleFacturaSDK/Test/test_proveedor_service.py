@@ -1,11 +1,12 @@
 from ClientSimpleFactura import ClientSimpleFactura
 import base64
 import requests
-from unittest.mock import patch
 import unittest
 from dotenv import load_dotenv
 import os
 import random
+import aiohttp
+from unittest.mock import AsyncMock, patch
 from enumeracion.TipoDTE import DTEType
 from models.ResponseDTE import Response
 from models.GetFactura.ListadoRequest import ListaDteRequestEnt
@@ -19,15 +20,14 @@ load_dotenv()
 fecha_desde = datetime.strptime("2024-04-01", "%Y-%m-%d")
 fecha_hasta = datetime.strptime("2024-04-30", "%Y-%m-%d")
 
-class TestProveedorService(unittest.TestCase):
-    def setUp(self):
+class TestProveedorService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
         username = os.getenv("USERNAME")
         password = os.getenv("PASSWORD")
-        
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Proveedores
 
-    def test_listarDteRecibidos(self):
+    async def test_listarDteRecibidos(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -39,14 +39,14 @@ class TestProveedorService(unittest.TestCase):
             hasta=fecha_hasta,
         )
 
-        response = self.service.listarDteRecibidos(solicitud)
+        response = await self.service.listarDteRecibidos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, list)
         self.assertTrue(len(response.data) > 0)
 
-    def test_listarDteRecibidos_BadRequest_WhenDataISInvalid(self):
+    async def test_listarDteRecibidos_BadRequest_WhenDataISInvalid(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor=""
@@ -58,14 +58,14 @@ class TestProveedorService(unittest.TestCase):
             hasta=fecha_hasta,
         )
 
-        response = self.service.listarDteRecibidos(solicitud)
+        response = await self.service.listarDteRecibidos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
 
-    def test_listarDteRecibidos_ServerError(self):
+    async def test_listarDteRecibidos_ServerError(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -77,18 +77,18 @@ class TestProveedorService(unittest.TestCase):
             hasta=fecha_hasta,
         )
 
-        with patch('SimpleFacturaSDK.services.ProveedorService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al listar DteRecibidos")
 
-            response = self.service.listarDteRecibidos(solicitud)
+            response = await self.service.listarDteRecibidos(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al listar DteRecibidos", response.message)
 
-    def test_obtenerXml_ReturnOK(self):
+    async def test_obtenerXml_ReturnOK(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -98,28 +98,28 @@ class TestProveedorService(unittest.TestCase):
             folio= 7366834,
             codigoTipoDte=DTEType.NotaCreditoElectronica
         )
-        response = self.service.obtenerXml(solicitud)
+        response = await self.service.obtenerXml(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsInstance(response.data, bytes)
 
-    def test_obtenerXml_BadRequest_WhenDataISInvalid(self):
+    async def test_obtenerXml_BadRequest_WhenDataISInvalid(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6",
                 rut_contribuyente="96689310-9"
             )
         )
-        response = self.service.obtenerXml(solicitud)
+        response = await self.service.obtenerXml(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
 
-    def test_obtenerXml_ServerError(self):
+    async def test_obtenerXml_ServerError(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="",
@@ -129,14 +129,18 @@ class TestProveedorService(unittest.TestCase):
             folio= 0,
             codigoTipoDte=None
         )
-        response = self.service.obtenerXml(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNone(response.data)
-        self.assertIsNotNone(response.message)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Xml")
 
-    def test_obtener_pdf_ReturnOK(self):
+            response = await self.service.obtenerXml(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNone(response.data)
+            self.assertIsNotNone(response.message)
+            self.assertEqual("Error al obtener Xml", response.message)
+
+    async def test_obtener_pdf_ReturnOK(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -146,28 +150,28 @@ class TestProveedorService(unittest.TestCase):
             folio= 2232,
             codigoTipoDte=DTEType.FacturaElectronica
         )
-        response = self.service.obtener_pdf(solicitud)
+        response = await self.service.obtener_pdf(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsInstance(response.data, bytes)
 
-    def test_obtener_pdf_BadRequest_WhenDataISInvalid(self):
+    async def test_obtener_pdf_BadRequest_WhenDataISInvalid(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6",
                 rut_contribuyente="76269769-6"
             )
         )
-        response = self.service.obtener_pdf(solicitud)
+        response = await self.service.obtener_pdf(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
 
-    def test_obtener_pdf_ServerError(self):
+    async def test_obtener_pdf_ServerError(self):
         solicitud=ListaDteRequestEnt(
             Credenciales=Credenciales(
                 rut_emisor="",
@@ -177,53 +181,63 @@ class TestProveedorService(unittest.TestCase):
             folio= 0,
             codigoTipoDte=None
         )
-        response = self.service.obtener_pdf(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNone(response.data)
-        self.assertIsNotNone(response.message)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener PDF")
 
-    #pREGUNTAR
-    def test_ConciliarRecibidos_ReturnOK(self):
+            response = await self.service.obtener_pdf(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNone(response.data)
+            self.assertIsNotNone(response.message)
+            self.assertEqual("Error al obtener PDF", response.message)
+
+    async def test_ConciliarRecibidos_ReturnOK(self):
         solicitud=Credenciales(rut_emisor="76269769-6")
 
-        response = self.service.ConciliarRecibidos(solicitud,5,2024)
+        response = await self.service.ConciliarRecibidos(solicitud,5,2024)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsInstance(response.data, str)
         
-    def test_ConciliarRecibidos_BadRequest_WhenMesISInvalid(self):
+    async def test_ConciliarRecibidos_BadRequest_WhenMesISInvalid(self):
         solicitud=Credenciales(rut_emisor="76269769-6")
 
-        response = self.service.ConciliarRecibidos(solicitud,"5",2024)
+        response = await self.service.ConciliarRecibidos(solicitud,"5",2024)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
+        self.assertEqual("El parámetro 'mes' debe ser un número entero.", response.message)
 
-    def test_ConciliarRecibidos_BadRequest_WhenAnioISInvalid(self):
+    async def test_ConciliarRecibidos_BadRequest_WhenAnioISInvalid(self):
         solicitud=Credenciales(rut_emisor="76269769-6")
 
-        response = self.service.ConciliarRecibidos(solicitud,5,"2024")
+        response = await self.service.ConciliarRecibidos(solicitud,5,"2024")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
+        self.assertEqual("El parámetro 'anio' debe ser un número entero.", response.message)
 
-    def test_ConciliarRecibidos_ServerError(self):
+    async def test_ConciliarRecibidos_ServerError(self):
         solicitud=Credenciales(rut_emisor="76269769-k")
 
-        response = self.service.ConciliarRecibidos(solicitud,5,2024)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNone(response.data)
-        self.assertIsNotNone(response.message)
+
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ConciliarRecibidos")
+
+            response = await self.service.ConciliarRecibidos(solicitud,5,2024)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNone(response.data)
+            self.assertIsNotNone(response.message)
+            self.assertEqual("Error al ConciliarRecibidos", response.message)
 
 
 

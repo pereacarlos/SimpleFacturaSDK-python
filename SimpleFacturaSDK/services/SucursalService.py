@@ -5,22 +5,41 @@ from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from models.GetFactura.Credenciales import Credenciales
-
+import aiohttp
+import asyncio
 class SucursalService:
-    def __init__(self, session, base_url):
-        self.session = session
+    def __init__(self, base_url, headers):
         self.base_url = base_url
+        self.headers = headers
+        self.session = aiohttp.ClientSession(headers=self.headers)
 
-    def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
+    async def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
         url = f"{self.base_url}/branchOffices"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text                
-        if response.status_code == 200:
-            resultado = Response[List[Sucursal]].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=resultado.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    resultado = Response[List[Sucursal]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=resultado.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al ListarSucursales",
+                data=None
+            )
+
+    async def close(self):
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())
+
+    
