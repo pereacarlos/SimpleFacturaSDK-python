@@ -34,4 +34,7 @@ class SucursalService:
             )
 
     async def close(self):
-        await self.session.close()
+        if not self.session.closed:
+            await self.session.close()
+
+    

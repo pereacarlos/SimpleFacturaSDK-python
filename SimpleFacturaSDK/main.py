@@ -1,30 +1,33 @@
 import asyncio
 
 from ClientSimpleFactura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from models.Folios.SolicitudFolios import SolicitudFolios
 
 async def main():
     username = "demo@chilesystems.com"
     password = "Rv8Il4eV"
     client_api = ClientSimpleFactura(username, password)
-    solicitud= Credenciales(rut_emisor="76269769-6")
-
-
+    solicitud= SolicitudFolios(
+        RutEmpresa = "76269769-6",
+        TipoDTE = 33,
+        Ambiente = 0
+    )
     try:
-        ListSucursal = await client_api.Sucursales.ListarSucursales(solicitud)
+        FolioSinUsar = await client_api.Folios.Folios_Sin_Uso(solicitud)
         print("\nDatos de la Respuesta:")
-        print(f"Status: {ListSucursal.status}")
-        print(f"Message: {ListSucursal.message}")
-        for cliente in ListSucursal.data:
-            print(f"Nombre: {cliente.nombre}")
-            print(f"Direccion: {cliente.direccion}")
-            print("\n")
+        print(f"Status: {FolioSinUsar.status}")
+        print(f"Message: {FolioSinUsar.message}")
+        print(f"Data: {FolioSinUsar.data}")
+        for data in FolioSinUsar.data:
+            print(f"desde: {data.desde}")
+            print(f"hasta: {data.hasta}")
+            print(f"Cantidad: {data.cantidad}")
 
 
     except Exception as err:
         print(f"Error: {err}")
     finally:
-        await client_api.Sucursales.close()
+        await client_api.Folios.close()
        
 if __name__ == "__main__":
     asyncio.run(main())
