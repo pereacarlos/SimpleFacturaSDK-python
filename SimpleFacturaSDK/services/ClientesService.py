@@ -27,10 +27,10 @@ class ClientesService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al Crear Clientes",
                 data=None
             )
 
@@ -48,10 +48,10 @@ class ClientesService:
                     message=simplificar_errores(contenidoRespuesta),
                     data=None
                 )
-        except aiohttp.ClientError as err:
+        except Exception as error:
             return Response(
                 status=500,
-                message=f"Error en la conexión: {err}",
+                message="Error al Listar Clientes",
                 data=None
             )
 

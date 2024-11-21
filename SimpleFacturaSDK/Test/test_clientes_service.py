@@ -8,7 +8,8 @@ from enumeracion.Ambiente import AmbienteEnum
 from enumeracion.TipoDTE import DTEType
 import json
 from dotenv import load_dotenv
-from unittest.mock import patch
+import aiohttp
+from unittest.mock import AsyncMock, patch
 import os
 from models.GetFactura.Credenciales import Credenciales
 from models.Productos.DatoExternoRequest import DatoExternoRequest
@@ -16,15 +17,14 @@ from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoReq
 from models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 load_dotenv()
 
-class TestClientesService(unittest.TestCase):
-    def setUp(self):
+class TestClientesService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
         username = os.getenv("USERNAME")
         password = os.getenv("PASSWORD")
-        
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Clientes
 
-    def test_CrearClientes_ReturnOK(self):
+    async def test_CrearClientes_ReturnOK(self):
         solicitud= DatoExternoRequest(
             Credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -66,7 +66,7 @@ class TestClientesService(unittest.TestCase):
                 )
             ]
         )
-        response = self.service.CrearClientes(solicitud)
+        response = await self.service.CrearClientes(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
@@ -80,7 +80,7 @@ class TestClientesService(unittest.TestCase):
             self.assertIsNotNone(cliente.giro)
             self.assertIsNotNone(cliente.emisorId)
 
-    def test_CrearClientes_BadRequest(self):
+    async def test_CrearClientes_BadRequest(self):
 
         solicitud = DatoExternoRequest(
             Credenciales=Credenciales(
@@ -102,7 +102,7 @@ class TestClientesService(unittest.TestCase):
             ]
         )
 
-        response = self.service.CrearClientes(solicitud)
+        response = await self.service.CrearClientes(solicitud)
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
@@ -110,7 +110,7 @@ class TestClientesService(unittest.TestCase):
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_CrearClientes_ServerError(self):
+    async def test_CrearClientes_ServerError(self):
 
         solicitud = DatoExternoRequest(
             Credenciales=Credenciales(
@@ -118,22 +118,22 @@ class TestClientesService(unittest.TestCase):
                 nombre_sucursal= "Matriz"
             )
         )
-        with patch('SimpleFacturaSDK.services.ClientesService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al Crear Clientes")
 
-            response = self.service.CrearClientes(solicitud)
+            response = await self.service.CrearClientes(solicitud)
 
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500) 
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al Crear Clientes", response.message)
 
-    def test_ListarClientes_ReturnOK(self):
+    async def test_ListarClientes_ReturnOK(self):
         solicitud= Credenciales(rut_emisor="76269769-6")
 
-        response = self.service.ListarClientes(solicitud)
+        response = await self.service.ListarClientes(solicitud)
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
@@ -146,11 +146,11 @@ class TestClientesService(unittest.TestCase):
             self.assertIsNotNone(cliente.giro)
             self.assertIsNotNone(cliente.emisorId)
 
-    def test_ListarClientes_BadRequest(self):
+    async def test_ListarClientes_BadRequest(self):
             
         solicitud = Credenciales(rut_emisor="")
 
-        response = self.service.ListarClientes(solicitud)
+        response = await self.service.ListarClientes(solicitud)
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
@@ -158,21 +158,21 @@ class TestClientesService(unittest.TestCase):
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_ListarClientes_ServerError(self):
+    async def test_ListarClientes_ServerError(self):
             
         solicitud = Credenciales(rut_emisor="76269769-6")
 
-        with patch('SimpleFacturaSDK.services.ClientesService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al Listar Clientes")
 
-            response = self.service.ListarClientes(solicitud)
+            response = await self.service.ListarClientes(solicitud)
 
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500) 
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al Listar Clientes", response.message)
 
 
 
