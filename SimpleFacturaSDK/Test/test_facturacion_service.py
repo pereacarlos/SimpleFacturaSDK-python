@@ -48,14 +48,32 @@ from models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 
 load_dotenv()
+
+async def solicitar_folio(service_folios, tipo, cantidad):
+    solicitud_folio = FolioRequest(
+        credenciales=Credenciales(
+            rut_emisor="76269769-6",
+            nombre_sucursal="Casa Matriz"
+        ),
+        Cantidad=cantidad,
+        CodigoTipoDte=tipo
+    )
+    result = await service_folios.SolicitarFolios(solicitud_folio)
+    if result and result.status == 200 and result.data:
+        return result.data.hasta
+    return None
+
+
 class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Facturacion
         self.service_folios = self.client_api.Folios
+
+ 
 
     async  def test_obtener_pdf_returnOK(self):
         solicitud = SolicitudPdfDte(
@@ -762,8 +780,9 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
-    #Volver a probrar cuando lo arreglen en qa
     async def test_facturacion_individualV2_Exportacion_ReturnOK(self):
+        folio = await solicitar_folio(self.service_folios, DTEType.FacturaExportacionElectronica, 1)
+        self.assertIsNotNone(folio, "No se pudo obtener el folio")
         solicitud = RequestDTE(
             Exportaciones=Exportaciones(
                 Encabezado=Encabezado(
@@ -772,6 +791,7 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
                         FchEmis="2024-08-17",
                         FmaPago=1,
                         FchVenc="2024-08-17",
+                        Folio=folio
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -1139,17 +1159,10 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             self.assertIsNotNone(response.message)
             self.assertEqual(response.message, "Error al obtener Facturacion Masiva")
     
-    #Volver a probrar cuando lo arreglen en qa
     async def test_EmisionNC_ND_V2_ReturnOK(self):
 
-        solicitudFolio= FolioRequest(
-            credenciales=Credenciales(
-                rut_emisor = "76269769-6",
-                nombre_sucursal = "Casa Matriz"
-            ),
-            Cantidad= 1,
-            CodigoTipoDte=61
-        )
+        folio = await solicitar_folio(self.service_folios, DTEType.NotaCreditoElectronica, 1)
+        self.assertIsNotNone(folio, "No se pudo obtener el folio")
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1157,7 +1170,8 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
                         TipoDTE=DTEType.NotaCreditoElectronica,
                         FchEmis="2024-08-13",
                         FmaPago=2,
-                        FchVenc="2024-08-13"
+                        FchVenc="2024-08-13",
+                        Folio=folio 
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -1215,8 +1229,6 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             )
         )
         motivo = ReasonTypeEnum.Otros.value
-    
-        responseFolio = await self.service_folios.SolicitarFolios(solicitudFolio)
         response = await self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
         print(response.message)
         self.assertIsNotNone(response)
@@ -1224,11 +1236,6 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsNotNone(response.data.folio)
-
-        self.assertIsNotNone(responseFolio)
-        self.assertIsInstance(responseFolio, Response)
-        self.assertEqual(responseFolio.status, 200)
-        self.assertIsNotNone(responseFolio.data)
 
     async def test_EmisionNC_ND_V2_BadRequest_WhenSucursalIsInavlid(self):
         solicitud = RequestDTE(

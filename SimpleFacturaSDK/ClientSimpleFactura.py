@@ -14,7 +14,7 @@ import os
 load_dotenv()
 
 #BASE_URL = "https://api.simplefactura.cl"
-BASE_URL = os.getenv("BASE_URL")
+BASE_URL = os.getenv("SF_BASE_URL")
 class ClientSimpleFactura:
     def __init__(self, username, password):
         self.session = requests.Session()
