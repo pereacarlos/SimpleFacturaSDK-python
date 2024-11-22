@@ -22,6 +22,7 @@ El SDK SimpleFactura es una solución en Python diseñada para facilitar la inte
 
 Las dependencias necesarias para utilizar este SDK son:
 
+- `requests`
 - `aiohttp`
 - `requests-toolbelt`
 - `pydantic`
@@ -47,7 +48,16 @@ pip install simplefactura-sdk
 Si necesitas instalar las dependencias manualmente:
     
 ```bash
-pip install cryptography pyOpenSSL requests-toolbelt pydantic aiohttp httpx pytest requests-mock python-dotenv pytest-asyncio
+pip install requests requests-toolbelt pydantic aiohttp pytest requests-mock python-dotenv pytest-asyncio httpx
+
+```
+
+Opcional(Clonar el repositorio e instalar dependencias desde requirements.txt)
+```bash
+git clone https://github.com/tu_usuario/SimpleFacturaSDK-python.git
+cd SimpleFacturaSDK-python
+pip install -r requirements.txt
+
 ```
 
 ```bash
