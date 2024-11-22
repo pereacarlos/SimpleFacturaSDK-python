@@ -12,8 +12,8 @@ load_dotenv()
 
 class TestSucursalService(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Sucursales
 
