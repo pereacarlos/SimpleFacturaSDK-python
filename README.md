@@ -1,37 +1,49 @@
+# SDK SimpleFactura
 
-SDK SimpleFactura
 El SDK SimpleFactura es una solución en Python diseñada para facilitar la integración con los servicios de SimpleFactura, parte de ChileSystems. Este SDK provee un conjunto de clases y métodos que permiten realizar operaciones como facturación, gestión de productos, proveedores, clientes, sucursales, folios, configuración y boletas de honorarios.
 
-Características principales
-Simplifica la interacción con los servicios de SimpleFactura.
-Proporciona interfaces específicas para operaciones como:
-Facturación: Generación y gestión de documentos tributarios electrónicos.
-Gestión de productos, proveedores y clientes.
-Gestión de folios.
-Emisión de boletas de honorarios.
-Compatible con Python 3.6 y superior.
-Requisitos
-Dependencias
+---
+
+## Características principales
+
+- **Simplifica** la interacción con los servicios de SimpleFactura.
+- Proporciona interfaces específicas para operaciones como:
+  - **Facturación**: Generación y gestión de documentos tributarios electrónicos.
+  - **Gestión** de productos, proveedores y clientes.
+  - **Gestión de folios**.
+  - **Emisión de boletas de honorarios**.
+- Compatible con **Python 3.6 y superior**.
+
+---
+
+## Requisitos
+
+### Dependencias
+
 Las dependencias necesarias para utilizar este SDK son:
 
-aiohttp
-cryptography
-pyOpenSSL
-requests-toolbelt
-pydantic
-httpx
-pytest
-requests-mock
-python-dotenv
-pytest-asyncio
-Plataforma
-El SDK es compatible con Python 3.6 y versiones superiores.
+- `aiohttp`
+- `cryptography`
+- `pyOpenSSL`
+- `requests-toolbelt`
+- `pydantic`
+- `httpx`
+- `pytest`
+- `requests-mock`
+- `python-dotenv`
+- `pytest-asyncio`
 
-Instalación
-Puedes instalar el SDK y sus dependencias utilizando pip:
+### Plataforma
 
-bash
-Copiar código
+El SDK es compatible con **Python 3.6** y versiones superiores.
+
+---
+
+## Instalación
+
+Puedes instalar el SDK y sus dependencias utilizando **pip**:
+
+```bash
 pip install simplefactura-sdk
 Si necesitas instalar las dependencias manualmente:
 
@@ -49,6 +61,7 @@ def main():
     username = "tu_usuario"
     password = "tu_contraseña"
     client_api = ClientSimpleFactura(username, password)
+    
     # Ejemplo: Uso de los servicios
     facturacion_service = client_api.Facturacion
     productos_service = client_api.Productos
@@ -76,6 +89,7 @@ async def main():
     username = "tu_usuario"
     password = "tu_contraseña"
     client_api = ClientSimpleFactura(username, password)
+    
     solicitud = SolicitudPdfDte(
         credenciales=Credenciales(
             rut_emisor="tu_rut_emisor",
@@ -87,6 +101,7 @@ async def main():
             ambiente=0
         )
     )
+    
     try:
         pdf_response = await client_api.Facturacion.obtener_pdf(solicitud)
         if pdf_response.status == 200:
@@ -102,10 +117,12 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-Nota: Asegúrate de reemplazar "tu_usuario", "tu_contraseña", "tu_rut_emisor", y "tu_sucursal" con tus credenciales y datos reales. También verifica que los valores en DteReferenciadoExterno correspondan a tu configuración específica.
+Nota: Asegúrate de reemplazar "tu_usuario", "tu_contraseña", "tu_rut_emisor" y "tu_sucursal" con tus credenciales y datos reales. También verifica que los valores en DteReferenciadoExterno correspondan a tu configuración específica.
 
 Documentación
 La documentación relevante para usar este SDK es:
 
-Documentación general: Sitio Simple Factura.
-Documentación de APIs: Postman.
+Documentación general
+Documentación de APIs (Postman)
+css
+Copiar código
