@@ -9,14 +9,15 @@ setup(
     packages=find_packages(),
     install_requires=[
         "requests",
-        "cryptography",
-        "pyOpenSSL",
         "requests-toolbelt",
         "pydantic",
         "aiohttp",
         "pytest",
-        " requests-mock",
-        "python-dotenv"
+        "requests-mock",
+        "python-dotenv",
+        "pytest-asyncio",
+        "httpx",
+
     ],
     include_package_data=True,
 )

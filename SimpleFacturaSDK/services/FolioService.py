@@ -4,66 +4,104 @@ from models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
 from models.ResponseDTE import Response
 from Utilidades.Simplificar_error import simplificar_errores
 import requests
+import asyncio
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
-
+import aiohttp
 
 class FolioService:
-    def __init__(self, session, base_url):
-        self.session = session
+    def __init__(self, base_url, headers):
         self.base_url = base_url
+        self.headers = headers
+        self.session = aiohttp.ClientSession(headers=self.headers)
 
-    def ConsultaFoliosDisponibles(self, solicitud) -> int:
+    async def ConsultaFoliosDisponibles(self, solicitud) -> int:
         url = f"{self.base_url}/folios/consultar/disponibles"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text        
-        if response.status_code == 200:
-            deserialized_response = Response[int].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialized_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[int].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al ConsultarFoliosDisponibles",
+                data=None
+            )
 
-    def SolicitarFolios(self, solicitudFolio) -> Optional[TimbrajeApiEnt]:
+    async def SolicitarFolios(self, solicitudFolio) -> Optional[TimbrajeApiEnt]:
         url = f"{self.base_url}/folios/solicitar"
         solicitud_dict = serializar_solicitud_dict(solicitudFolio)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            deserialized_response = Response[TimbrajeApiEnt].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialized_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[TimbrajeApiEnt].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al SolicitarFolios",
+                data=None
+            )
 
-    def ConsultarFolios(self, solicitud) -> Optional[Response[List[TimbrajeApiEnt]]]:
+    async def ConsultarFolios(self, solicitud) -> Optional[Response[List[TimbrajeApiEnt]]]:
         url = f"{self.base_url}/folios/consultar"
         solicitud_dict = serializar_solicitud_dict(solicitud)       
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            deserialized_response = Response[List[TimbrajeApiEnt]].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialized_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
-
-    def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[TimbrajeApiEnt]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al ConsultarFolios",
+                data=None
+            )
+    
+    async def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
         url = f"{self.base_url}/folios/consultar/sin-uso"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            deserialized_response = Response[List[FoliosAnulablesEnt]].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialized_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[FoliosAnulablesEnt]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al ConsultarFoliosSinUso",
+                data=None
+            )
+
+    async def close(self):
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())

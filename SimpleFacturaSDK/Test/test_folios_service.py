@@ -14,61 +14,62 @@ import unittest
 from models.GetFactura.Credenciales import Credenciales
 from models.Sucursal import Sucursal
 from dotenv import load_dotenv
-from unittest.mock import patch
+import aiohttp
+from unittest.mock import AsyncMock, patch
 import os
 load_dotenv()
 
-class TestFoliosService(unittest.TestCase):
-    def setUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
-        
+class TestFoliosService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Folios
 
 
-    def test_ConsultaFoliosDisponibles_ReturnOK(self):
+    async def test_ConsultaFoliosDisponibles_ReturnOK(self):
         solicitud= SolicitudFolios(
             RutEmpresa="76269769-6",
             TipoDTE=33,
             Ambiente=0
         )
-        response = self.service.ConsultaFoliosDisponibles(solicitud)
+        response = await self.service.ConsultaFoliosDisponibles(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
 
-    def test_ConsultarFoliosDisponibles_ReturnBadRequest(self):
+    async def test_ConsultarFoliosDisponibles_ReturnBadRequest(self):
         solicitud= SolicitudFolios(
             RutEmpresa="",
             TipoDTE=33,
             Ambiente=0
         )
-        response = self.service.ConsultaFoliosDisponibles(solicitud)
+        response = await self.service.ConsultaFoliosDisponibles(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400) 
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_ConsultarFoliosDisponible_ReturnServerError(self):
+    async def test_ConsultarFoliosDisponible_ReturnServerError(self):
         solicitud= SolicitudFolios(
             RutEmpresa="",
             TipoDTE=None,
             Ambiente=0
         )
-        with patch('SimpleFacturaSDK.services.FolioService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
-            response = self.service.ConsultaFoliosDisponibles(solicitud)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ConsultarFoliosDisponibles")
+
+            response = await self.service.ConsultaFoliosDisponibles(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al ConsultarFoliosDisponibles", response.message)
 
-    def test_SolicitarFolios_ReturnOK(self):
+    async def test_SolicitarFolios_ReturnOK(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "76269769-6",
@@ -77,13 +78,13 @@ class TestFoliosService(unittest.TestCase):
             Cantidad= 3,
             CodigoTipoDte= DTEType.FacturaElectronica
         )
-        response = self.service.SolicitarFolios(solicitud)
+        response = await self.service.SolicitarFolios(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
 
-    def test_SolicitarFolios_ReturnBadRequest(self):
+    async def test_SolicitarFolios_ReturnBadRequest(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "",
@@ -92,14 +93,14 @@ class TestFoliosService(unittest.TestCase):
             Cantidad= 3,
             CodigoTipoDte= DTEType.FacturaElectronica
         )
-        response = self.service.SolicitarFolios(solicitud)
+        response = await self.service.SolicitarFolios(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400) 
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_SolicitarFolios_ReturnServerError(self):
+    async def test_SolicitarFolios_ReturnServerError(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "76269769-6",
@@ -108,17 +109,18 @@ class TestFoliosService(unittest.TestCase):
             Cantidad= 3,
             CodigoTipoDte= DTEType.FacturaElectronica
         )
-        with patch('SimpleFacturaSDK.services.FolioService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
-            response = self.service.SolicitarFolios(solicitud)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al SolicitarFolios")
+
+            response = await self.service.SolicitarFolios(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al SolicitarFolios", response.message)
 
-    def test_ConsultarFolios_ReturnOK(self):
+    async def test_ConsultarFolios_ReturnOK(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "76269769-6",
@@ -128,7 +130,7 @@ class TestFoliosService(unittest.TestCase):
             Ambiente=0
         )
 
-        response = self.service.ConsultarFolios(solicitud)
+        response = await self.service.ConsultarFolios(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
@@ -142,7 +144,7 @@ class TestFoliosService(unittest.TestCase):
             self.assertIsNotNone(folio.desde)
             self.assertIsNotNone(folio.hasta)
 
-    def test_ConsultarFolios_ReturnBadRequest(self):
+    async def test_ConsultarFolios_ReturnBadRequest(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "",
@@ -151,14 +153,14 @@ class TestFoliosService(unittest.TestCase):
             CodigoTipoDte= None,
             Ambiente=0
         )
-        response = self.service.ConsultarFolios(solicitud)
+        response = await self.service.ConsultarFolios(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400) 
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_ConsultarFolios_ReturnServerError(self):
+    async def test_ConsultarFolios_ReturnServerError(self):
         solicitud= FolioRequest(
             credenciales=Credenciales(
                 rut_emisor = "76269769-6",
@@ -167,23 +169,24 @@ class TestFoliosService(unittest.TestCase):
             CodigoTipoDte= None,
             Ambiente=0
         )
-        with patch('SimpleFacturaSDK.services.FolioService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
-            response = self.service.ConsultarFolios(solicitud)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ConsultarFolios")
+
+            response = await self.service.ConsultarFolios(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al ConsultarFolios", response.message)
 
-    def test_Folios_Sin_Uso_ReturnOK(self):
+    async def test_Folios_Sin_Uso_ReturnOK(self):
         solicitud= SolicitudFolios(
             RutEmpresa = "76269769-6",
             TipoDTE = 33,
             Ambiente = 0
         )
-        response = self.service.Folios_Sin_Uso(solicitud)
+        response = await self.service.Folios_Sin_Uso(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
@@ -195,34 +198,34 @@ class TestFoliosService(unittest.TestCase):
             self.assertIsNotNone(folio.hasta)
             self.assertIsNotNone(folio.cantidad)
 
-    def test_Folios_Sin_Uso_ReturnBadRequest(self):
+    async def test_Folios_Sin_Uso_ReturnBadRequest(self):
         solicitud= SolicitudFolios(
             RutEmpresa = "",
             TipoDTE = 33,
             Ambiente = 0
         )
-        response = self.service.Folios_Sin_Uso(solicitud)
+        response = await self.service.Folios_Sin_Uso(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400) 
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_Folios_Sin_Uso_ReturnServerError(self):
+    async def test_Folios_Sin_Uso_ReturnServerError(self):
         solicitud= SolicitudFolios(
             RutEmpresa = "76269769-6",
             TipoDTE = 33,
             Ambiente = 0
         )
-        with patch('SimpleFacturaSDK.services.FolioService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
-            response = self.service.Folios_Sin_Uso(solicitud)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ConsultarFoliosSinUso")
+            response = await self.service.Folios_Sin_Uso(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al ConsultarFoliosSinUso", response.message)
 
 
 

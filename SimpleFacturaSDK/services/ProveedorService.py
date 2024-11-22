@@ -4,54 +4,101 @@ from models.GetFactura.Dte import Dte
 from Utilidades.Simplificar_error import simplificar_errores
 import requests
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
-
+from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+import aiohttp
+import asyncio
 
 class ProveedorService:
-    def __init__(self, session, base_url):
-        self.session = session
+    def __init__(self, base_url, headers):
         self.base_url = base_url
+        self.headers = headers
+        self.session = aiohttp.ClientSession(headers=self.headers)
 
-    def listarDteRecibidos(self, solicitud) -> Response[Optional[List[Dte]]]:
+    #Revisar
+    async def Aceptar_RechazarDTE(self, solicitud) -> Response[bool]:
+        url = f"{self.base_url}/acknowledgmentReceipt"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        print(solicitud_dict)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al hacer Aceptar_RechazarDTE",
+                data=None
+            )
+
+    async def listarDteRecibidos(self, solicitud) -> Response[Optional[List[Dte]]]:
         url = f"{self.base_url}/documentsReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialized_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[Dte]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al listar DteRecibidos",
+                data=None
+            )
 
-    def obtenerXml(self, solicitud) -> Response[bytes]:
+    async def obtenerXml(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/documentReceived/xml"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud.to_dict())
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            return Response(status=200, data=response.content)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
-
-    def obtener_pdf(self, solicitud):
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, data=await response.read())
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al obtener Xml",
+                data=None
+            )
+    
+    async def obtener_pdf(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/documentReceived/getPdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            return Response(status=200, data=response.content)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.read()
+                if response.status == 200:
+                    return Response(status=200, data=contenidoRespuesta)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
 
-    def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al obtener PDF",
+                data=None
+            )
+
+    async def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
         url = f"{self.base_url}/documentsReceived/consolidate/{mes}/{anio}"
         if not isinstance(mes, int):
             return Response(
@@ -67,13 +114,28 @@ class ProveedorService:
             )
         
         solicitud_dict = serializar_solicitud_dict(solicitud)
-        response = self.session.post(url, json=solicitud_dict)
-        contenidoRespuesta = response.text
-        if response.status_code == 200:
-            deserialize_response = Response[str].parse_raw(contenidoRespuesta)
-            return Response(status=200, data=deserialize_response.data)
-        return Response(
-            status=response.status_code,
-            message=simplificar_errores(contenidoRespuesta),
-            data=None
-        )
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialize_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialize_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al ConciliarRecibidos",
+                data=None
+            )
+
+    async def close(self):
+        if not self.session.closed:
+            await self.session.close()
+
+    def __del__(self):
+        if not self.session.closed:
+            asyncio.create_task(self.close())

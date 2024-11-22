@@ -5,23 +5,23 @@ import base64
 from models.ResponseDTE import Response
 from models.GetFactura.Credenciales import Credenciales
 from dotenv import load_dotenv
-from unittest.mock import patch
+import aiohttp
+from unittest.mock import AsyncMock, patch
 import os
 load_dotenv()
 
-class TestSucursalService(unittest.TestCase):
-    def setUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
-        
+class TestSucursalService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Sucursales
 
-    def test_ListarSucursales_ReturnOK(self):
+    async def test_ListarSucursales_ReturnOK(self):
         solicitud= Credenciales(
             rut_emisor="76269769-6"
         )
-        response = self.service.ListarSucursales(solicitud)
+        response = await self.service.ListarSucursales(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
@@ -32,11 +32,11 @@ class TestSucursalService(unittest.TestCase):
             self.assertIsNotNone(sucursal.nombre)
             self.assertIsNotNone(sucursal.direccion)
 
-    def test_ListarSucursales_BadRequest(self):
+    async def test_ListarSucursales_BadRequest(self):
         solicitud= Credenciales(
             rut_emisor=""
         )
-        response = self.service.ListarSucursales(solicitud)
+        response = await self.service.ListarSucursales(solicitud)
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
@@ -44,18 +44,18 @@ class TestSucursalService(unittest.TestCase):
         self.assertIsNone(response.data) 
         self.assertIsNotNone(response.message)
 
-    def test_ListarSucursales_ServeError(self):
+    async def test_ListarSucursales_ServeError(self):
         solicitud= Credenciales(
             rut_emisor="76269769-6"
         )
-        with patch('SimpleFacturaSDK.services.SucursalService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ListarSucursales")
 
-            response = self.service.ListarSucursales(solicitud)
+            response = await self.service.ListarSucursales(solicitud)
 
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500) 
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
+            self.assertEqual("Error al ListarSucursales", response.message)

@@ -4,8 +4,9 @@ import base64
 import requests
 from models.ResponseDTE import Response
 import json
+import aiohttp
+from unittest.mock import AsyncMock, patch
 from typing import List
-from unittest.mock import patch
 from datetime import datetime
 import requests_mock
 from models.Productos.ProductoEnt import ProductoEnt
@@ -18,20 +19,19 @@ import random
 
 load_dotenv()
 
-class TestProductoService(unittest.TestCase):
-    def setUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
-        
+class TestProductoService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Productos
 
-    def test_CrearProducto(self):
-        producto_1_nombre = f"NombreGoma_{random.randint(1, 1000)}"
-        producto_1_codigo_barra = f"NombreCB_{random.randint(1, 1000)}"
+    async def test_CrearProducto(self):
+        producto_1_nombre = f"NomGoma_{random.randint(1, 1000)}"
+        producto_1_codigo_barra = f"NomCB_{random.randint(1, 1000)}"
         
-        producto_2_nombre = f"NombreGoma2_{random.randint(1, 1000)}"
-        producto_2_codigo_barra = f"NombreCB2_{random.randint(1, 1000)}"
+        producto_2_nombre = f"NomGoma2_{random.randint(1, 1000)}"
+        producto_2_codigo_barra = f"NomCB2_{random.randint(1, 1000)}"
 
         solicitud = DatoExternoRequest(
             Credenciales=Credenciales(
@@ -60,14 +60,14 @@ class TestProductoService(unittest.TestCase):
             ]
         )
 
-        response = self.service.CrearProducto(solicitud)
+        response = await self.service.CrearProducto(solicitud)
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, list)
 
-    def test_CrearProducto_BadRequest_WhenProductoExist(self):
+    async def test_CrearProducto_BadRequest_WhenProductoExist(self):
         nombre_producto_1 = "Goma 500000"
         nombre_producto_2 = "Goma 500001"
 
@@ -98,39 +98,38 @@ class TestProductoService(unittest.TestCase):
             ]
         )
 
-        response = self.service.CrearProducto(solicitud)
+        response = await self.service.CrearProducto(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)
-        self.assertIn(f"Ya existe un producto con el nombre {nombre_producto_1}", response.message)
+        self.assertEqual(f"Ya existe un producto con el nombre {nombre_producto_1}", response.message)
 
-    def test_CrearProducto_ServerError(self):
+    async def test_CrearProducto_ServerError(self):
         solicitud = DatoExternoRequest(
             Credenciales=Credenciales(
                 rut_emisor="",
                 nombre_sucursal=""
             )
         )
-        with patch('SimpleFacturaSDK.services.ProductoService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al Crear Producto")
 
-            response = self.service.CrearProducto(solicitud)
+            response = await self.service.CrearProducto(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
-            self.assertIn("Internal Server Error", response.message)
+            self.assertEqual("Error al Crear Producto", response.message)
 
-    def test_listarProductos_ReturnOK(self):       
+    async def test_listarProductos_ReturnOK(self):       
         solicitud= Credenciales(
             rut_emisor="76269769-6",
             nombre_sucursal="Casa Matriz"
         )
 
-        response = self.service.listarProductos(solicitud)
+        response = await self.service.listarProductos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
@@ -140,31 +139,30 @@ class TestProductoService(unittest.TestCase):
                 break
             self.assertIsNotNone(producto.nombre)
 
-    def test_listarProductos_BadRequest(self):
+    async def test_listarProductos_BadRequest(self):
         solicitud = Credenciales(
             rut_emisor="",
             nombre_sucursal=""
         )
 
-        response = self.service.listarProductos(solicitud)
+        response = await self.service.listarProductos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
         self.assertIsNotNone(response.message)     
 
-    def test_listarProductos_ServerError(self):
+    async def test_listarProductos_ServerError(self):
         solicitud = Credenciales(
             rut_emisor="",
             nombre_sucursal=""
         )
-        with patch('SimpleFacturaSDK.services.ProductoService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Internal Server Error"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al listar Productos")
 
-            response = self.service.listarProductos(solicitud)
+            response = await self.service.listarProductos(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
-            self.assertIn("Internal Server Error", response.message)
+            self.assertEqual("Error al listar Productos", response.message)

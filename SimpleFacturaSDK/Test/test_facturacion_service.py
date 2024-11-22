@@ -4,7 +4,7 @@ import base64
 import json
 from dotenv import load_dotenv
 import os
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 from requests.auth import HTTPBasicAuth
 from models.GetFactura.Credenciales import Credenciales
 from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
@@ -43,20 +43,39 @@ from models.Folios.TimbrajeEnt import TimbrajeEnt
 from models.Folios.Foliorequest import FolioRequest
 from datetime import datetime
 import requests
+import aiohttp
 from models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 
 load_dotenv()
-class TestFacturacionService(unittest.TestCase):
-    def setUp(self):
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
+
+async def solicitar_folio(service_folios, tipo, cantidad):
+    solicitud_folio = FolioRequest(
+        credenciales=Credenciales(
+            rut_emisor="76269769-6",
+            nombre_sucursal="Casa Matriz"
+        ),
+        Cantidad=cantidad,
+        CodigoTipoDte=tipo
+    )
+    result = await service_folios.SolicitarFolios(solicitud_folio)
+    if result and result.status == 200 and result.data:
+        return result.data.hasta
+    return None
+
+
+class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        username = os.getenv("SF_USERNAME")
+        password = os.getenv("SF_PASSWORD")
         
         self.client_api = ClientSimpleFactura(username, password)
         self.service = self.client_api.Facturacion
         self.service_folios = self.client_api.Folios
 
-    def test_obtener_pdf_returnOK(self):
+ 
+
+    async  def test_obtener_pdf_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6",
@@ -69,14 +88,14 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
 
-        response = self.service.obtener_pdf(solicitud)
+        response = await  self.service.obtener_pdf(solicitud)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, bytes)
         self.assertGreater(len(response.data), 0)
 
-    def test_obtener_pdf_bad_request(self):
+    async def test_obtener_pdf_bad_request(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="",
@@ -88,12 +107,33 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_pdf(solicitud)
+        response = await self.service.obtener_pdf(solicitud)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_obtener_timbre_returnOK(self):
+    async def test_obtener_pdf_serverError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                nombre_sucursal=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener PDF")
+
+            response = await self.service.obtener_pdf(solicitud)
+            self.assertIsNotNone(response)
+            self.assertEqual(response.status, 500)
+            self.assertEqual(response.message, "Error al obtener PDF")
+            self.assertIsNone(response.data)
+
+    async def test_obtener_timbre_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -104,7 +144,7 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_timbre(solicitud)
+        response = await self.service.obtener_timbre(solicitud)
         
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
@@ -112,7 +152,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertGreater(len(response.data), 0)
         self.assertIsNotNone(response.data)
 
-    def test_obtener_timbre_bad_request(self):
+    async def test_obtener_timbre_bad_request(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="",
@@ -124,13 +164,34 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_timbre(solicitud)
+        response = await self.service.obtener_timbre(solicitud)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_obtener_xml_returnOK(self):
+    async def test_obtener_timbre_serverError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                nombre_sucursal=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Timbre")
+
+            response = await self.service.obtener_timbre(solicitud)
+            self.assertIsNotNone(response)
+            self.assertEqual(response.status, 500)
+            self.assertEqual(response.message, "Error al obtener Timbre")
+            self.assertIsNone(response.data)
+
+    async def test_obtener_xml_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -141,14 +202,14 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_xml(solicitud)
+        response = await self.service.obtener_xml(solicitud)
         
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, bytes)
         self.assertGreater(len(response.data), 0)
 
-    def test_obtener_xml_bad_request(self):
+    async def test_obtener_xml_bad_request(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor=""
@@ -159,12 +220,32 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_xml(solicitud)
+        response = await self.service.obtener_xml(solicitud)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_obtener_dte_returnOK(self):
+    async def test_obtener_xml_serverError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=39,
+                ambiente=0
+            )
+        )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener XML")
+
+            response = await self.service.obtener_xml(solicitud)
+            self.assertIsNotNone(response)
+            self.assertEqual(response.status, 500)
+            self.assertEqual(response.message, "Error al obtener XML")
+            self.assertIsNone(response.data)
+    
+    async def test_obtener_dte_returnOK(self):
         solicitud= SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -176,16 +257,15 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
 
-        response = self.service.obtener_dte(solicitud)
-        
-        # Verifica que la respuesta es correcta
+        response = await self.service.obtener_dte(solicitud)
+   
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, Dte)
         dte_data = response.data
         self.assertIsNotNone(dte_data.folio)
 
-    def test_obtener_dte_bad_request(self):
+    async def test_obtener_dte_bad_request(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor=""
@@ -196,14 +276,34 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_dte(solicitud)
+        response = await self.service.obtener_dte(solicitud)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
         self.assertIn("data", response.message) 
 
-    def test_obtener_sobreXml_returnOK(self):
+    async def test_obtener_dte_serverError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=39,
+                ambiente=0
+            )
+        )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener DTE")
+
+            response = await self.service.obtener_dte(solicitud)
+            self.assertIsNotNone(response)
+            self.assertEqual(response.status, 500)
+            self.assertEqual(response.message, "Error al obtener DTE")
+            self.assertIsNone(response.data)
+    
+    async def test_obtener_sobreXml_returnOK(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -214,13 +314,13 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,0)
+        response = await self.service.obtener_sobreXml(solicitud,0)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, bytes)
         self.assertGreater(len(response.data), 0)
         
-    def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
+    async def test_obtener_sobreXml_bad_request_WhenSolicitudIsFalse(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor=""
@@ -231,13 +331,13 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,0)
+        response = await self.service.obtener_sobreXml(solicitud,0)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
         self.assertIn("archivoExternoEnt", response.message)
 
-    def test_obtener_sobreXml_bad_request_WhenSobreIsInvalid(self):
+    async def test_obtener_sobreXml_bad_request_WhenSobreIsInvalid(self):
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6"
@@ -248,12 +348,49 @@ class TestFacturacionService(unittest.TestCase):
                 ambiente=0
             )
         )
-        response = self.service.obtener_sobreXml(solicitud,"sdd")
+        response = await self.service.obtener_sobreXml(solicitud,"sdd")
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+        self.assertEqual(response.message, "El parámetro 'sobre' debe ser un número entero.")
+
+    async def test_obtener_sobreXml_bad_request_WhenSobreNotExist(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=2393,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        response = await self.service.obtener_sobreXml(solicitud,5)
         self.assertIsNotNone(response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_dte_returnOK(self):
+    async def test_obtener_sobreXml_serverError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Sobre XML")
+
+            response = await self.service.obtener_sobreXml(solicitud,0)
+            self.assertIsNotNone(response)
+            self.assertEqual(response.status, 500)
+            self.assertEqual(response.message, "Error al obtener Sobre XML")
+            self.assertIsNone(response.data)
+
+    async def test_facturacion_individualV2_dte_returnOK(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -311,14 +448,14 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago="30 dias"
         )
 
-        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsInstance(response.data, InvoiceData)
         self.assertIsNotNone(response.data.folio) 
 
-    def test_facturacion_individualV2_dte_bad_request_WhenSucursalInvalid(self):
+    async def test_facturacion_individualV2_dte_bad_request_WhenSucursalInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -376,13 +513,13 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago="30 dias"
         )
 
-        response = self.service.facturacion_individualV2_Dte(solicitud, 1)
+        response = await self.service.facturacion_individualV2_Dte(solicitud, 1)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)  
        
-    def test_facturacion_individualV2_dte_bad_request_WhenSDatosInvalid(self):
+    async def test_facturacion_individualV2_dte_bad_request_WhenSDatosInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -424,24 +561,24 @@ class TestFacturacionService(unittest.TestCase):
             Observaciones="",
             TipoPago=""
         )
-        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
 
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)    
     
-    def test_facturacion_individualV2_dte_serverError(self):
+    async def test_facturacion_individualV2_dte_serverError(self):
         solicitud = RequestDTE(
         )
 
-        response = self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Dte(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Boleta_ReturnOK(self):
+    async def test_facturacion_individualV2_Boleta_ReturnOK(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -506,14 +643,14 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago="CONTADO"
         )
 
-        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsNotNone(response.data.folio)
         
-    def test_facturacion_individualV2_Boleta_bad_request_WhenSucursalInvalid(self):
+    async def test_facturacion_individualV2_Boleta_bad_request_WhenSucursalInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -578,13 +715,13 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago="CONTADO"
         )
 
-        response = self.service.facturacion_individualV2_Boletas(solicitud, 1)
+        response = await self.service.facturacion_individualV2_Boletas(solicitud, 1)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Boleta_bad_request_WhenSDatosInvalid(self):
+    async def test_facturacion_individualV2_Boleta_bad_request_WhenSDatosInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -627,23 +764,25 @@ class TestFacturacionService(unittest.TestCase):
             TipoPago=""
         )
 
-        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Boleta_serverError(self):
+    async def test_facturacion_individualV2_Boleta_serverError(self):
         solicitud = RequestDTE(
         )
 
-        response = self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Boletas(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 500)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Exportacion_ReturnOK(self):
+    async def test_facturacion_individualV2_Exportacion_ReturnOK(self):
+        folio = await solicitar_folio(self.service_folios, DTEType.FacturaExportacionElectronica, 1)
+        self.assertIsNotNone(folio, "No se pudo obtener el folio")
         solicitud = RequestDTE(
             Exportaciones=Exportaciones(
                 Encabezado=Encabezado(
@@ -652,6 +791,7 @@ class TestFacturacionService(unittest.TestCase):
                         FchEmis="2024-08-17",
                         FmaPago=1,
                         FchVenc="2024-08-17",
+                        Folio=folio
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -744,14 +884,14 @@ class TestFacturacionService(unittest.TestCase):
             Observaciones="NOTA AL PIE DE PAGINA"
         )
 
-        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
         self.assertIsNotNone(response.data.folio)
 
-    def test_facturacion_individualV2_Exportacion_badRequest_WhenSucursalInvalid(self):
+    async def test_facturacion_individualV2_Exportacion_badRequest_WhenSucursalInvalid(self):
         solicitud = RequestDTE(
             Exportaciones=Exportaciones(
                 Encabezado=Encabezado(
@@ -852,13 +992,13 @@ class TestFacturacionService(unittest.TestCase):
             Observaciones="NOTA AL PIE DE PAGINA"
         )
 
-        response = self.service.facturacion_individualV2_Exportacion(solicitud, 1)
+        response = await self.service.facturacion_individualV2_Exportacion(solicitud, 1)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_facturacion_individualV2_Exportacion_badRequest_WhenDatosInvalid(self):
+    async def test_facturacion_individualV2_Exportacion_badRequest_WhenDatosInvalid(self):
         solicitud = RequestDTE(
             Exportaciones=Exportaciones(
                 Encabezado=Encabezado(
@@ -959,63 +1099,70 @@ class TestFacturacionService(unittest.TestCase):
             Observaciones="NOTA AL PIE DE PAGINA"
         )
 
-        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+        response = await self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
         
-    def test_facturacion_individualV2_Exportacion_ServerError(self):
+    async def test_facturacion_individualV2_Exportacion_ServerError(self):
         solicitud = RequestDTE(
         )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Facturacion")
+            response = await self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message, "Error al obtener Facturacion")
 
-        response = self.service.facturacion_individualV2_Exportacion(solicitud, "Casa Matriz")
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNotNone(response.message)
-
-    def test_facturacion_masiva_ReturnOK(self):
+    async def test_facturacion_masiva_ReturnOK(self):
         credenciales = Credenciales(
             rut_emisor="76269769-6",
             nombre_sucursal="Casa Matriz"
         )
         path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
         
-        response = self.service.facturacion_Masiva(credenciales, path_csv)
+        response = await self.service.facturacion_Masiva(credenciales, path_csv)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
 
-    def test_facturacion_masiva_BadRequest_WhenCsvIsInvalid(self):
+    async def test_facturacion_masiva_BadRequest_WhenCsvIsInvalid(self):
         credenciales = Credenciales(
             rut_emisor="76269769-6",
             nombre_sucursal="Casa Matriz"
         )
         path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional52.csv"
         
-        response = self.service.facturacion_Masiva(credenciales, path_csv)
+        response = await self.service.facturacion_Masiva(credenciales, path_csv)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
-        self.assertIsNotNone(response.message)
+        self.assertIsNotNone(response.message, "El archivo no existe")
     
-    def test_facturacion_masiva_ServerError(self):
+    async def test_facturacion_masiva_ServerError(self):
         credenciales = Credenciales(
             rut_emisor="",
             nombre_sucursal=""
         )
         path_csv = r"C:\Users\perea\Downloads\SinDatos.csv"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Facturacion Masiva")
 
-        response = self.service.facturacion_Masiva(credenciales, path_csv)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNotNone(response.message)
+            response = await self.service.facturacion_Masiva(credenciales, path_csv)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message, "Error al obtener Facturacion Masiva")
+    
+    async def test_EmisionNC_ND_V2_ReturnOK(self):
 
-    def test_EmisionNC_ND_V2_ReturnOK(self):
-
+        folio = await solicitar_folio(self.service_folios, DTEType.NotaCreditoElectronica, 1)
+        self.assertIsNotNone(folio, "No se pudo obtener el folio")
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1023,7 +1170,8 @@ class TestFacturacionService(unittest.TestCase):
                         TipoDTE=DTEType.NotaCreditoElectronica,
                         FchEmis="2024-08-13",
                         FmaPago=2,
-                        FchVenc="2024-08-13"
+                        FchVenc="2024-08-13",
+                        Folio=folio 
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -1081,17 +1229,7 @@ class TestFacturacionService(unittest.TestCase):
             )
         )
         motivo = ReasonTypeEnum.Otros.value
-        solicitudFolio= FolioRequest(
-            credenciales=Credenciales(
-                rut_emisor = "76269769-6",
-                nombre_sucursal = "Casa Matriz"
-            ),
-            Cantidad= 1,
-            CodigoTipoDte=61
-        )
-
-        responseFolio = self.service_folios.SolicitarFolios(solicitudFolio)
-        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+        response = await self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
         print(response.message)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
@@ -1099,12 +1237,7 @@ class TestFacturacionService(unittest.TestCase):
         self.assertIsNotNone(response.data)
         self.assertIsNotNone(response.data.folio)
 
-        self.assertIsNotNone(responseFolio)
-        self.assertIsInstance(responseFolio, Response)
-        self.assertEqual(responseFolio.status, 200)
-        self.assertIsNotNone(responseFolio.data)
-
-    def test_EmisionNC_ND_V2_BadRequest_WhenSucursalIsInavlid(self):
+    async def test_EmisionNC_ND_V2_BadRequest_WhenSucursalIsInavlid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1171,13 +1304,13 @@ class TestFacturacionService(unittest.TestCase):
         )
         motivo = ReasonTypeEnum.Otros.value
 
-        response = self.service.EmisionNC_ND_V2(solicitud, 1, motivo)
+        response = await self.service.EmisionNC_ND_V2(solicitud, 1, motivo)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
-        self.assertIsNotNone(response.message)
+        self.assertIsNotNone(response.message, "El parámetro 'sucursal' debe ser un string.")
 
-    def test_EmisionNC_ND_V2_BadRequest_WhenMotivoIsInvalid(self):
+    async def test_EmisionNC_ND_V2_BadRequest_WhenMotivoIsInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1244,13 +1377,13 @@ class TestFacturacionService(unittest.TestCase):
         )
         motivo = ReasonTypeEnum.Otros.value
 
-        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", "Motivo")
+        response = await self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", "Motivo")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
-        self.assertIsNotNone(response.message)
+        self.assertIsNotNone(response.message, "El parámetro 'motivo' debe ser un número entero.")
 
-    def test_EmisionNC_ND_V2_BadRequest_WhenDataIsInvalid(self):
+    async def test_EmisionNC_ND_V2_BadRequest_WhenDataIsInvalid(self):
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1317,24 +1450,28 @@ class TestFacturacionService(unittest.TestCase):
         )
         motivo = ReasonTypeEnum.Otros.value
 
-        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+        response = await self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_EmisionNC_ND_V2_ServerError(self):
+    async def test_EmisionNC_ND_V2_ServerError(self):
         solicitud = RequestDTE(
         )
         motivo = ReasonTypeEnum.Otros.value
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener EmisionNC_ND_V2")
 
-        response = self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNotNone(response.message)
+            response = await self.service.EmisionNC_ND_V2(solicitud, "Casa Matriz", motivo)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message, "Error al obtener EmisionNC_ND_V2")
 
-    def test_ListadoDteEmitidos_ReturnOK(self):
+
+    async def test_ListadoDteEmitidos_ReturnOK(self):
         fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
         fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
         solicitud = ListaDteRequestEnt(
@@ -1350,17 +1487,19 @@ class TestFacturacionService(unittest.TestCase):
             hasta=fecha_hasta
         )
 
-        response = self.service.listadoDteEmitidos(solicitud)
+        response = await self.service.listadoDteEmitidos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
-        for dte in response.data:
+        for i, dte in enumerate(response.data):
+            if i >= 3:
+                break
             self.assertIsNotNone(dte.folio)
             self.assertIsNotNone(dte.ambiente)
             self.assertIsNotNone(dte.folioReutilizado)
 
-    def test_ListadoDteEmitidos_BadRequest_WhenDataIsInvalid(self):
+    async def test_ListadoDteEmitidos_BadRequest_WhenDataIsInvalid(self):
         fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
         fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
         solicitud = ListaDteRequestEnt(
@@ -1376,13 +1515,39 @@ class TestFacturacionService(unittest.TestCase):
             hasta=fecha_hasta
         )
 
-        response = self.service.listadoDteEmitidos(solicitud)
+        response = await self.service.listadoDteEmitidos(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_enviarCorreo_ReturnOK(self):
+    async def test_ListadoDteEmitidos_ServerError(self):
+        fecha_desde = datetime.strptime("2024-08-01", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2024-08-17", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor="",
+                rut_contribuyente="",
+                nombre_sucursal=""
+            ),
+            ambiente=AmbienteEnum.Certificacion,
+            folio=0,
+            codigoTipoDte=DTEType.NotSet,
+            desde=fecha_desde,
+            hasta=fecha_hasta
+        )
+
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener ListadoDteEmitidos")
+
+            response = await self.service.listadoDteEmitidos(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message,  "Error al obtener ListadoDteEmitidos")
+
+    async def test_enviarCorreo_ReturnOK(self):
         solicitud = EnvioMailRequest(
                 RutEmpresa="76269769-6",
                 Dte= DteClass(folio=2149, tipoDTE=33),
@@ -1396,13 +1561,13 @@ class TestFacturacionService(unittest.TestCase):
                 Comments="ESTO ES UN COMENTARIO"
             )
 
-        response = self.service.enviarCorreo(solicitud)
+        response = await self.service.enviarCorreo(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
 
-    def test_enviarCorreo_BadRequest_WhenDataIsInvalid(self):
+    async def test_enviarCorreo_BadRequest_WhenDataIsInvalid(self):
         solicitud = EnvioMailRequest(
                 RutEmpresa="",
                 Dte= DteClass(folio=None, tipoDTE=None),
@@ -1416,14 +1581,13 @@ class TestFacturacionService(unittest.TestCase):
                 Comments="ESTO ES UN COMENTARIO"
             )
 
-        response = self.service.enviarCorreo(solicitud)
+        response = await self.service.enviarCorreo(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
 
-    def test_enviarCorreo_ServerError(self):
-        # Mock de solicitud vacía
+    async def test_enviarCorreo_ServerError(self):
         solicitud = EnvioMailRequest(
             RutEmpresa="",
             Dte=DteClass(folio=None, tipoDTE=None),
@@ -1437,17 +1601,17 @@ class TestFacturacionService(unittest.TestCase):
             Comments=""
         )
 
-        with patch('SimpleFacturaSDK.services.FacturaService.requests.Session.post') as mock_post:
-            mock_post.return_value.status_code = 500
-            mock_post.return_value.text = "Error interno del servidor"
-            response = self.service.enviarCorreo(solicitud)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al enviar Correo")
+
+            response = await self.service.enviarCorreo(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
-            self.assertIn("Error interno del servidor", response.message)
+            self.assertEqual(response.message, "Error al enviar Correo")
 
-    def test_consolidadoVentas_ReturnOK(self):
+    async def test_consolidadoVentas_ReturnOK(self):
         fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
         fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
         solicitud = ListaDteRequestEnt(
@@ -1459,16 +1623,33 @@ class TestFacturacionService(unittest.TestCase):
             hasta=fecha_hasta
         )
 
-        response = self.service.consolidadoVentas(solicitud)
+        response = await self.service.consolidadoVentas(solicitud)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
-        for dte in response.data:
+        for i, dte in enumerate(response.data):
+            if i >= 3:
+                break
             self.assertIsNotNone(dte.total)
             self.assertIsNotNone(dte.anulados)
     
-    def test_consolidadoVentas_ServerError(self):
+    async def test_consolidadoVentas_BadRequest_WhenDataIsInvalid(self):
+        fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
+        fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
+        solicitud = ListaDteRequestEnt(
+            Credenciales=Credenciales(
+                rut_emisor=""
+            )
+        )
+
+        response = await self.service.consolidadoVentas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    async def test_consolidadoVentas_ServerError(self):
         fecha_desde = datetime.strptime("2023-10-25", "%Y-%m-%d")
         fecha_hasta = datetime.strptime("2023-10-30", "%Y-%m-%d")
         solicitud = ListaDteRequestEnt(
@@ -1479,54 +1660,62 @@ class TestFacturacionService(unittest.TestCase):
             desde=fecha_desde,
             hasta=fecha_hasta
         )
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener ConsolidadoVentas")
 
-        response = self.service.consolidadoVentas(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNotNone(response.message)
+            response = await self.service.consolidadoVentas(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message, "Error al obtener ConsolidadoVentas")
 
-    #consultar
-    def test_conciliarEmitidos_ReturnOK(self):
+    async def test_conciliarEmitidos_ReturnOK(self):
         solicitud =Credenciales(
             rut_emisor="76269769-6"
         )
 
-        response = self.service.ConciliarEmitidos(solicitud,5, 2024)
+        response = await self.service.ConciliarEmitidos(solicitud,5, 2024)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
         self.assertIsNotNone(response.data)
 
-    def test_conciliarEmitidos_BadRequest_WhenMesIsInvalid(self):
+    async def test_conciliarEmitidos_BadRequest_WhenMesIsInvalid(self):
         solicitud = Credenciales(
             rut_emisor="76269769-6"
         )
 
-        response = self.service.ConciliarEmitidos(solicitud, "5", 2024)
+        response = await self.service.ConciliarEmitidos(solicitud, "5", 2024)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
+        self.assertEqual(response.message, "El parámetro 'mes' debe ser un número entero.")
 
-    def test_conciliarEmitidos_BadRequest_WhenAnioIsInvalid(self):
+    async def test_conciliarEmitidos_BadRequest_WhenAnioIsInvalid(self):
         solicitud = Credenciales(
             rut_emisor="76269769-6"
         )
 
-        response = self.service.ConciliarEmitidos(solicitud, 5, "2024")
+        response = await self.service.ConciliarEmitidos(solicitud, 5, "2024")
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 400)
         self.assertIsNotNone(response.message)
+        self.assertEqual(response.message, "El parámetro 'anio' debe ser un número entero.")
         
-    def test_conciliarEmitidos_ServerError(self):
+    async def test_conciliarEmitidos_ServerError(self):
         solicitud = Credenciales(
             rut_emisor=""
         )
 
-        response = self.service.ConciliarEmitidos(solicitud, 5, 2024)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 500)
-        self.assertIsNotNone(response.message)
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al Conciliar Emitidos")
+
+            response = await self.service.ConciliarEmitidos(solicitud, 5, 2024)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+            self.assertEqual(response.message, "Error al Conciliar Emitidos")

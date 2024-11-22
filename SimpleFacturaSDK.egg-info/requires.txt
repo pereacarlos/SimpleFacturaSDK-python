@@ -1,9 +1,9 @@
-requests
-cryptography
-pyOpenSSL
+aiohttp
 requests-toolbelt
 pydantic
-aiohttp
+httpx
 pytest
 requests-mock
 python-dotenv
+pytest-asyncio
+requests
