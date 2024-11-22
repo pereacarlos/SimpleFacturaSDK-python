@@ -127,3 +127,11 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+```
+
+## Documentación
+La documentación relevante para usar este SDK es:
+
+- Documentación general:
+  [Sitio Simple Factura](https://www.simplefactura.cl/).
+- Documentacion de APIs [Postman](https://documentacion.simplefactura.cl/).
