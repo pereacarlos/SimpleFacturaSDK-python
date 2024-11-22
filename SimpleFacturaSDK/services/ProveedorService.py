@@ -4,6 +4,7 @@ from models.GetFactura.Dte import Dte
 from Utilidades.Simplificar_error import simplificar_errores
 import requests
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 import aiohttp
 import asyncio
 
@@ -12,6 +13,28 @@ class ProveedorService:
         self.base_url = base_url
         self.headers = headers
         self.session = aiohttp.ClientSession(headers=self.headers)
+
+    #Revisar
+    async def Aceptar_RechazarDTE(self, solicitud) -> Response[bool]:
+        url = f"{self.base_url}/acknowledgmentReceipt"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        print(solicitud_dict)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message="Error al hacer Aceptar_RechazarDTE",
+                data=None
+            )
 
     async def listarDteRecibidos(self, solicitud) -> Response[Optional[List[Dte]]]:
         url = f"{self.base_url}/documentsReceived"

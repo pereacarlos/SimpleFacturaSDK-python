@@ -8,7 +8,7 @@ from enumeracion.RejectionType import RejectionType
 @dataclass
 class AcuseReciboExternoRequest:
     credenciales: Credenciales
-    dte_referenciado_externo: DteReferenciadoExterno
+    dteReferenciadoExterno: DteReferenciadoExterno
     respuesta: ResponseType
     tipo_rechazo: Optional[RejectionType] 
     comentario: Optional[str] 
@@ -26,7 +26,7 @@ class AcuseReciboExternoRequest:
     def to_dict(self):
         return {
             "credenciales": self.credenciales.to_dict(),
-            "dte_referenciado_externo": self.dte_referenciado_externo.to_dict(),
+            "dteReferenciadoExterno": self.dteReferenciadoExterno.to_dict(),
             "respuesta": self.respuesta.value,
             "tipo_rechazo": self.tipo_rechazo.value if self.tipo_rechazo else None,
             "comentario": self.comentario
