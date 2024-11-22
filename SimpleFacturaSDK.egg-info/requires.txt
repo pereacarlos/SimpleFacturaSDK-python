@@ -1,6 +1,4 @@
 requests
-cryptography
-pyOpenSSL
 requests-toolbelt
 pydantic
 aiohttp
