@@ -3,9 +3,6 @@ from typing import List, Optional
 from enumeracion.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises
 from models.GetFactura.TipoBulto import TipoBulto
 
-def truncate(value: str, length: int) -> str:
-    return value[:length] if value else ''
-
 @dataclass
 class Aduana:
     CodModVenta: ModalidadVenta
