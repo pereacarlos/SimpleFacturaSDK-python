@@ -28,10 +28,9 @@ class Aduana:
     TipoBultos: List[TipoBulto] 
     IdAdicPtoEmb: Optional[str] = None
     TotItems: Optional[int] = None
-    ombreTransp: Optional[str] = None
-    UTCiaTransp: Optional[str] = None
-    omCiaTransp: Optional[str] = None
-    dAdicTransp: Optional[str] = None
-    ooking: Optional[str] = None
-    perador: Optional[str] = None
-    CodPaisTransito: Optional[Paises] = None
+    NombreTransp: Optional[str] = None
+    RUTCiaTransp: Optional[str] = None
+    NomCiaTransp: Optional[str] = None
+    IdAdicTransp: Optional[str] = None
+    Booking: Optional[str] = None
+    Operador: Optional[str] = None

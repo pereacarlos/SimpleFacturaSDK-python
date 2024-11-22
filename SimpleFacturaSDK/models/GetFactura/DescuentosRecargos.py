@@ -11,8 +11,8 @@ class DescuentosRecargos:
     NroLinDR: int
     TpoMov: TipoMovimientoEnum
     GlosaDR: str 
-    tpo_valor: ExpresionDineroEnum
+    TpoValor: ExpresionDineroEnum
     ValorDR: float 
     ValorDROtrMnda: float 
-    ind_exe_dr: IndicadorExentoEnum 
+    IndExeDR: IndicadorExentoEnum 
 

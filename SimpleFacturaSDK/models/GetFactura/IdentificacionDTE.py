@@ -38,3 +38,7 @@ class IdDoc:
     TermPagoGlosa: str = None
     TermPagoDias: int = None
     IndMntNeto: int = None
+
+    
+
+
