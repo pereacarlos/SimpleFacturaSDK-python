@@ -1,3 +1,4 @@
+
 SDK SimpleFactura
 El SDK SimpleFactura es una solución en Python diseñada para facilitar la integración con los servicios de SimpleFactura, parte de ChileSystems. Este SDK provee un conjunto de clases y métodos que permiten realizar operaciones como facturación, gestión de productos, proveedores, clientes, sucursales, folios, configuración y boletas de honorarios.
 
