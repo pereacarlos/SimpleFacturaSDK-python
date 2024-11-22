@@ -14,7 +14,10 @@ setup(
         "aiohttp",
         "pytest",
         "requests-mock",
-        "python-dotenv"
+        "python-dotenv",
+        "pytest-asyncio",
+        "httpx",
+
     ],
     include_package_data=True,
 )

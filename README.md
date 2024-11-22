@@ -23,8 +23,6 @@ El SDK SimpleFactura es una solución en Python diseñada para facilitar la inte
 Las dependencias necesarias para utilizar este SDK son:
 
 - `aiohttp`
-- `cryptography`
-- `pyOpenSSL`
 - `requests-toolbelt`
 - `pydantic`
 - `httpx`
@@ -42,19 +40,20 @@ El SDK es compatible con **Python 3.6** y versiones superiores.
 ## Instalación
 
 Puedes instalar el SDK y sus dependencias utilizando **pip**:
-
 ```bash
 pip install simplefactura-sdk
-Si necesitas instalar las dependencias manualmente:
+```
 
-bash
-Copiar código
+Si necesitas instalar las dependencias manualmente:
+    
+```bash
 pip install cryptography pyOpenSSL requests-toolbelt pydantic aiohttp httpx pytest requests-mock python-dotenv pytest-asyncio
+```
+
+```bash
 Cómo empezar
 Para utilizar el SDK, simplemente inicializa la clase ClientSimpleFactura proporcionando tu nombre de usuario y contraseña:
 
-python
-Copiar código
 from ClientSimpleFactura import ClientSimpleFactura
 import os
 from dotenv import load_dotenv
@@ -67,14 +66,14 @@ def main():
     client_api = ClientSimpleFactura(username, password)
     
     # Ejemplo: Uso de los servicios
-    facturacion_service = client_api.Facturacion
-    productos_service = client_api.Productos
-    proveedores_service = client_api.Proveedores
-    clientes_service = client_api.Clientes
-    sucursal_service = client_api.Sucursal
-    folio_service = client_api.Folio
-    configuracion_service = client_api.Configuracion
-    boleta_honorarios_service = client_api.BoletasHonorarios
+    facturacionService = client_api.Facturacion
+    productoService = client_api.Productos
+    proveedorService = client_api.Proveedores
+    clientesService = client_api.Clientes
+    sucursalService = client_api.Sucursales
+    folioService = client_api.Folios
+    configuracionService = client_api.ConfiguracionService
+    boletaHonorarioService = client_api.BoletaHonorarioService
 
 if __name__ == "__main__":
     main()
@@ -83,8 +82,6 @@ if __name__ == "__main__":
 Ejemplo de uso: Obtener PDF de una factura
 El siguiente ejemplo muestra cómo obtener el PDF de una factura utilizando el SDK:
 
-python
-Copiar código
 import asyncio
 from ClientSimpleFactura import ClientSimpleFactura
 from models.GetFactura.Credenciales import Credenciales
