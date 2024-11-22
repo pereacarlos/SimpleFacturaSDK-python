@@ -56,10 +56,14 @@ Para utilizar el SDK, simplemente inicializa la clase ClientSimpleFactura propor
 python
 Copiar código
 from ClientSimpleFactura import ClientSimpleFactura
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+username = os.getenv("SF_USERNAME")
+password = os.getenv("SF_PASSWORD")
 
 def main():
-    username = "tu_usuario"
-    password = "tu_contraseña"
     client_api = ClientSimpleFactura(username, password)
     
     # Ejemplo: Uso de los servicios
@@ -74,6 +78,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 Ejemplo de uso: Obtener PDF de una factura
 El siguiente ejemplo muestra cómo obtener el PDF de una factura utilizando el SDK:
 
@@ -84,10 +90,14 @@ from ClientSimpleFactura import ClientSimpleFactura
 from models.GetFactura.Credenciales import Credenciales
 from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+username = os.getenv("SF_USERNAME")
+password = os.getenv("SF_PASSWORD")
 
 async def main():
-    username = "tu_usuario"
-    password = "tu_contraseña"
     client_api = ClientSimpleFactura(username, password)
     
     solicitud = SolicitudPdfDte(
@@ -117,12 +127,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-Nota: Asegúrate de reemplazar "tu_usuario", "tu_contraseña", "tu_rut_emisor" y "tu_sucursal" con tus credenciales y datos reales. También verifica que los valores en DteReferenciadoExterno correspondan a tu configuración específica.
-
-Documentación
-La documentación relevante para usar este SDK es:
-
-Documentación general
-Documentación de APIs (Postman)
-css
-Copiar código
