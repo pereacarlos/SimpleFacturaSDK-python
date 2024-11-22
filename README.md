@@ -59,11 +59,9 @@ cd SimpleFacturaSDK-python
 pip install -r requirements.txt
 
 ```
-
-```bash
 Cómo empezar
 Para utilizar el SDK, simplemente inicializa la clase ClientSimpleFactura proporcionando tu nombre de usuario y contraseña:
-
+```bash
 from ClientSimpleFactura import ClientSimpleFactura
 import os
 from dotenv import load_dotenv
@@ -88,9 +86,11 @@ def main():
 if __name__ == "__main__":
     main()
 
+```
 
 Ejemplo de uso: Obtener PDF de una factura
 El siguiente ejemplo muestra cómo obtener el PDF de una factura utilizando el SDK:
+```bash
 
 import asyncio
 from ClientSimpleFactura import ClientSimpleFactura
