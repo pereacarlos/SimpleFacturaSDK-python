@@ -48,13 +48,13 @@ pip install simplefactura-sdk
 Si necesitas instalar las dependencias manualmente:
     
 ```bash
-pip install requests requests-toolbelt pydantic aiohttp pytest requests-mock python-dotenv pytest-asyncio httpx
+pip install requests requests-toolbelt pydantic aiohttp pytest requests-mock python-dotenv pytest-asyncio httpx aiofiles
 
 ```
 
 Opcional(Clonar el repositorio e instalar dependencias desde requirements.txt)
 ```bash
-git clone https://github.com/tu_usuario/SimpleFacturaSDK-python.git
+git clone https://github.com/pereacarlos/SimpleFacturaSDK-python.git
 cd SimpleFacturaSDK-python
 pip install -r requirements.txt
 
