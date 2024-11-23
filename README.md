@@ -42,7 +42,7 @@ El SDK es compatible con **Python 3.6** y versiones superiores.
 
 Puedes instalar el SDK y sus dependencias utilizando **pip**:
 ```bash
-pip install simplefactura-sdk
+pip install SimpleFacturaSDK-python
 ```
 
 Si necesitas instalar las dependencias manualmente:
