@@ -31,6 +31,7 @@ Las dependencias necesarias para utilizar este SDK son:
 - `requests-mock`
 - `python-dotenv`
 - `pytest-asyncio`
+- `aiofiles`
 
 ### Plataforma
 
