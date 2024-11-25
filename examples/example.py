@@ -1,3 +1,10 @@
+
+'''
+Estos ejmplos estan orientados para ejecutarse dentro  de la carpeta de SimpleFacturaSDK en el main.py,
+si deseas ejecutarlo desde afuera deberas hacer las debidas modificaciones en los imports
+'''
+
+
 #Obtener Pdf de una Factura
 
 import asyncio
