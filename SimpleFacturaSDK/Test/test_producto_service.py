@@ -68,8 +68,8 @@ class TestProductoService(unittest.IsolatedAsyncioTestCase):
         self.assertIsInstance(response.data, list)
 
     async def test_CrearProducto_BadRequest_WhenProductoExist(self):
-        nombre_producto_1 = "Goma 500000"
-        nombre_producto_2 = "Goma 500001"
+        nombre_producto_1 = "Goma 785"
+        nombre_producto_2 = "Goma 84"
 
         solicitud = DatoExternoRequest(
             Credenciales=Credenciales(
