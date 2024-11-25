@@ -3,7 +3,7 @@
     "python.testing.pytestEnabled": false,
     "python.testing.pytestArgs": [
         "--asyncio-mode=strict",
-        "SimpleFacturaSDK/Test"
+        "SimpleFacturaSDK/tests"
     ],
     "python.envFile": "${workspaceFolder}/.env",
     "terminal.integrated.env.windows": {
@@ -12,7 +12,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./SimpleFacturaSDK/Test",
+        "./SimpleFacturaSDK/tests",
         "-p",
         "test_*.py"
     ]

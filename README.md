@@ -89,8 +89,55 @@ if __name__ == "__main__":
 
 ```
 
-Ejemplo de uso: Obtener PDF de una factura
-El siguiente ejemplo muestra cómo obtener el PDF de una factura utilizando el SDK:
+### Ejemplo de Uso del SDK SimpleFactura
+Este ejemplo muestra cómo utilizar el SDK `SimpleFacturaSdk` para obtener un PDF de una factura electrónica desde el servicio de SimpleFactura.
+```bash
+import asyncio
+from client_simple_factura import ClientSimpleFactura
+from models.GetFactura.Credenciales import Credenciales
+from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Obtener credenciales del archivo .env
+username = os.getenv("SF_USERNAME")
+password = os.getenv("SF_PASSWORD")
+
+async def main():
+    # Crear una instancia de ClientSimpleFactura y asegurar el cierre de la sesión
+    async with ClientSimpleFactura(username, password) as client_api:
+        # Crear una solicitud para obtener el PDF de una factura
+        pdf = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6",
+                nombre_sucursal="Casa Matriz"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=4117,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+        try:
+            # Llamar al endpoint /dte/pdf para obtener el PDF de la factura
+            pdf_response = await client_api.Facturacion.obtener_pdf(pdf)
+            if pdf_response.status == 200:
+                # Guardar el PDF en un archivo local
+                with open("factura.pdf", "wb") as file:
+                    file.write(pdf_response.data)
+                print("PDF guardado exitosamente")
+            else:
+                print(f"Error: {pdf_response.message}")
+        except Exception as err:
+            print(f"Error: {err}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+
 ```bash
 
 import asyncio
@@ -136,6 +183,55 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+
+```bash
+
+import asyncio
+from ClientSimpleFactura import ClientSimpleFactura
+from models.GetFactura.Credenciales import Credenciales
+from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+username = os.getenv("SF_USERNAME")
+password = os.getenv("SF_PASSWORD")
+
+async def main():
+    client_api = ClientSimpleFactura(username, password)
+    
+    solicitud = SolicitudPdfDte(
+        credenciales=Credenciales(
+            rut_emisor="tu_rut_emisor",
+            nombre_sucursal="tu_sucursal"
+        ),
+        dte_referenciado_externo=DteReferenciadoExterno(
+            folio=4117,
+            codigoTipoDte=33,
+            ambiente=0
+        )
+    )
+    
+    try:
+        pdf_response = await client_api.Facturacion.obtener_pdf(solicitud)
+        if pdf_response.status == 200:
+            with open("factura.pdf", "wb") as file:
+                file.write(pdf_response.data)
+            print("PDF guardado exitosamente")
+        else:
+            print(f"Error: {pdf_response.message}")
+    except Exception as err:
+        print(f"Error: {err}")
+    finally:
+        await client_api.Facturacion.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+
 
 ## Documentación
 La documentación relevante para usar este SDK es:

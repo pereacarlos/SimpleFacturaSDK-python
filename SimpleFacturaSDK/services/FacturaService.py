@@ -23,10 +23,10 @@ from httpx import AsyncClient
 
 
 class FacturacionService:
-    def __init__(self, base_url, headers):
+    def __init__(self, base_url, headers, session=None):
         self.base_url = base_url
         self.headers = headers
-        self.session = aiohttp.ClientSession(headers=self.headers)
+        self.session = session or aiohttp.ClientSession(headers=headers)
 
     async def _post_and_response_facturacion(self, url: str, solicitud_dict: dict) -> Response[InvoiceData]:
         try:
@@ -369,5 +369,5 @@ class FacturacionService:
             await self.session.close()
 
     def __del__(self):
-        if not self.session.closed:
-            asyncio.create_task(self.close())
+        if hasattr(self, 'session') and not self.session.closed:
+            asyncio.run(self.close())

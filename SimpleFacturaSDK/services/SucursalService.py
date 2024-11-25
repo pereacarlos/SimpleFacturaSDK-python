@@ -8,10 +8,10 @@ from models.GetFactura.Credenciales import Credenciales
 import aiohttp
 import asyncio
 class SucursalService:
-    def __init__(self, base_url, headers):
+    def __init__(self, base_url, headers, session=None):
         self.base_url = base_url
         self.headers = headers
-        self.session = aiohttp.ClientSession(headers=self.headers)
+        self.session = session or aiohttp.ClientSession(headers=headers)
 
     async def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
         url = f"{self.base_url}/branchOffices"
@@ -39,7 +39,7 @@ class SucursalService:
             await self.session.close()
 
     def __del__(self):
-        if not self.session.closed:
-            asyncio.create_task(self.close())
+        if hasattr(self, 'session') and not self.session.closed:
+            asyncio.run(self.close())
 
     
