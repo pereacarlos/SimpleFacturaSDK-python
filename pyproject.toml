@@ -7,7 +7,6 @@ name = "SimpleFacturaSDK"
 version = "1.0.0"
 description = "SDK para la integración con los servicios de SimpleFactura"
 readme = "README.md"
-readme-content-type = "text/markdown"
 authors = [
     { name = "Carlos Perea", email = "pereacarlos685@gmail.com" }
 ]
