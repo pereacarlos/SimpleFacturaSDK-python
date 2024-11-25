@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SimpleFacturaSDK"
+version = "1.0.0"
+description = "SDK para la integración con los servicios de SimpleFactura"
+readme = "README.md"
+readme-content-type = "text/markdown"
+authors = [
+    { name = "Carlos Perea", email = "pereacarlos685@gmail.com" }
+]
+license = { text = "MIT" }
+keywords = ["dte", "factura", "boleta", "impuestos internos", "factura electrónica", "boleta electrónica", "documento", "iva", "SII", "documento tributario electrónico"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+requires-python = ">=3.6"
+dependencies = [
+    "aiohttp",
+    "requests-toolbelt",
+    "pydantic",
+    "httpx",
+    "pytest",
+    "requests-mock",
+    "python-dotenv",
+    "pytest-asyncio",
+    "requests",
+    "aiofiles"
+]
+
+[tool.setuptools.packages.find]
+where = ["simplefacturasdk"]
