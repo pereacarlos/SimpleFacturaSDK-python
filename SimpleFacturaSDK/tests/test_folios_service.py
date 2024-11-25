@@ -76,7 +76,7 @@ class TestFoliosService(unittest.IsolatedAsyncioTestCase):
                 nombre_sucursal = "Casa Matriz"
             ),
             Cantidad= 3,
-            CodigoTipoDte= DTEType.FacturaElectronica
+            CodigoTipoDte= DTEType.BoletaElectronica
         )
         response = await self.service.SolicitarFolios(solicitud)
         self.assertIsNotNone(response)
