@@ -1,4 +1,4 @@
-from ClientSimpleFactura import ClientSimpleFactura
+from client_simple_factura import ClientSimpleFactura
 import base64
 import requests
 import json
@@ -15,7 +15,7 @@ class TestConfiguracionService(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         username = os.getenv("SF_USERNAME")
         password = os.getenv("SF_PASSWORD")
-        self.client_api = ClientSimpleFactura(username, password)
+        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
         self.service = self.client_api.ConfiguracionService
 
     async def test_DatosEmpresa_ReturnOK(self):

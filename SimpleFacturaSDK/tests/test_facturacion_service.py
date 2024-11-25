@@ -1,5 +1,5 @@
 import unittest
-from ClientSimpleFactura import ClientSimpleFactura
+from client_simple_factura import ClientSimpleFactura
 import base64
 import json
 from dotenv import load_dotenv
@@ -69,7 +69,7 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
         username = os.getenv("SF_USERNAME")
         password = os.getenv("SF_PASSWORD")
         
-        self.client_api = ClientSimpleFactura(username, password)
+        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
         self.service = self.client_api.Facturacion
         self.service_folios = self.client_api.Folios
 
