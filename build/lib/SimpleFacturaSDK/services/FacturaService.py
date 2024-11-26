@@ -2,19 +2,19 @@
 import os
 import json
 from typing import List
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 from requests_toolbelt import MultipartEncoder
 import aiofiles
 import asyncio
 import requests
-from models.GetFactura.Dte import Dte
-from models.GetFactura.ReporteDTE import ReporteDTE
-from models.ResponseDTE import Response
-from enumeracion.TipoSobreEnvio import TipoSobreEnvio
-from models.GetFactura.InvoiceData import InvoiceData
-from models.GetFactura.RequestDTE import RequestDTE
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.GetFactura.ReporteDTE import ReporteDTE
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
+from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import httpx
 import aiohttp
 import traceback

@@ -1,8 +1,8 @@
 from typing import List, Optional
-from models.BoletaHonorarios.BHERequest import BHERequest
-from models.BoletaHonorarios.BHEEnt import BHEEnt
-from models.ResponseDTE import Response
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.BoletaHonorarios.BHEEnt import BHEEnt
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp

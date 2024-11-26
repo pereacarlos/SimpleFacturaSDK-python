@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
-from models.GetFactura.Documento import Documento
-from models.GetFactura.Exportaciones import Exportaciones
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
 
 
 @dataclass

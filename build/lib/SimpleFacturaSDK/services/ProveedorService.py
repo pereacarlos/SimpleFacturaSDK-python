@@ -1,10 +1,10 @@
 from typing import List, Optional
-from models.ResponseDTE import Response
-from models.GetFactura.Dte import Dte
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 import aiohttp
 import asyncio
 

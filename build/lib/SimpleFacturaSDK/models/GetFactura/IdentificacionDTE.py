@@ -1,15 +1,15 @@
 from dataclasses import dataclass, field
 from typing import List
 from datetime import datetime
-from enumeracion.TipoDTE import DTEType
-from enumeracion.CodigosAduana import FormaPagoExportacionEnum
-from enumeracion.IndicadorServicio import IndicadorServicioEnum
-from enumeracion.TipoImpresion import TipoImpresionEnum
-from enumeracion.MedioPago import MedioPagoEnum
-from enumeracion.TipoCuentaPago import TipoCuentaPagoEnum
-from enumeracion.TipoDespacho import TipoDespachoEnum
-from enumeracion.TipoTraslado import TipoTrasladoEnum
-from models.GetFactura.MontoPagoItem import MontoPagoItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.CodigosAduana import FormaPagoExportacionEnum
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.enumeracion.TipoImpresion import TipoImpresionEnum
+from SimpleFacturaSDK.enumeracion.MedioPago import MedioPagoEnum
+from SimpleFacturaSDK.enumeracion.TipoCuentaPago import TipoCuentaPagoEnum
+from SimpleFacturaSDK.enumeracion.TipoDespacho import TipoDespachoEnum
+from SimpleFacturaSDK.enumeracion.TipoTraslado import TipoTrasladoEnum
+from SimpleFacturaSDK.models.GetFactura.MontoPagoItem import MontoPagoItem
 
 @dataclass
 class IdDoc:

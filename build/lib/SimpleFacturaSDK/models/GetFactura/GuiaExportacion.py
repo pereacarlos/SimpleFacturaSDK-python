@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from enumeracion.CodigoTraslado import CodigoTrasladoEnum
+from SimpleFacturaSDK.enumeracion.CodigoTraslado import CodigoTrasladoEnum
 
 @dataclass
 class GuiaExportacion:

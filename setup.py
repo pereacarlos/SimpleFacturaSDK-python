@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="SimpleFacturaSDK",
-    version="1.1.1",
+    version="1.1.2",
     description="SDK para la integración con los servicios de SimpleFactura",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
