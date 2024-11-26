@@ -7,7 +7,7 @@
     ],
     "python.envFile": "${workspaceFolder}/.env",
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/SimpleFacturaSDK"
+        "PYTHONPATH": "${workspaceFolder}"
     },
     "python.testing.unittestArgs": [
         "-v",
