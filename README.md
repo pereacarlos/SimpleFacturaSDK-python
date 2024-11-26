@@ -66,6 +66,9 @@ Para usar el SDK, asegúrate de crear un archivo .env en el directorio raíz de 
 ```bash
 SF_USERNAME=tu_usuario
 SF_PASSWORD=tu_contraseña
+SF_BASE_URL=https://api.simplefactura.cl
+PYTHONPATH=.
+
 ```
 Para garantizar que el archivo **.env** esté disponible en tiempo de ejecución, sigue estos pasos:
 
