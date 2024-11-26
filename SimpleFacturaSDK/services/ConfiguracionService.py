@@ -31,7 +31,7 @@ class ConfiguracionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ObtenerDatos de la Empresa",
+                message=error.__str__(),
                 data=None
             )
 

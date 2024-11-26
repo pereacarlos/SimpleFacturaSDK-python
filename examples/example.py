@@ -1,6 +1,6 @@
 
 '''
-Estos ejmplos estan orientados para ejecutarse dentro  de la carpeta de SimpleFacturaSDK en el main.py,
+Estos ejemplos estan orientados para ejecutarse dentro de la carpeta de SimpleFacturaSDK en el main.py,
 si deseas ejecutarlo desde afuera deberas hacer las debidas modificaciones en los imports
 '''
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 
-#Obtner timbre de una factura
+#Obtener timbre de una factura
 import asyncio
 from client_simple_factura import ClientSimpleFactura
 from models.GetFactura.Credenciales import Credenciales

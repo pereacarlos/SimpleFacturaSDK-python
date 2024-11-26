@@ -30,7 +30,7 @@ class ProductoService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Crear Producto",
+                message=error.__str__(),
                 data=None
             )
 
@@ -52,7 +52,7 @@ class ProductoService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al listar Productos",
+                message=error.__str__(),
                 data=None
             )
 

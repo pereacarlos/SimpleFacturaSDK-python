@@ -8,13 +8,7 @@ from SimpleFacturaSDK.services.FolioService import FolioService
 from SimpleFacturaSDK.services.ConfiguracionService import ConfiguracionService
 from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
 import base64
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-BASE_URL = os.getenv("SF_BASE_URL")
-
+from config import BASE_URL 
 class ClientSimpleFactura:
     def __init__(self, username, password):
         self.base_url = BASE_URL

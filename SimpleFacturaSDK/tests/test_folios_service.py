@@ -1,18 +1,18 @@
 
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
+from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Sucursal import Sucursal
 import base64
 import requests
-from models.ResponseDTE import Response
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
-from models.Folios.TimbrajeEnt import TimbrajeEnt
-from models.Folios.Foliorequest import FolioRequest
-from models.Folios.SolicitudFolios import SolicitudFolios
 import json
 import unittest
-from models.GetFactura.Credenciales import Credenciales
-from models.Sucursal import Sucursal
 from dotenv import load_dotenv
 import aiohttp
 from unittest.mock import AsyncMock, patch
@@ -67,7 +67,6 @@ class TestFoliosService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al ConsultarFoliosDisponibles", response.message)
 
     async def test_SolicitarFolios_ReturnOK(self):
         solicitud= FolioRequest(
@@ -118,7 +117,6 @@ class TestFoliosService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al SolicitarFolios", response.message)
 
     async def test_ConsultarFolios_ReturnOK(self):
         solicitud= FolioRequest(
@@ -178,7 +176,6 @@ class TestFoliosService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al ConsultarFolios", response.message)
 
     async def test_Folios_Sin_Uso_ReturnOK(self):
         solicitud= SolicitudFolios(
@@ -225,7 +222,7 @@ class TestFoliosService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al ConsultarFoliosSinUso", response.message)
+
 
 
 

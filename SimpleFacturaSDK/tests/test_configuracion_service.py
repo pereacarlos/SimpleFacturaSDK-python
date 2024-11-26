@@ -1,10 +1,10 @@
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import base64
 import requests
 import json
 import unittest
-from models.ResponseDTE import Response
-from models.GetFactura.Credenciales import Credenciales
 from dotenv import load_dotenv
 import aiohttp
 from unittest.mock import AsyncMock, patch
@@ -49,7 +49,6 @@ class TestConfiguracionService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al ObtenerDatos de la Empresa", response.message)
 
 
 
