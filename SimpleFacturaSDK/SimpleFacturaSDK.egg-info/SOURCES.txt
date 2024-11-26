@@ -16,6 +16,7 @@ SimpleFacturaSDK/SimpleFacturaSDK.egg-info/top_level.txt
 SimpleFacturaSDK/Utilidades/EnviarArchivoFacturacionMasiva.py
 SimpleFacturaSDK/Utilidades/Simplificar_error.py
 SimpleFacturaSDK/Utilidades/Utilidades.py
+SimpleFacturaSDK/Utilidades/__init__.py
 SimpleFacturaSDK/enumeracion/Ambiente.py
 SimpleFacturaSDK/enumeracion/CodigosAduana.py
 SimpleFacturaSDK/enumeracion/FormaPago.py
@@ -44,14 +45,18 @@ SimpleFacturaSDK/models/EmisorApiEnt.py
 SimpleFacturaSDK/models/ResponseDTE.py
 SimpleFacturaSDK/models/SerializarJson.py
 SimpleFacturaSDK/models/Sucursal.py
+SimpleFacturaSDK/models/__init__.py
 SimpleFacturaSDK/models/BoletaHonorarios/BHEEnt.py
 SimpleFacturaSDK/models/BoletaHonorarios/BHERequest.py
 SimpleFacturaSDK/models/BoletaHonorarios/ListaBHERequest.py
+SimpleFacturaSDK/models/BoletaHonorarios/__init__.py
 SimpleFacturaSDK/models/Clientes/NuevoReceptorExternoRequest.py
+SimpleFacturaSDK/models/Clientes/__init__.py
 SimpleFacturaSDK/models/Folios/Foliorequest.py
 SimpleFacturaSDK/models/Folios/FoliosAnulablesEnt.py
 SimpleFacturaSDK/models/Folios/SolicitudFolios.py
 SimpleFacturaSDK/models/Folios/TimbrajeEnt.py
+SimpleFacturaSDK/models/Folios/__init__.py
 SimpleFacturaSDK/models/GetFactura/Aduana.py
 SimpleFacturaSDK/models/GetFactura/Chofer.py
 SimpleFacturaSDK/models/GetFactura/CodigoItem.py
@@ -101,6 +106,7 @@ SimpleFacturaSDK/models/Productos/NuevoProductoExternoRequest.py
 SimpleFacturaSDK/models/Productos/ProductoEnt.py
 SimpleFacturaSDK/models/Productos/__init__.py
 SimpleFacturaSDK/models/Proveedores/AcuseReciboExternoRequest.py
+SimpleFacturaSDK/models/Proveedores/__init__.py
 SimpleFacturaSDK/services/BoletaHonorarioService.py
 SimpleFacturaSDK/services/ClientesService.py
 SimpleFacturaSDK/services/ConfiguracionService.py
