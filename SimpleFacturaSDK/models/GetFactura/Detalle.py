@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass, asdict
 from typing import List, Optional
-from models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
 from SimpleFacturaSDK.models.GetFactura.Retenedor import Retenedor
 from SimpleFacturaSDK.models.GetFactura.Subcantidad import SubCantidad
