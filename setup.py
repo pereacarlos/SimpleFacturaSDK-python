@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="SimpleFacturaSDK",
-    version="1.0.1",
+    version="1.0.2",
     description="SDK para la integración con los servicios de SimpleFactura",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author="Carlos Perea",
     author_email="pereacarlos685@gmail.com",
     url="https://github.com/pereacarlos/SimpleFacturaSDK-python",
-    packages=find_packages(),
+    packages=find_packages(where="SimpleFacturaSDK"),
     install_requires=[
         "aiohttp",
         "requests-toolbelt",
