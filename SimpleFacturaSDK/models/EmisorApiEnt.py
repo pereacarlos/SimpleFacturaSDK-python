@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 from datetime import datetime
-from models.ActividadesEconomicaApiEnt import ActividadesEconomicaEnt
+from SimpleFacturaSDK.models.ActividadesEconomicaApiEnt import ActividadesEconomicaEnt
 
 @dataclass
 class EmisorAapiEnt:

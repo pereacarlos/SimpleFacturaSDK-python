@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from enumeracion.ResponseType import ResponseType
-from enumeracion.RejectionType import RejectionType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.enumeracion.ResponseType import ResponseType
+from SimpleFacturaSDK.enumeracion.RejectionType import RejectionType
 
 @dataclass
 class AcuseReciboExternoRequest:

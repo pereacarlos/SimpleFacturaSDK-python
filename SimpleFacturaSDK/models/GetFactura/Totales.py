@@ -1,6 +1,6 @@
 from dataclasses import dataclass, asdict
 from typing import List, Optional
-from enumeracion.CodigosAduana import Moneda
+from SimpleFacturaSDK.enumeracion.CodigosAduana import Moneda
 @dataclass
 class Totales:
     TpoMoneda: Optional[Moneda] = None

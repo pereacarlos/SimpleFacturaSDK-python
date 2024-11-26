@@ -1,6 +1,6 @@
 from typing import Optional
 from dataclasses import dataclass
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from datetime import datetime
 
 @dataclass

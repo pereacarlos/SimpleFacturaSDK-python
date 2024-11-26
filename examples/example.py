@@ -8,10 +8,10 @@ si deseas ejecutarlo desde afuera deberas hacer las debidas modificaciones en lo
 #Obtener Pdf de una Factura
 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import os
 from dotenv import load_dotenv
 load_dotenv()
