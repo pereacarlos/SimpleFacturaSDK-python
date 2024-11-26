@@ -27,6 +27,9 @@ setup(
         ]
     },
     include_package_data=True,
+     package_data={
+        "": ["log.png"],
+    },
     keywords=[
         "dte",
         "factura",
@@ -45,4 +48,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+
 )
