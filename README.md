@@ -60,6 +60,19 @@ cd SimpleFacturaSDK-python
 pip install -r requirements.txt
 
 ```
+
+## Configuración del archivo **.env**:
+Para usar el SDK, asegúrate de crear un archivo .env en el directorio raíz de tu proyecto. Este archivo debe contener tus credenciales de acceso a la API de SimpleFactura. Aquí tienes un ejemplo de cómo configurarlo:
+```bash
+SF_USERNAME=tu_usuario
+SF_PASSWORD=tu_contraseña
+```
+Para garantizar que el archivo **.env** esté disponible en tiempo de ejecución, sigue estos pasos:
+
+1. Crea un archivo llamado .env en el directorio raíz de tu proyecto.
+2. Agrega tus credenciales de acceso a la API en el archivo .env como se muestra en el ejemplo anterior.
+3. Asegúrate de que el archivo .env esté incluido en tu archivo .gitignore para evitar subir tus credenciales a un repositorio público.
+
 Cómo empezar
 Para utilizar el SDK, simplemente inicializa la clase ClientSimpleFactura proporcionando tu nombre de usuario y contraseña:
 ```bash
@@ -103,10 +116,10 @@ El código utiliza programación asincrónica para garantizar un manejo eficient
 
 ```bash
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -154,10 +167,10 @@ El código utiliza programación asincrónica para manejar las solicitudes y ase
 
 ```bash
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import base64
 import json
 import os
@@ -203,20 +216,20 @@ Este ejemplo muestra cómo utilizar el SDK `SimpleFacturaSdk` para emitir una bo
 El código utiliza programación asincrónica para manejar eficientemente las solicitudes hacia la API y captura errores para un manejo robusto en caso de fallos.
 ```bash
 import asyncio
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
 import base64
 import json
-from models.GetFactura.Documento import Documento
-from models.GetFactura.Encabezado import Encabezado
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Totales import Totales
-from models.GetFactura.Detalle import Detalle
-from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.TipoDTE import DTEType
-from enumeracion.IndicadorServicio import IndicadorServicioEnum
-from models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 import requests
 from models.ResponseDTE import Response
 import os
