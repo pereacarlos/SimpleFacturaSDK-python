@@ -1,10 +1,10 @@
 import requests
 from typing import List,Optional
-from models.Sucursal import Sucursal
-from models.ResponseDTE import Response
-from Utilidades.Simplificar_error import simplificar_errores
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Sucursal import Sucursal
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import aiohttp
 import asyncio
 class SucursalService:

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from enumeracion.CodigosAduana import TipoBultoEnum
+from SimpleFacturaSDK.enumeracion.CodigosAduana import TipoBultoEnum
 
 
 @dataclass

@@ -3,8 +3,8 @@ from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
 from SimpleFacturaSDK.models.BoletaHonorarios.BHEEnt import BHEEnt
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import requests
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 import asyncio
 

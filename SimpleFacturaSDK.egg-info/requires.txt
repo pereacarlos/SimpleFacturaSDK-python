@@ -2,9 +2,11 @@ aiohttp
 requests-toolbelt
 pydantic
 httpx
-pytest
-requests-mock
-python-dotenv
-pytest-asyncio
 requests
+python-dotenv
 aiofiles
+
+[test]
+pytest
+pytest-asyncio
+requests-mock

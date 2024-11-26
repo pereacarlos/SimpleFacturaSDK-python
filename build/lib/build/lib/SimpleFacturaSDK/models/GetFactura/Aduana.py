@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from enumeracion.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises
-from models.GetFactura.TipoBulto import TipoBulto
+from SimpleFacturaSDK.enumeracion.CodigosAduana import ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, Paises
+from SimpleFacturaSDK.models.GetFactura.TipoBulto import TipoBulto
 
 @dataclass
 class Aduana:
