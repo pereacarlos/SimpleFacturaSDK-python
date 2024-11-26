@@ -1,6 +1,6 @@
 from dataclasses import dataclass, asdict
-from models.GetFactura.DetalleDte import DetalleDte 
-from models.GetFactura.DescuentosRecargos import DescuentosRecargos
+from SimpleFacturaSDK.models.GetFactura.DetalleDte import DetalleDte 
+from SimpleFacturaSDK.models.GetFactura.DescuentosRecargos import DescuentosRecargos
 from typing import Optional, List
 
 @dataclass

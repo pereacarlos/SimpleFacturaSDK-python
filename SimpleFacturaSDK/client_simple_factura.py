@@ -1,12 +1,12 @@
 import aiohttp
-from services.FacturaService import FacturacionService
-from services.ProductoService import ProductoService
-from services.ProveedorService import ProveedorService
-from services.ClientesService import ClientesService
-from services.SucursalService import SucursalService
-from services.FolioService import FolioService
-from services.ConfiguracionService import ConfiguracionService
-from services.BoletaHonorarioService import BoletaHonorarioService
+from SimpleFacturaSDK.services.FacturaService import FacturacionService
+from SimpleFacturaSDK.services.ProductoService import ProductoService
+from SimpleFacturaSDK.services.ProveedorService import ProveedorService
+from SimpleFacturaSDK.services.ClientesService import ClientesService
+from SimpleFacturaSDK.services.SucursalService import SucursalService
+from SimpleFacturaSDK.services.FolioService import FolioService
+from SimpleFacturaSDK.services.ConfiguracionService import ConfiguracionService
+from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
 import base64
 from dotenv import load_dotenv
 import os

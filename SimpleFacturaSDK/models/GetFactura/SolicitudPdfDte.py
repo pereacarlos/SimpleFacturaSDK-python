@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
 @dataclass
 class SolicitudPdfDte:
     credenciales: Credenciales

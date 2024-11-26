@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from enumeracion.TipoImpuesto import TipoImpuestoEnum
+from SimpleFacturaSDK.enumeracion.TipoImpuesto import TipoImpuestoEnum
 
 @dataclass
 class ImpuestosRetenciones:

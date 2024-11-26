@@ -1,5 +1,5 @@
 from dataclasses import dataclass, asdict
-from models.GetFactura.DetalleDte import DetalleDte 
+from SimpleFacturaSDK.models.GetFactura.DetalleDte import DetalleDte 
 from typing import Optional, List
 from datetime import datetime
 

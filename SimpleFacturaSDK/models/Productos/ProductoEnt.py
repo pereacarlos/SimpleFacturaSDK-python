@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 from uuid import UUID
-from models.Productos.ImpuestoEnt import ImpuestoEnt
+from SimpleFacturaSDK.models.Productos.ImpuestoEnt import ImpuestoEnt
 
 @dataclass
 class ProductoEnt:
