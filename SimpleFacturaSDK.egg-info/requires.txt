@@ -1,0 +1,10 @@
+aiohttp
+requests-toolbelt
+pydantic
+httpx
+pytest
+requests-mock
+python-dotenv
+pytest-asyncio
+requests
+aiofiles
