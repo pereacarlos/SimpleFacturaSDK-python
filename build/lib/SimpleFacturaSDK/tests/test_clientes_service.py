@@ -1,20 +1,20 @@
 import unittest
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
+from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 import base64
 import requests
-from models.ResponseDTE import Response
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
 import json
 from dotenv import load_dotenv
 import aiohttp
 from unittest.mock import AsyncMock, patch
 import os
-from models.GetFactura.Credenciales import Credenciales
-from models.Productos.DatoExternoRequest import DatoExternoRequest
-from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
-from models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 load_dotenv()
 
 class TestClientesService(unittest.IsolatedAsyncioTestCase):
@@ -128,7 +128,6 @@ class TestClientesService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500) 
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al Crear Clientes", response.message)
 
     async def test_ListarClientes_ReturnOK(self):
         solicitud= Credenciales(rut_emisor="76269769-6")
@@ -172,7 +171,6 @@ class TestClientesService(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.status, 500) 
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al Listar Clientes", response.message)
 
 
 

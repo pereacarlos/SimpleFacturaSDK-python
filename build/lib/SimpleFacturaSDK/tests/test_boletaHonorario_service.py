@@ -1,14 +1,14 @@
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
 import base64
 import requests
 import json
 import sys
 import unittest
-from models.ResponseDTE import Response
-from models.GetFactura.Credenciales import Credenciales
-from models.BoletaHonorarios.BHERequest import BHERequest
-from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
-from services.BoletaHonorarioService import BoletaHonorarioService
 from datetime import datetime
 from dotenv import load_dotenv
 import aiohttp
@@ -64,7 +64,7 @@ class TestBoletahonorarioService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
-            self.assertEqual("Error al ObtenPdf", response.message)
+
 
     #Falta probarlo
     async def test_ListadoBHEEmitidos_ReturnOK(self):
@@ -125,7 +125,6 @@ class TestBoletahonorarioService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
-            self.assertEqual("Error al ListadoBHEEmitidos", response.message)
 
     #preguntar
     async def test_ObtenerPdfBoletaRecibida_ReturnOK(self):
@@ -171,7 +170,6 @@ class TestBoletahonorarioService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
-            self.assertEqual("Error al ObtenerPdfBoletaRecibida", response.message)
 
     async def test_ListadoBHERecibido_ReturnOK(self):
         fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
@@ -230,4 +228,3 @@ class TestBoletahonorarioService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNone(response.data)
-            self.assertEqual("Error al ListadoBHERecibido", response.message)

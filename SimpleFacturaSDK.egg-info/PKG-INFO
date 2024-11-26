@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: SimpleFacturaSDK
-Version: 1.1.3
+Version: 1.1.4
 Summary: SDK para la integración con los servicios de SimpleFactura
 Home-page: https://github.com/pereacarlos/SimpleFacturaSDK-python
 Author: Carlos Perea
@@ -93,6 +93,9 @@ Para usar el SDK, asegúrate de crear un archivo .env en el directorio raíz de 
 ```bash
 SF_USERNAME=tu_usuario
 SF_PASSWORD=tu_contraseña
+SF_BASE_URL=https://api.simplefactura.cl
+PYTHONPATH=.
+
 ```
 Para garantizar que el archivo **.env** esté disponible en tiempo de ejecución, sigue estos pasos:
 

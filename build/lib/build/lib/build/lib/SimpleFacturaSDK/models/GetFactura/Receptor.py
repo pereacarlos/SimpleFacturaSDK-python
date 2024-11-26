@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from models.GetFactura.Extranjero import Extranjero
+from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
 
 @dataclass
 class Receptor:

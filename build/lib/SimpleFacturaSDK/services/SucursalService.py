@@ -30,7 +30,7 @@ class SucursalService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ListarSucursales",
+                message=error.__str__(),
                 data=None
             )
 

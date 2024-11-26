@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass, field
 from typing import Optional
-from enumeracion.TipoRecargoComision import TipoRecargoComisionEnum
+from SimpleFacturaSDK.enumeracion.TipoRecargoComision import TipoRecargoComisionEnum
 
 @dataclass
 class ComisionRecargo:

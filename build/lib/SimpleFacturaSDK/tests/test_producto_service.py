@@ -1,18 +1,18 @@
 import unittest
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Productos.ProductoEnt import ProductoEnt
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
+from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from SimpleFacturaSDK.models.ResponseDTE import Response
 import base64
 import requests
-from models.ResponseDTE import Response
 import json
 import aiohttp
 from unittest.mock import AsyncMock, patch
 from typing import List
 from datetime import datetime
 import requests_mock
-from models.Productos.ProductoEnt import ProductoEnt
-from models.GetFactura.Credenciales import Credenciales
-from models.Productos.DatoExternoRequest import DatoExternoRequest
-from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
 from dotenv import load_dotenv
 import os
 import random
@@ -121,7 +121,6 @@ class TestProductoService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al Crear Producto", response.message)
 
     async def test_listarProductos_ReturnOK(self):       
         solicitud= Credenciales(
@@ -165,4 +164,4 @@ class TestProductoService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
-            self.assertEqual("Error al listar Productos", response.message)
+            

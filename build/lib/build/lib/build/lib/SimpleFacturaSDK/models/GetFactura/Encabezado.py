@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Transporte import Transporte
-from models.GetFactura.Totales import Totales
-from models.GetFactura.OtraMoneda import OtraMoneda
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Transporte import Transporte
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
 
 @dataclass
 class Encabezado:

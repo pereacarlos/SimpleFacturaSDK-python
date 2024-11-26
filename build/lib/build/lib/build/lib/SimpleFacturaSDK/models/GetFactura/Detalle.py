@@ -2,12 +2,12 @@
 from dataclasses import dataclass, asdict
 from typing import List, Optional
 from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
-from models.GetFactura.Retenedor import Retenedor
-from models.GetFactura.Subcantidad import SubCantidad
-from models.GetFactura.SubDescuento import SubDescuento
-from models.GetFactura.SubRecargo import SubRecargo
-from models.GetFactura.OtraMonedaDetalle import OtraMonedaDetalle
+from SimpleFacturaSDK.enumeracion.IndicadorFacturacionExencion import IndicadorFacturacionExencionEnum
+from SimpleFacturaSDK.models.GetFactura.Retenedor import Retenedor
+from SimpleFacturaSDK.models.GetFactura.Subcantidad import SubCantidad
+from SimpleFacturaSDK.models.GetFactura.SubDescuento import SubDescuento
+from SimpleFacturaSDK.models.GetFactura.SubRecargo import SubRecargo
+from SimpleFacturaSDK.models.GetFactura.OtraMonedaDetalle import OtraMonedaDetalle
 from datetime import datetime
 @dataclass
 class Detalle:

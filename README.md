@@ -76,6 +76,17 @@ Para garantizar que el archivo **.env** esté disponible en tiempo de ejecución
 2. Agrega tus credenciales de acceso a la API en el archivo .env como se muestra en el ejemplo anterior.
 3. Asegúrate de que el archivo .env esté incluido en tu archivo .gitignore para evitar subir tus credenciales a un repositorio público.
 
+## Configuración del archivo **config.py**:
+Para usar el SDK, asegúrate de crear un archivo **config.py** en el directorio raíz de tu proyecto. Este archivo debe contener tus la url de acceso a la API de SimpleFactura. Aquí tienes un ejemplo de cómo configurarlo:
+```bash
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("SF_BASE_URL")
+```
+
 Cómo empezar
 Para utilizar el SDK, simplemente inicializa la clase ClientSimpleFactura proporcionando tu nombre de usuario y contraseña:
 ```bash
