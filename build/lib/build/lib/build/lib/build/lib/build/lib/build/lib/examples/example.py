@@ -1,10 +1,4 @@
 
-'''
-Estos ejemplos estan orientados para ejecutarse dentro de la carpeta de SimpleFacturaSDK en el main.py,
-si deseas ejecutarlo desde afuera deberas hacer las debidas modificaciones en los imports
-'''
-
-
 #Obtener Pdf de una Factura
 
 import asyncio
@@ -46,10 +40,10 @@ if __name__ == "__main__":
 
 #Obtener timbre de una factura
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import base64
 import json
 import os
@@ -85,10 +79,10 @@ if __name__ == "__main__":
 #Obtener XML de una factura
 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import json
 import base64
 import requests
@@ -129,10 +123,10 @@ if __name__ == "__main__":
 
 #Obtener DtE de una factura
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import json
 import base64
 import requests
@@ -176,10 +170,10 @@ if __name__ == "__main__":
 
 #Obtener SobreXml de una factura
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 import json
 import base64
 import requests
@@ -219,22 +213,22 @@ if __name__ == "__main__":
 #Facturacion individual DTE
 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
 import base64
 import json
-from models.GetFactura.Documento import Documento
-from models.GetFactura.Encabezado import Encabezado
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Totales import Totales
-from models.GetFactura.Detalle import Detalle
-from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.RequestDTE import RequestDTE
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.ResponseDTE import Response
 import requests
-from models.ResponseDTE import Response
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -322,22 +316,22 @@ if __name__ == "__main__":
 
 #Facturacion individual Boleta
 import asyncio
-from client_simple_factura import ClientSimpleFactura
 import base64
 import json
-from models.GetFactura.Documento import Documento
-from models.GetFactura.Encabezado import Encabezado
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Totales import Totales
-from models.GetFactura.Detalle import Detalle
-from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.TipoDTE import DTEType
-from enumeracion.IndicadorServicio import IndicadorServicioEnum
-from models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.ResponseDTE import Response
 import requests
-from models.ResponseDTE import Response
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -431,25 +425,25 @@ if __name__ == "__main__":
 
 #Facturacion individual Exportaciones
 import asyncio
-from client_simple_factura import ClientSimpleFactura
 import base64
 import json
-from models.GetFactura.Exportaciones import Exportaciones
-from models.GetFactura.OtraMoneda import OtraMoneda
-from models.GetFactura.Extranjero import Extranjero
-from models.GetFactura.Aduana import Aduana
-from models.GetFactura.Transporte import Transporte
-from models.GetFactura.TipoBulto import TipoBulto
-from enumeracion.CodigosAduana import Paises,Moneda, ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, TipoBultoEnum
-from models.GetFactura.Encabezado import Encabezado
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Totales import Totales
-from models.GetFactura.Detalle import Detalle
-from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Exportaciones import Exportaciones
+from SimpleFacturaSDK.models.GetFactura.OtraMoneda import OtraMoneda
+from SimpleFacturaSDK.models.GetFactura.Extranjero import Extranjero
+from SimpleFacturaSDK.models.GetFactura.Aduana import Aduana
+from SimpleFacturaSDK.models.GetFactura.Transporte import Transporte
+from SimpleFacturaSDK.models.GetFactura.TipoBulto import TipoBulto
+from SimpleFacturaSDK.enumeracion.CodigosAduana import Paises,Moneda, ModalidadVenta, ClausulaCompraVenta, ViasdeTransporte, Puertos, UnidadMedida, TipoBultoEnum
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from datetime import datetime
 import requests
 import os
@@ -583,8 +577,8 @@ if __name__ == "__main__":
 
 #Facturacion masiva 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -612,23 +606,23 @@ if __name__ == "__main__":
 #EmisionNC_ND_V2
 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
 import base64
-from enumeracion.ReasonTypeEnum import ReasonTypeEnum
-from models.GetFactura.Documento import Documento
-from models.GetFactura.Encabezado import Encabezado
-from models.GetFactura.IdentificacionDTE import IdDoc
-from models.GetFactura.Emisor import Emisor
-from models.GetFactura.Receptor import Receptor
-from models.GetFactura.Totales import Totales
-from models.GetFactura.Detalle import Detalle
-from models.GetFactura.CodigoItem import CdgItem
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.RequestDTE import RequestDTE
-from models.GetFactura.Referencia import Referencia
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.enumeracion.ReasonTypeEnum import ReasonTypeEnum
+from SimpleFacturaSDK.models.GetFactura.Documento import Documento
+from SimpleFacturaSDK.models.GetFactura.Encabezado import Encabezado
+from SimpleFacturaSDK.models.GetFactura.IdentificacionDTE import IdDoc
+from SimpleFacturaSDK.models.GetFactura.Emisor import Emisor
+from SimpleFacturaSDK.models.GetFactura.Receptor import Receptor
+from SimpleFacturaSDK.models.GetFactura.Totales import Totales
+from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
+from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
+from SimpleFacturaSDK.models.GetFactura.Referencia import Referencia
+from SimpleFacturaSDK.models.ResponseDTE import Response
 import requests
 from datetime import datetime
-from models.ResponseDTE import Response
 fecha_referencia = datetime.strptime("2024-10-17", "%Y-%m-%d").date().isoformat()
 import os
 from dotenv import load_dotenv
@@ -723,12 +717,12 @@ if __name__ == "__main__":
 #ListadoDTEEmitidos
 import asyncio
 import httpx
-from client_simple_factura import ClientSimpleFactura
 import requests
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from datetime import datetime
 import os
 from dotenv import load_dotenv
@@ -777,10 +771,10 @@ if __name__ == "__main__":
 #EnviarCorreo
 import asyncio
 import httpx
-from client_simple_factura import ClientSimpleFactura
 import requests
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.EnvioMailRequest import EnvioMailRequest, DteClass, MailClass
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -819,11 +813,11 @@ if __name__ == "__main__":
 
 import asyncio
 import httpx
-from client_simple_factura import ClientSimpleFactura
 import requests
-from enumeracion.Ambiente import AmbienteEnum
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from datetime import datetime
 import os
 from dotenv import load_dotenv
@@ -868,9 +862,9 @@ if __name__ == "__main__":
 #ConciliarEmitidoss
 import asyncio
 import httpx
-from client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import requests
-from models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -898,12 +892,12 @@ if __name__ == "__main__":
 
 #Crear productos
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.ResponseDTE import Response
 import json
-from models.GetFactura.Credenciales import Credenciales
-from models.Productos.DatoExternoRequest import DatoExternoRequest
-from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
+from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -967,8 +961,8 @@ if __name__ == "__main__":
 
 #Listar productos 
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1006,11 +1000,11 @@ if __name__ == "__main__":
 
 #ListarDTERecibido Proveedores
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.ResponseDTE import Response
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from enumeracion.Ambiente import AmbienteEnum
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from datetime import datetime
 import os
 from dotenv import load_dotenv
@@ -1051,12 +1045,12 @@ if __name__ == "__main__":
 
 #Obtener XML Proveedores
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.ResponseDTE import Response
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1089,12 +1083,12 @@ if __name__ == "__main__":
 
 #Obtener PDF Proveedores
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.ResponseDTE import Response
-from models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1126,9 +1120,9 @@ if __name__ == "__main__":
 
 #ConciliarRecibidos Proveedores
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.ResponseDTE import Response
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1153,12 +1147,12 @@ if __name__ == "__main__":
 
 #Aceptar o Rechazar Acuse Proveedores
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.Proveedores.AcuseReciboExternoRequest import AcuseReciboExternoRequest
-from models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
-from enumeracion.ResponseType import ResponseType
-from enumeracion.RejectionType import RejectionType
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Proveedores.AcuseReciboExternoRequest import AcuseReciboExternoRequest
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.enumeracion.ResponseType import ResponseType
+from SimpleFacturaSDK.enumeracion.RejectionType import RejectionType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1198,17 +1192,17 @@ if __name__ == "__main__":
 
 #CrearClientes
 import asyncio
-from client_simple_factura import ClientSimpleFactura
 import base64
 import requests
 import json
-from models.ResponseDTE import Response
-from enumeracion.Ambiente import AmbienteEnum
-from enumeracion.TipoDTE import DTEType
-from models.GetFactura.Credenciales import Credenciales
-from models.Productos.DatoExternoRequest import DatoExternoRequest
-from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
-from models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
+from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
+from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1291,8 +1285,8 @@ if __name__ == "__main__":
 
 #Listar Clientes
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1334,8 +1328,8 @@ if __name__ == "__main__":
 
 #Listar sucursales
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1366,8 +1360,8 @@ if __name__ == "__main__":
 
 #ConsultarFoliosDisponibles
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.Folios.SolicitudFolios import SolicitudFolios
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1398,10 +1392,10 @@ if __name__ == "__main__":
 
 #SolicitarFolios
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.Folios.Foliorequest import FolioRequest
-from models.GetFactura.Credenciales import Credenciales
-from enumeracion.TipoDTE import DTEType
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1437,9 +1431,9 @@ if __name__ == "__main__":
 
 #ConsultarFolios
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.Folios.Foliorequest import FolioRequest
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1478,8 +1472,8 @@ if __name__ == "__main__":
 
 #FoliosSin Uso
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.Folios.SolicitudFolios import SolicitudFolios
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1513,8 +1507,8 @@ if __name__ == "__main__":
 
 #Datos Empresas
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1545,9 +1539,9 @@ if __name__ == "__main__":
 
 #Obtener PDF Recibidas Boleta de Honorarios
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.BoletaHonorarios.BHERequest import BHERequest
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1578,9 +1572,9 @@ if __name__ == "__main__":
 
 #Obtener PDF Emitidas Boleta de Honorarios
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.BoletaHonorarios.BHERequest import BHERequest
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -1608,9 +1602,9 @@ if __name__ == "__main__":
 
 #ListadoBHEEmitidas Boleta de Honorarios
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import os
 from dotenv import load_dotenv
 import json
@@ -1651,9 +1645,9 @@ if __name__ == "__main__":
 
 #Listado de Boletas de Honorarios Recibidas
 import asyncio
-from client_simple_factura import ClientSimpleFactura
-from models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
-from models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
+from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 from datetime import datetime
 fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
 fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
