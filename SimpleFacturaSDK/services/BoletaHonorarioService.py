@@ -9,10 +9,11 @@ import aiohttp
 import asyncio
 
 class BoletaHonorarioService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def ObtenerPdf(self, solicitud) -> Response[bytes]:
         url = f"{self.base_url}/bhe/pdfIssuied"

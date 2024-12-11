@@ -9,10 +9,11 @@ import aiohttp
 import asyncio
 
 class ProveedorService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     #Revisar
     async def Aceptar_RechazarDTE(self, solicitud) -> Response[bool]:

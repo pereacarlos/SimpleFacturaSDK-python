@@ -23,10 +23,11 @@ from httpx import AsyncClient
 
 
 class FacturacionService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def _post_and_response_facturacion(self, url: str, solicitud_dict: dict) -> Response[InvoiceData]:
         try:
@@ -49,6 +50,7 @@ class FacturacionService:
     
 
     async def obtener_pdf(self, solicitud):
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/pdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
