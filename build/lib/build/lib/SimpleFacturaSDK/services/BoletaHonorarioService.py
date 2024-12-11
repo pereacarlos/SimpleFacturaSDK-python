@@ -30,7 +30,7 @@ class BoletaHonorarioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ObtenPdf",
+                message=error.__str__(),
                 data=None
             )
 
@@ -51,7 +51,7 @@ class BoletaHonorarioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ListadoBHEEmitidos",
+                message=error.__str__(),
                 data=None
             )
 
@@ -71,7 +71,7 @@ class BoletaHonorarioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ObtenerPdfBoletaRecibida",
+                message=error.__str__(),
                 data=None
             )
 
@@ -92,7 +92,7 @@ class BoletaHonorarioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ListadoBHERecibido",
+                message=error.__str__(),
                 data=None
             )
 

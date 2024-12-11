@@ -18,6 +18,7 @@ SimpleFacturaSDK/Utilidades/EnviarArchivoFacturacionMasiva.py
 SimpleFacturaSDK/Utilidades/Simplificar_error.py
 SimpleFacturaSDK/Utilidades/Utilidades.py
 SimpleFacturaSDK/Utilidades/__init__.py
+SimpleFacturaSDK/Utilidades/auth_utils.py
 SimpleFacturaSDK/enumeracion/Ambiente.py
 SimpleFacturaSDK/enumeracion/CodigosAduana.py
 SimpleFacturaSDK/enumeracion/FormaPago.py

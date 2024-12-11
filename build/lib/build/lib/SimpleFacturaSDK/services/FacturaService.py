@@ -43,7 +43,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Facturacion",
+                message=error.__str__(),
                 data=None
             )
     
@@ -64,7 +64,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener PDF",
+                message=error.__str__(),
                 data=None
             )
     
@@ -84,7 +84,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Timbre",
+                message=error.__str__(),
                 data=None
             )
     
@@ -104,7 +104,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener XML",
+                message=error.__str__(),
                 data=None
             )
 
@@ -125,7 +125,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener DTE",
+                message=error.__str__(),
                 data=None
             )
         
@@ -230,7 +230,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Facturacion Masiva",
+                message=error.__str__(),
                 data=None
             )
     
@@ -264,7 +264,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener EmisionNC_ND_V2",
+                message=error.__str__(),
                 data=None
             )
     
@@ -285,7 +285,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener ListadoDteEmitidos",
+                message=error.__str__(),
                 data=None
             )
 
@@ -305,7 +305,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al enviar Correo",
+                message=error.__str__(),
                 data=None
             )
         
@@ -326,7 +326,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener ConsolidadoVentas",
+                message=error.__str__(),
                 data=None
             )
     
@@ -360,7 +360,7 @@ class FacturacionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Conciliar Emitidos",
+                message=error.__str__(),
                 data=None
             )
             

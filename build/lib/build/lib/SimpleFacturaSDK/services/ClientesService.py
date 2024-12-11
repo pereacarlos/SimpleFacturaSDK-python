@@ -30,7 +30,7 @@ class ClientesService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Crear Clientes",
+                message=error.__str__(),
                 data=None
             )
 
@@ -51,7 +51,7 @@ class ClientesService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Listar Clientes",
+                message=error.__str__(),
                 data=None
             )
 

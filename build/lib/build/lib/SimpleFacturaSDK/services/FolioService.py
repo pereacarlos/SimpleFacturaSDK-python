@@ -31,7 +31,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFoliosDisponibles",
+                message=error.__str__(),
                 data=None
             )
 
@@ -52,7 +52,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al SolicitarFolios",
+                message=error.__str__(),
                 data=None
             )
 
@@ -73,7 +73,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFolios",
+                message=error.__str__(),
                 data=None
             )
     
@@ -94,7 +94,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFoliosSinUso",
+                message=error.__str__(),
                 data=None
             )
 
