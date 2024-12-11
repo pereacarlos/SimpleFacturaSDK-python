@@ -1118,7 +1118,7 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             rut_emisor="76269769-6",
             nombre_sucursal="Casa Matriz"
         )
-        path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
+        path_csv = r"C:\SimpleFacturaSDK\ejemplo_carga_masiva_nacional.csv"
         
         response = await self.service.facturacion_Masiva(credenciales, path_csv)
         self.assertIsNotNone(response)
@@ -1144,7 +1144,8 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             rut_emisor="",
             nombre_sucursal=""
         )
-        path_csv = r"C:\Users\perea\Downloads\SinDatos.csv"
+        
+        path_csv = r"C:\SimpleFacturaSDK\SinDatos.csv"
         with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
             mock_post.side_effect = Exception("Error al obtener Facturacion Masiva")
 
@@ -1155,9 +1156,6 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             self.assertIsNotNone(response.message)
     
     async def test_EmisionNC_ND_V2_ReturnOK(self):
-
-        folio = await solicitar_folio(self.service_folios, DTEType.NotaCreditoElectronica, 1)
-        self.assertIsNotNone(folio, "No se pudo obtener el folio")
         solicitud = RequestDTE(
             Documento=Documento(
                 Encabezado=Encabezado(
@@ -1165,8 +1163,7 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
                         TipoDTE=DTEType.NotaCreditoElectronica,
                         FchEmis="2024-08-13",
                         FmaPago=2,
-                        FchVenc="2024-08-13",
-                        Folio=folio 
+                        FchVenc="2024-08-13"
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -1666,7 +1663,7 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             rut_emisor="76269769-6"
         )
 
-        response = await self.service.ConciliarEmitidos(solicitud,5, 2024)
+        response = await self.service.ConciliarEmitidos(solicitud,12, 2024)
         self.assertIsNotNone(response)
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)

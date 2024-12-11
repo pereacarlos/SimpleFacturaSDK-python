@@ -8,12 +8,14 @@ from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
 import aiohttp
 import asyncio
 class SucursalService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/branchOffices"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
