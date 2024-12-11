@@ -15,6 +15,7 @@ class SucursalService:
         self.client = client
 
     async def ListarSucursales(self, solicitud) -> Optional[List[Sucursal]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/branchOffices"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

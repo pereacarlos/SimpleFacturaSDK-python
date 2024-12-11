@@ -16,6 +16,7 @@ class ConfiguracionService:
 
 
     async def datos_empresa(self, solicitud) -> Optional[EmisorAapiEnt]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/datosEmpresa"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

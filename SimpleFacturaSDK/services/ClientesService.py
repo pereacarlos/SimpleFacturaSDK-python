@@ -15,6 +15,7 @@ class ClientesService:
         self.client = client
 
     async def CrearClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/addClients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -36,6 +37,7 @@ class ClientesService:
             )
 
     async def ListarClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/clients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

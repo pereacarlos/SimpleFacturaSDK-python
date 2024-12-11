@@ -17,6 +17,7 @@ class ProveedorService:
 
     #Revisar
     async def Aceptar_RechazarDTE(self, solicitud) -> Response[bool]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/acknowledgmentReceipt"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         print(solicitud_dict)
@@ -38,6 +39,7 @@ class ProveedorService:
             )
 
     async def listarDteRecibidos(self, solicitud) -> Response[Optional[List[Dte]]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentsReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -59,6 +61,7 @@ class ProveedorService:
             )
 
     async def obtenerXml(self, solicitud) -> Response[bytes]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentReceived/xml"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -79,6 +82,7 @@ class ProveedorService:
             )
     
     async def obtener_pdf(self, solicitud) -> Response[bytes]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentReceived/getPdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -100,6 +104,7 @@ class ProveedorService:
             )
 
     async def ConciliarRecibidos(self, solicitud, mes, anio) -> str:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentsReceived/consolidate/{mes}/{anio}"
         if not isinstance(mes, int):
             return Response(

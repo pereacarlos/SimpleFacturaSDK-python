@@ -15,6 +15,7 @@ class ProductoService:
         self.client = client
 
     async def CrearProducto(self, solicitud) -> Response[List[ProductoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/addProducts"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -34,9 +35,9 @@ class ProductoService:
                 message=error.__str__(),
                 data=None
             )
-
-        
+   
     async def listarProductos(self, solicitud) -> Response[List[ProductoExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/products"
         solicitud_dict = solicitud.to_dict()
         try:

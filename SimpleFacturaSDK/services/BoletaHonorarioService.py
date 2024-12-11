@@ -16,6 +16,7 @@ class BoletaHonorarioService:
         self.client = client
 
     async def ObtenerPdf(self, solicitud) -> Response[bytes]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/bhe/pdfIssuied"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -36,6 +37,7 @@ class BoletaHonorarioService:
             )
 
     async def ListadoBHEEmitidos(self, solicitud) -> Optional[list[BHEEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/bhesIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -57,6 +59,7 @@ class BoletaHonorarioService:
             )
 
     async def ObtenerPdfBoletaRecibida(self, solicitud) -> bytes:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/bhe/pdfReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -77,6 +80,7 @@ class BoletaHonorarioService:
             )
 
     async def ListadoBHERecibido(self, solicitud) -> Optional[list[BHEEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/bhesReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

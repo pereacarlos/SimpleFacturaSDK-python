@@ -16,6 +16,7 @@ class FolioService:
         self.client = client
 
     async def ConsultaFoliosDisponibles(self, solicitud) -> int:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/folios/consultar/disponibles"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -37,6 +38,7 @@ class FolioService:
             )
 
     async def SolicitarFolios(self, solicitudFolio) -> Optional[TimbrajeApiEnt]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/folios/solicitar"
         solicitud_dict = serializar_solicitud_dict(solicitudFolio)
         try:
@@ -58,6 +60,7 @@ class FolioService:
             )
 
     async def ConsultarFolios(self, solicitud) -> Optional[Response[List[TimbrajeApiEnt]]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/folios/consultar"
         solicitud_dict = serializar_solicitud_dict(solicitud)       
         try:
@@ -79,6 +82,7 @@ class FolioService:
             )
     
     async def Folios_Sin_Uso(self, solicitud) -> Optional[Response[List[FoliosAnulablesEnt]]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/folios/consultar/sin-uso"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

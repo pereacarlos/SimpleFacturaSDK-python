@@ -29,6 +29,7 @@ class ClientSimpleFactura:
         }
         self.token = None
         self.expires_at = None
+        # No tenemos last_username y last_password al inicio; se setearán al obtener el token
         self.services = [
             ("Facturacion", FacturacionService),
             ("Productos", ProductoService),
