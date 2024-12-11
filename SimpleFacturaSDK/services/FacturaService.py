@@ -23,10 +23,11 @@ from httpx import AsyncClient
 
 
 class FacturacionService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def _post_and_response_facturacion(self, url: str, solicitud_dict: dict) -> Response[InvoiceData]:
         try:
@@ -47,8 +48,8 @@ class FacturacionService:
                 data=None
             )
     
-
     async def obtener_pdf(self, solicitud):
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/pdf"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -69,6 +70,7 @@ class FacturacionService:
             )
     
     async def obtener_timbre(self, solicitud):
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/timbre"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -109,6 +111,7 @@ class FacturacionService:
             )
 
     async def obtener_dte(self, solicitud) -> Response[Dte]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -130,6 +133,7 @@ class FacturacionService:
             )
         
     async def obtener_sobreXml(self, solicitud, sobre) -> bytes:
+        await self.client.ensure_token_valid()
         if isinstance(sobre, int):
             try:
                 sobre_enum = TipoSobreEnvio(sobre)
@@ -147,6 +151,7 @@ class FacturacionService:
                 message="El parámetro 'sobre' debe ser un número entero.",
                 data=None
             )
+
         url = f"{self.base_url}/dte/xml/sobre/{sobre_value}"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -167,6 +172,7 @@ class FacturacionService:
             )
    
     async def facturacion_individualV2_Dte(self, solicitud, sucursal) -> Response[InvoiceData]:
+        await self.client.ensure_token_valid()
         if not isinstance(sucursal, str):
             return Response(
                 status=400,
@@ -178,6 +184,7 @@ class FacturacionService:
         return await self._post_and_response_facturacion(url, solicitud_dict)
         
     async def facturacion_individualV2_Boletas(self, solicitud, sucursal) -> Response[InvoiceData]:
+        await self.client.ensure_token_valid()
         if not isinstance(sucursal, str):
             return Response(
                 status=400,
@@ -189,6 +196,7 @@ class FacturacionService:
         return await self._post_and_response_facturacion(url, solicitud_dict)
     
     async def facturacion_individualV2_Exportacion(self, solicitud, sucursal) -> Response[InvoiceData]:
+        await self.client.ensure_token_valid()
         if not isinstance(sucursal, str):
             return Response(
                 status=400,
@@ -200,6 +208,7 @@ class FacturacionService:
         return await self._post_and_response_facturacion(url, solicitud_dict)
 
     async def facturacion_Masiva(self, credenciales: Credenciales, path_csv: str):
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/massiveInvoice"
         if not os.path.isfile(path_csv):
             return Response(status=400, message="El archivo no existe.", data=None)
@@ -235,6 +244,7 @@ class FacturacionService:
             )
     
     async def EmisionNC_ND_V2(self, solicitud, sucursal, motivo) -> Response[InvoiceData]:
+        await self.client.ensure_token_valid()
         if not isinstance(sucursal, str):
            return Response(
                 status=400,
@@ -269,6 +279,7 @@ class FacturacionService:
             )
     
     async def listadoDteEmitidos(self, solicitud) -> Response[List[Dte]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentsIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -290,6 +301,7 @@ class FacturacionService:
             )
 
     async def enviarCorreo(self, solicitud) -> Response[bool]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/enviar/mail"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -310,6 +322,7 @@ class FacturacionService:
             )
         
     async def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/consolidated/issued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -331,6 +344,7 @@ class FacturacionService:
             )
     
     async def ConciliarEmitidos(self, solicitud, mes, anio):
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentsIssued/consolidate/{mes}/{anio}"
         if not isinstance(mes, int):
             return Response(
