@@ -8,12 +8,14 @@ import aiohttp
 import asyncio
 
 class ProductoService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def CrearProducto(self, solicitud) -> Response[List[ProductoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/addProducts"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -33,9 +35,9 @@ class ProductoService:
                 message=error.__str__(),
                 data=None
             )
-
-        
+   
     async def listarProductos(self, solicitud) -> Response[List[ProductoExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/products"
         solicitud_dict = solicitud.to_dict()
         try:

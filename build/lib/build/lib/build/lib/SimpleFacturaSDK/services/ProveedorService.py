@@ -32,7 +32,7 @@ class ProveedorService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al hacer Aceptar_RechazarDTE",
+                message=error.__str__(),
                 data=None
             )
 
@@ -53,7 +53,7 @@ class ProveedorService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al listar DteRecibidos",
+                message=error.__str__(),
                 data=None
             )
 
@@ -73,7 +73,7 @@ class ProveedorService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener Xml",
+                message=error.__str__(),
                 data=None
             )
     
@@ -94,7 +94,7 @@ class ProveedorService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al obtener PDF",
+                message=error.__str__(),
                 data=None
             )
 
@@ -128,7 +128,7 @@ class ProveedorService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConciliarRecibidos",
+                message=error.__str__(),
                 data=None
             )
 

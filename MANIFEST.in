@@ -4,5 +4,6 @@ include .env
 include requirements.txt
 include setup.py
 recursive-include SimpleFacturaSDK *.py
+recursive-include SimpleFacturaSDK *.png
 recursive-include tests *.py
 include log.png
