@@ -1,6 +1,7 @@
 from typing import List, Optional
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.TrazasEnt import TrazasEnt
 from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
@@ -139,7 +140,7 @@ class ProveedorService:
             )
 
 
-    async def obtener_Trazas(self, solicitud):
+    async def obtener_TrazasRecibidas(self, solicitud)-> Response[List[TrazasEnt]]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/trazasReceived"
         solicitud_dict = serializar_solicitud_dict(solicitud)
@@ -147,7 +148,7 @@ class ProveedorService:
             async with self.session.post(url, json=solicitud_dict) as response:
                 contenidoRespuesta = await response.text()
                 if response.status == 200:
-                    deserialized_response = parse_raw(contenidoRespuesta)
+                    deserialized_response = Response[List[TrazasEnt]].parse_raw(contenidoRespuesta)
                     return Response(status=200, data=deserialized_response.data)
                 return Response(
                     status=response.status,
@@ -160,6 +161,8 @@ class ProveedorService:
                 message=error.__str__(),
                 data=None
             )
+
+
     async def close(self):
         if not self.session.closed:
             await self.session.close()

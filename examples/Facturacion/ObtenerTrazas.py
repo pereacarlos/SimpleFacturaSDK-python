@@ -28,7 +28,7 @@ async def main():
             trazas_bytes = await client_api.Facturacion.obtener_Trazas(solicitud)
             print(f"Status: {trazas_bytes.status}")
             print(f"Message: {trazas_bytes.message}")
-            for trazas in dte_bytes.data:
+            for trazas in trazas_bytes.data:
                 print(f"Fecha: {trazas.fecha}")
                 print(f"Descripcion: {trazas.descripcion}")
                 print(trazas)

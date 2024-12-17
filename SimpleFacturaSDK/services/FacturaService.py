@@ -8,6 +8,7 @@ import aiofiles
 import asyncio
 import requests
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
+from SimpleFacturaSDK.models.TrazasEnt import TrazasEnt
 from SimpleFacturaSDK.models.GetFactura.ReporteDTE import ReporteDTE
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.enumeracion.TipoSobreEnvio import TipoSobreEnvio
@@ -379,7 +380,7 @@ class FacturacionService:
             )
             
 
-    async def obtener_Trazas(self, solicitud):
+    async def obtener_Trazas(self, solicitud)-> Response[List[TrazasEnt]]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/trazasIssued"
         solicitud_dict = serializar_solicitud_dict(solicitud)
@@ -387,7 +388,7 @@ class FacturacionService:
             async with self.session.post(url, json=solicitud_dict) as response:
                 contenidoRespuesta = await response.text()
                 if response.status == 200:
-                    deserialized_response = parse_raw(contenidoRespuesta)
+                    deserialized_response = Response[List[TrazasEnt]].parse_raw(contenidoRespuesta)
                     return Response(status=200, data=deserialized_response.data)
                 return Response(
                     status=response.status,

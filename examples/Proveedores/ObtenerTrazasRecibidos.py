@@ -17,7 +17,7 @@ async def main():
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
                 rut_emisor="76269769-6",
-                rut_contribuyente="76269769-6",
+                rut_contribuyente="76269769-6"
             ),
             dte_referenciado_externo=DteReferenciadoExterno(
                 folio=2232,
@@ -26,10 +26,10 @@ async def main():
             )
         )
         try:
-            trazas_bytes = await client_api.Facturacion.obtener_Trazas(solicitud)
+            trazas_bytes = await client_api.Proveedores.obtener_TrazasRecibidas(solicitud)
             print(f"Status: {trazas_bytes.status}")
             print(f"Message: {trazas_bytes.message}")
-            for trazas in dte_bytes.data:
+            for trazas in trazas_bytes.data:
                 print(f"Fecha: {trazas.fecha}")
                 print(f"Descripcion: {trazas.descripcion}")
                 print(trazas)
