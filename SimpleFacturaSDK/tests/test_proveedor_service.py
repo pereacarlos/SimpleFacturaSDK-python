@@ -1,5 +1,7 @@
 from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
+from SimpleFacturaSDK.models.GetFactura.DteReferenciadoExterno import DteReferenciadoExterno
+from SimpleFacturaSDK.models.GetFactura.SolicitudPdfDte import SolicitudPdfDte
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
@@ -235,10 +237,66 @@ class TestProveedorService(unittest.IsolatedAsyncioTestCase):
             self.assertIsNone(response.data)
             self.assertIsNotNone(response.message)
 
+    async def test_obtener_TrazasRecibidas_ReturnOK(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6",
+                rut_contribuyente="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=2232,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+
+        response = await self.service.obtener_TrazasRecibidas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+
+    async def test_obtener_TrazasRecibidas_BadRequest_WhenDataIsInvalid(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                rut_contribuyente=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=None,
+                ambiente=None
+            )
+        )
+
+        response = await self.service.obtener_TrazasRecibidas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    async def test_obtener_TrazasRecibidas_ServerError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="",
+                rut_contribuyente=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=None,
+                ambiente=None
+            )
+        )
 
 
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Trazas")
 
-
+            response = await self.service.obtener_TrazasRecibidas(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
 
 
 
