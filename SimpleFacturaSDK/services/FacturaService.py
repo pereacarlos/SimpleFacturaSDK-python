@@ -404,7 +404,7 @@ class FacturacionService:
 
     async def ceder_Factura(self, solicitud) -> Response[str]:
         await self.client.ensure_token_valid()
-        url = f"https://localhost:44396/cederFactura"
+        url = f"{self.base_url}/cederFactura"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
             async with self.session.post(url, json=solicitud_dict) as response:
