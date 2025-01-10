@@ -1,5 +1,3 @@
-
-#Listar Clientes
 import asyncio
 from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
@@ -32,7 +30,6 @@ async def main():
                 print(f"Comuna: {response.data.comuna}")
                 print(f"Ciudad: {response.data.ciudad}")
                 print(f"Activo: {response.data.activo}")
-                print(response.data)
             print("\n")
         except Exception as err:
             print(f"Error: {err}")

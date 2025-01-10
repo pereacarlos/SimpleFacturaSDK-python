@@ -172,5 +172,43 @@ class TestClientesService(unittest.IsolatedAsyncioTestCase):
             self.assertIsNone(response.data) 
             self.assertIsNotNone(response.message)
 
+    async def test_ObtenerDatosCliente_ReturnOK(self):
+        solicitud= Credenciales(rut_emisor="76269769-6")
+        rutCliente = "17096073-4"
+        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
 
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
 
+    async def test_ObtenerDatosCliente_BadRequest(self):
+        solicitud= Credenciales(rut_emisor="")
+        rutCliente = "17096073-4"
+        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
+
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
+
+    async def test_ObtenerDatosCliente_ServerError(self):
+        solicitud= Credenciales(rut_emisor="76269769-6")
+        rutCliente = "17096073-4"
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al Obtener Datos Cliente")
+            response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNone(response.data)
+
+    async def test_ObtenerDatosCliente_ServerError_WhenRutClientIsNull(self):
+        solicitud= Credenciales(rut_emisor="76269769-6")
+        rutCliente = ""
+        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
+
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertIsNone(response.data)

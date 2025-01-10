@@ -41,6 +41,7 @@ from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
 from SimpleFacturaSDK.models.Folios.SolicitudFolios import SolicitudFolios
 from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt
 from SimpleFacturaSDK.models.Folios.Foliorequest import FolioRequest
+from SimpleFacturaSDK.models.GetFactura.CesionDteRequest import CesionDteRequest
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from datetime import datetime
 import requests
@@ -1759,6 +1760,56 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             mock_post.side_effect = Exception("Error al obtener Trazas")
 
             response = await self.service.obtener_Trazas(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)
+
+    async def test_cederFactura_ReturnOK(self):
+        solicitud= CesionDteRequest(
+            RutCesionario= "17432554-5",
+            RutPersonaAutorizada= "17096073-4",
+            RutEmpresa= "76269769-6",
+            Folio= 5821,
+            CorreoDeudor= "correoCesionario@gmail.cl",
+            OtrasCondiciones= "otras"
+        )
+        response = await self.service.ceder_Factura(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+
+    async def test_cederFactura_BadRequest_WhenDataIsInvalid(self):
+        solicitud = CesionDteRequest(
+            RutCesionario="",
+            RutPersonaAutorizada="",
+            RutEmpresa="",
+            Folio=None,
+            CorreoDeudor="",
+            OtrasCondiciones=""
+        )
+
+        response = await self.service.ceder_Factura(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    async def test_cederFactura_ServerError(self):
+        solicitud = CesionDteRequest(
+            RutCesionario="",
+            RutPersonaAutorizada="",
+            RutEmpresa="",
+            Folio=None,
+            CorreoDeudor="",
+            OtrasCondiciones=""
+        )
+
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al ceder Factura")
+
+            response = await self.service.ceder_Factura(solicitud)
             self.assertIsNotNone(response)
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
