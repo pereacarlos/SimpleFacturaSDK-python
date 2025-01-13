@@ -8,12 +8,14 @@ from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, seriali
 import aiohttp
 
 class ClientesService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
     async def CrearClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/addClients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:
@@ -35,6 +37,7 @@ class ClientesService:
             )
 
     async def ListarClientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/clients"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

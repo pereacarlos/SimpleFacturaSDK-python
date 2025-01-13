@@ -1,9 +1,9 @@
 from typing import List
-from models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest, ProductoExternoEnt
-from models.Productos.ProductoEnt import ProductoEnt
-from models.ResponseDTE import Response
-from Utilidades.Simplificar_error import simplificar_errores
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest, ProductoExternoEnt
+from SimpleFacturaSDK.models.Productos.ProductoEnt import ProductoEnt
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 import asyncio
 
@@ -30,7 +30,7 @@ class ProductoService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Crear Producto",
+                message=error.__str__(),
                 data=None
             )
 
@@ -52,7 +52,7 @@ class ProductoService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al listar Productos",
+                message=error.__str__(),
                 data=None
             )
 

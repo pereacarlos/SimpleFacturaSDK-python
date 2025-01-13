@@ -8,13 +8,15 @@ import aiohttp
 import asyncio
 
 class ConfiguracionService:
-    def __init__(self, base_url, headers, session=None):
+    def __init__(self, base_url, headers, session, client):
         self.base_url = base_url
         self.headers = headers
-        self.session = session or aiohttp.ClientSession(headers=headers)
+        self.session = session
+        self.client = client
 
 
     async def datos_empresa(self, solicitud) -> Optional[EmisorAapiEnt]:
+        await self.client.ensure_token_valid()
         url = f"{self.base_url}/datosEmpresa"
         solicitud_dict = serializar_solicitud_dict(solicitud)
         try:

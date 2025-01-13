@@ -2,4 +2,3 @@ SimpleFacturaSDK
 build
 dist
 docs
-examples

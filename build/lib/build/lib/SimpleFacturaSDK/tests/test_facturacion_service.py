@@ -1706,3 +1706,60 @@ class TestFacturacionService(unittest.IsolatedAsyncioTestCase):
             self.assertIsInstance(response, Response)
             self.assertEqual(response.status, 500)
             self.assertIsNotNone(response.message)
+
+    async def test_obtenerTrazas_ReturnOK(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor="76269769-6"
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=8597,
+                codigoTipoDte=33,
+                ambiente=0
+            )
+        )
+
+        response = await self.service.obtener_Trazas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 200)
+        self.assertIsNotNone(response.data)
+
+    async def test_obtenerTrazas_BadRequest_WhenDataIsInvalid(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=None,
+                ambiente=None
+            )
+        )
+
+        response = await self.service.obtener_Trazas(solicitud)
+        self.assertIsNotNone(response)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 400)
+        self.assertIsNotNone(response.message)
+
+    async def test_obtenerTrazas_ServerError(self):
+        solicitud = SolicitudPdfDte(
+            credenciales=Credenciales(
+                rut_emisor=""
+            ),
+            dte_referenciado_externo=DteReferenciadoExterno(
+                folio=None,
+                codigoTipoDte=None,
+                ambiente=None
+            )
+        )
+
+        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
+            mock_post.side_effect = Exception("Error al obtener Trazas")
+
+            response = await self.service.obtener_Trazas(solicitud)
+            self.assertIsNotNone(response)
+            self.assertIsInstance(response, Response)
+            self.assertEqual(response.status, 500)
+            self.assertIsNotNone(response.message)

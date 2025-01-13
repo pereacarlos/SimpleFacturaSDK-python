@@ -1,10 +1,10 @@
 from typing import List, Optional
-from models.Clientes.NuevoReceptorExternoRequest import ReceptorExternoEnt
-from models.ResponseDTE import Response
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import ReceptorExternoEnt
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 import asyncio
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 
 class ClientesService:
@@ -30,7 +30,7 @@ class ClientesService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Crear Clientes",
+                message=error.__str__(),
                 data=None
             )
 
@@ -51,7 +51,7 @@ class ClientesService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al Listar Clientes",
+                message=error.__str__(),
                 data=None
             )
 

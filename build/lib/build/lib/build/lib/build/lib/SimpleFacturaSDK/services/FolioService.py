@@ -1,11 +1,11 @@
 from typing import List, Optional
-from models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
-from models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
-from models.ResponseDTE import Response
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.Folios.FoliosAnulablesEnt import FoliosAnulablesEnt
+from SimpleFacturaSDK.models.Folios.TimbrajeEnt import TimbrajeEnt, TimbrajeApiEnt
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 import asyncio
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 
 class FolioService:
@@ -31,7 +31,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFoliosDisponibles",
+                message=error.__str__(),
                 data=None
             )
 
@@ -52,7 +52,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al SolicitarFolios",
+                message=error.__str__(),
                 data=None
             )
 
@@ -73,7 +73,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFolios",
+                message=error.__str__(),
                 data=None
             )
     
@@ -94,7 +94,7 @@ class FolioService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ConsultarFoliosSinUso",
+                message=error.__str__(),
                 data=None
             )
 

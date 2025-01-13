@@ -1,9 +1,9 @@
 from typing import List, Optional
-from models.ResponseDTE import Response
-from models.EmisorApiEnt import EmisorAapiEnt
-from Utilidades.Simplificar_error import simplificar_errores
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.models.EmisorApiEnt import EmisorAapiEnt
+from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
-from models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
+from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 import aiohttp
 import asyncio
 
@@ -31,7 +31,7 @@ class ConfiguracionService:
         except Exception as error:
             return Response(
                 status=500,
-                message="Error al ObtenerDatos de la Empresa",
+                message=error.__str__(),
                 data=None
             )
 
