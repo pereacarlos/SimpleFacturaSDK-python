@@ -33,9 +33,9 @@ async def main():
                 Encabezado=Encabezado(
                     IdDoc=IdDoc(
                         TipoDTE=DTEType.FacturaExportacionElectronica,
-                        FchEmis="2024-08-17",
+                        FchEmis="2026-03-05",
                         FmaPago=1,
-                        FchVenc="2024-08-17"
+                        FchVenc="2026-03-05"
                     ),
                     Emisor=Emisor(
                         RUTEmisor="76269769-6",
@@ -95,14 +95,14 @@ async def main():
                     ),
                     Totales=Totales(
                             TpoMoneda=Moneda.DOLAR_ESTADOUNIDENSE,
-                            MntExe=1000,
-                            MntTotal=1000
+                            MntExe=100,
+                            MntTotal=100
                         ),
                     OtraMoneda= OtraMoneda(
                             TpoMoneda=Moneda.PESO_CHILENO,
                             TpoCambio=800.36,
-                            MntNetoOtrMnda=45454.36,
                             MntExeOtrMnda=45454.36,
+                            MntTotOtrMnda=45454.36,
                         ),
                 ),
                 Detalle=[
