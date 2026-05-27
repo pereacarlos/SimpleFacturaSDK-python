@@ -50,6 +50,27 @@ class FacturacionService:
                 data=None
             )
     
+    async def anular_guia(self, solicitud):
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/dte/anularGuia"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=False
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=False
+            )
+
     async def obtener_pdf(self, solicitud):
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/pdf"

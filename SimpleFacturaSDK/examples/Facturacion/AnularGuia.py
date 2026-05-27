@@ -9,7 +9,7 @@ username = os.getenv("SF_USERNAME")
 password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
-        solicitud= AnularGuiaRequest(RutEmpresa="17096073-4", Folio=567, Ambiente=0)
+        solicitud= AnularGuiaRequest(RutEmpresa="78181331-1", Folio=568, Ambiente=0)
 
         try:
             anularGuiaRequest = await client_api.Facturacion.anular_guia(solicitud)
