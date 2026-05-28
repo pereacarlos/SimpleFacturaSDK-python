@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SimpleFacturaSDK"
-version = "1.1.9"
+version = "1.2.0"
 description = "SDK para la integración con los servicios de SimpleFactura"
 readme = "README.md"
 authors = [
