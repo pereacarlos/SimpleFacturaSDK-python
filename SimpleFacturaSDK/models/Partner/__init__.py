@@ -1,0 +1,2 @@
+from .WizardEmisorRequest import WizardEmisorRequest, EmisorReq, SucursalReq
+from .PartnerDteResumenRequest import PartnerDteResumenRequest, PartnerDteResumenResponse
