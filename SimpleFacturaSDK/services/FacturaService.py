@@ -16,7 +16,7 @@ from SimpleFacturaSDK.models.GetFactura.InvoiceData import InvoiceData
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
 from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.GetFactura.CesionDteRequest import CesionDteRequest
+from SimpleFacturaSDK.models.GetFactura.ContribuyenteSiiEnt import ContribuyenteSiiEnt
 import httpx
 import aiohttp
 import traceback
@@ -343,7 +343,7 @@ class FacturacionService:
                 message=error.__str__(),
                 data=None
             )
-        
+
     async def consolidadoVentas(self, solicitud) -> Response[List[ReporteDTE]]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/consolidated/issued"
@@ -364,8 +364,8 @@ class FacturacionService:
                 status=500,
                 message=error.__str__(),
                 data=None
-            )
-    
+            )    
+  
     async def ConciliarEmitidos(self, solicitud, mes, anio):
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/documentsIssued/consolidate/{mes}/{anio}"
@@ -486,7 +486,7 @@ class FacturacionService:
                 data=False
             )  
 
-    async def ultima_sincronizacion(self, solicitud, mes, anio) -> Response[str]:
+    async def ultima_sincronizacion(self, solicitud,rut_header) -> Response[str]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/sii/lastsync/{mes}/{anio}"
         if not isinstance(mes, int):
@@ -521,6 +521,27 @@ class FacturacionService:
                 data=None
             )
         
+    async def obtener_correo_intercambio(self, solicitud, rut_header) -> Response[ContribuyenteSiiEnt]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/contribuyentes/correo-intercambio/{rut_header}"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[ContribuyenteSiiEnt].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
 
     async def close(self):
         if not self.session.closed:
