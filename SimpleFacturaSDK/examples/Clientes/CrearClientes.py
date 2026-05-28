@@ -20,13 +20,13 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud= DatoExternoRequest(
             Credenciales=Credenciales(
-                rut_emisor="76269769-6",
+                rut_emisor="78181331-1",
                 nombre_sucursal="Casa Matriz"
             ),
             Clientes=[
                 NuevoReceptorExternoRequest(
                     Rut="57681892-0",
-                    RazonSocial="Cliente Test 1",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 1",
                     DirPart="direccion 1",
                     DirFact="direccion 1",
@@ -37,7 +37,7 @@ async def main():
                 ),
                 NuevoReceptorExternoRequest(
                     Rut="56516677-8",
-                    RazonSocial="Cliente Test 2",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 2",
                     DirPart="direccion 2",
                     DirFact="direccion 2",
@@ -48,7 +48,7 @@ async def main():
                 ),
                 NuevoReceptorExternoRequest(
                     Rut="68959276-7",
-                    RazonSocial="Cliente Test 3",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 3",
                     DirPart="direccion 3",
                     DirFact="direccion 3",

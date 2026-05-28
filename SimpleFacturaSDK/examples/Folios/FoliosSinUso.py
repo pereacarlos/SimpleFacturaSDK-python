@@ -10,7 +10,7 @@ password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud= SolicitudFolios(
-            RutEmpresa = "76269769-6",
+            RutEmpresa = "78181331-1",
             TipoDTE = 33,
             Ambiente = 0
         )
@@ -30,3 +30,4 @@ async def main():
        
 if __name__ == "__main__":
     asyncio.run(main())
+

@@ -12,7 +12,7 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud= FolioRequest(
             credenciales=Credenciales(
-                rut_emisor = "76269769-6",
+                rut_emisor = "78181331-1",
                 nombre_sucursal = "Casa Matriz"
             ),
             CodigoTipoDte= None,
@@ -35,3 +35,4 @@ async def main():
             print(f"Error: {err}")
 if __name__ == "__main__":
     asyncio.run(main())
+

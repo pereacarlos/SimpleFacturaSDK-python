@@ -10,7 +10,7 @@ password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         credenciales = Credenciales(
-            rut_emisor="76269769-6",
+            rut_emisor="78181331-1",
             nombre_sucursal="Casa Matriz"
         )
         """Ruta donde se encuentra el CSV"""

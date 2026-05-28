@@ -11,7 +11,7 @@ async def main():
         solicitud= CesionDteRequest(
             RutCesionario= "17432554-5",
             RutPersonaAutorizada= "17096073-4",
-            RutEmpresa= "76269769-6",
+            RutEmpresa= "78181331-1",
             Folio= 2232,
             CorreoDeudor= "correoCesionario@gmail.cl",
             OtrasCondiciones= "otras"

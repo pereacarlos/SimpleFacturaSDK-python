@@ -21,7 +21,7 @@ async def main():
         solicitud = WizardEmisorRequest(
             Emisor=EmisorReq(
                 RutEmpresa="78181331-1",
-                RazonSocial="Empresa Demo SpA",
+                RazonSocial="CHILESYSTEMS SPA",
                 RutRepresentanteLegal="17096073-4",
                 Giro="Servicios",
                 Email="demo@empresa.cl",
@@ -55,3 +55,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+

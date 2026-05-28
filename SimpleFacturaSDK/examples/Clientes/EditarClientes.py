@@ -18,7 +18,7 @@ async def main():
             Clientes=[
                 EditarDatosClienteExternoEnt(
                     Rut="77123456-9",
-                    RazonSocial="Cliente Test 1",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 1",
                     DirPart="direccion 1",
                     DirFact="direccion 1",
@@ -29,7 +29,7 @@ async def main():
                 ),
                 EditarDatosClienteExternoEnt(
                     Rut="20852552-2",
-                    RazonSocial="Cliente Test 2",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 2",
                     DirPart="direccion 2",
                     DirFact="direccion 2",
@@ -40,7 +40,7 @@ async def main():
                 ),
                 EditarDatosClienteExternoEnt(
                     Rut="9813831-5",
-                    RazonSocial="Cliente Test 3",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 3",
                     DirPart="direccion 3",
                     DirFact="direccion 3",

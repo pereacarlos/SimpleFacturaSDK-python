@@ -10,7 +10,7 @@ username = os.getenv("SF_USERNAME")
 password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
-        solicitud= Credenciales(rut_emisor="76269769-6")
+        solicitud= Credenciales(rut_emisor="78181331-1")
 
         try:
             ListClient = await client_api.Clientes.ListarClientes(solicitud)

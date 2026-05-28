@@ -12,7 +12,7 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud= BHERequest(
             credenciales=Credenciales(
-                rut_emisor="76269769-6",
+                rut_emisor="78181331-1",
                 rut_contribuyente= "26429782-6"
             ),
             Folio=2

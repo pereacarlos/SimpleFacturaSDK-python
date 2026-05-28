@@ -16,7 +16,7 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
-                rut_emisor="76269769-6"
+                rut_emisor="78181331-1"
             ),
             dte_referenciado_externo=DteReferenciadoExterno(
                 folio=2393,
@@ -37,3 +37,4 @@ async def main():
             print(f"Error: {err}")
 if __name__ == "__main__":
     asyncio.run(main())
+
