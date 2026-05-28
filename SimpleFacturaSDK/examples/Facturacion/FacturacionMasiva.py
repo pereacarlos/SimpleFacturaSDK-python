@@ -13,7 +13,8 @@ async def main():
             rut_emisor="76269769-6",
             nombre_sucursal="Casa Matriz"
         )
-        path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
+        """Ruta donde se encuentra el CSV"""
+        path_csv = r"C:\Users\nombre\Downloads\ejemplo_carga_masiva_nacional.csv"
         try:
             factura = await client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
             print("\nDatos de la Respuesta:")
