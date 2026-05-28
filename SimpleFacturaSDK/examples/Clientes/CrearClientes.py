@@ -66,8 +66,6 @@ async def main():
             print(f"Message: {AddClient.message}")
             
             for cliente in AddClient.data:
-                print(f"ReceptorId: {cliente.receptorId}")
-                print(f"EmisorId: {cliente.emisorId}")
                 print(f"RUT: {cliente.rut}")
                 print(f"Dv: {cliente.dv}")
                 print(f"RutFormateado: {cliente.rutFormateado}")
