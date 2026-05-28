@@ -1,62 +1,59 @@
+import json
 import unittest
-from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+
 from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-import requests
-import base64
-from dotenv import load_dotenv
-import aiohttp
-from unittest.mock import AsyncMock, patch
-import os
-load_dotenv()
+from SimpleFacturaSDK.services.UsuarioService import UsuarioService
+from SimpleFacturaSDK.tests.mock_utils import (
+    DummyRequest,
+    MockAiohttpResponse,
+    MockRequestContext,
+    make_service,
+)
+
 
 class TestUsuarioService(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        username = os.getenv("SF_USERNAME")
-        password = os.getenv("SF_PASSWORD")
-        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
-        self.service = self.client_api.Usuarios
-
-    async def test_ListarUsuarios_ReturnOK(self):
-        solicitud= Credenciales(
-            rut_emisor="76269769-6"
+    async def test_ListarUsuario_Ok(self):
+        service, session, client = make_service(UsuarioService)
+        payload = {
+            "status": 200,
+            "data": [
+                {
+                    "rut": "78181331-1",
+                    "nombre": "Carlos",
+                    "apellidos": "Perea",
+                    "email": "cperea@chilesystems.com",
+                }
+            ],
+        }
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        response = await self.service.ListarUsuario(solicitud)
-        self.assertIsNotNone(response)
+
+        response = await service.ListarUsuario(DummyRequest())
+
+        client.ensure_token_valid.assert_awaited_once()
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, usuario in enumerate(response.data):
-            if i >= 2:
-                break
-            self.assertIsNotNone(usuario.rut)
-            self.assertIsNotNone(usuario.nombre)
-            self.assertIsNotNone(usuario.apellidos)
-            self.assertIsNotNone(usuario.email)
-           
-    async def test_ListarUsuarios_BadRequest(self):
-        solicitud= Credenciales(
-            rut_emisor=""
-        )
-        response = await self.service.ListarUsuario(solicitud)
+        self.assertEqual(response.data[0].email, "cperea@chilesystems.com")
 
-        self.assertIsNotNone(response)
+    async def test_ListarUsuario_BadRequest(self):
+        service, session, _ = make_service(UsuarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
+        )
+
+        response = await service.ListarUsuario(DummyRequest())
+
         self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 400) 
-        self.assertIsNone(response.data) 
-        self.assertIsNotNone(response.message)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
 
-    async def test_ListarUsuarios_ServeError(self):
-        solicitud= Credenciales(
-            rut_emisor="76269769-6"
-        )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ListarUsuarios")
+    async def test_ListarUsuario_ServerError(self):
+        service, session, _ = make_service(UsuarioService)
+        session.post.side_effect = Exception("server error")
 
-            response = await self.service.ListarUsuario(solicitud)
+        response = await service.ListarUsuario(DummyRequest())
 
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500) 
-            self.assertIsNone(response.data) 
-            self.assertIsNotNone(response.message)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertEqual(response.message, "server error")

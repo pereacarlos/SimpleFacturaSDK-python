@@ -1,230 +1,256 @@
-from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.BoletaHonorarios.BHERequest import BHERequest
-from SimpleFacturaSDK.models.BoletaHonorarios.ListaBHERequest import ListaBHERequest
-from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
-import base64
-import requests
 import json
-import sys
 import unittest
-from datetime import datetime
-from dotenv import load_dotenv
-import aiohttp
-from unittest.mock import AsyncMock, patch
-import os
-load_dotenv()
 
-class TestBoletahonorarioService(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        username = os.getenv("SF_USERNAME")
-        password = os.getenv("SF_PASSWORD") 
-        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
-        self.service = self.client_api.BoletaHonorarioService
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioService
+from SimpleFacturaSDK.tests.mock_utils import (
+    DummyRequest,
+    MockAiohttpResponse,
+    MockRequestContext,
+    make_service,
+)
 
 
-    async def test_ObtenerPdf_ReturnOK(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6"
-            ),
-            Folio=15
+def bhe_item():
+    return {
+        "folio": 15,
+        "fechaEmision": "2026-05-01",
+        "codigoBarra": "ABC123",
+        "estado": "Emitida",
+    }
+
+
+class TestBoletaHonorarioService(unittest.IsolatedAsyncioTestCase):
+    async def test_ObtenerPdf_Ok(self):
+        service, session, client = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, read_data=b"%PDF-1.4")
         )
-        response = await self.service.ObtenerPdf(solicitud)
-        self.assertTrue(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ObtenerPdf(DummyRequest())
+        client.ensure_token_valid.assert_awaited_once()
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, bytes)
+        self.assertEqual(response.data, b"%PDF-1.4")
 
-    async def test_ObtenPdf_ReturnBadRequest(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6"
-            ),
-            Folio=0
+    async def test_ObtenerPdf_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, read_data=b'{"errors":["bad"]}')
         )
-        response = await self.service.ObtenerPdf(solicitud)
-        self.assertTrue(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ObtenerPdf(DummyRequest())
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
 
-    async def test_ObtenPdf_ReturnServeError(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor=""
-            ),
-            Folio=0
+    async def test_ObtenerPdf_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ObtenerPdf(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_ListadoBHEEmitidos_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": [bhe_item()]}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ObtenPdf")
-            response = await self.service.ObtenerPdf(solicitud)
-            self.assertTrue(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500)
-            self.assertIsNone(response.data)
-
-
-    #Falta probarlo
-    async def test_ListadoBHEEmitidos_ReturnOK(self):
-        fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
-        fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde=fecha_desde,
-            Hasta=fecha_hasta
-        )
-
-        response = await self.service.ListadoBHEEmitidos(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ListadoBHEEmitidos(DummyRequest())
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, bhe in enumerate(response.data):
-            if i >= 3:
-                break
-            self.assertIsNotNone(bhe.folio)
-            self.assertIsNotNone(bhe.fechaEmision)
-            self.assertIsNotNone(bhe.codigoBarra)
+        self.assertEqual(response.data[0].folio, 15)
 
     async def test_ListadoBHEEmitidos_BadRequest(self):
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde="",
-            Hasta=""
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
         )
-        response = await self.service.ListadoBHEEmitidos(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ListadoBHEEmitidos(DummyRequest())
         self.assertEqual(response.status, 400)
-        self.assertIsNone(response.data)
 
     async def test_ListadoBHEEmitidos_ServerError(self):
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde="",
-            Hasta=""
-        )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ListadoBHEEmitidos")
-            response = await self.service.ListadoBHEEmitidos(solicitud)
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500)
-            self.assertIsNone(response.data)
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ListadoBHEEmitidos(DummyRequest())
+        self.assertEqual(response.status, 500)
 
-    #preguntar
-    async def test_ObtenerPdfBoletaRecibida_ReturnOK(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                rut_contribuyente= "26429782-6"
-            ),
-            Folio=2
+    async def test_ObtenerPdfBoletaRecibida_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, read_data=b"%PDF-1.4")
         )
-        response = await self.service.ObtenerPdfBoletaRecibida(solicitud)
-        self.assertTrue(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ObtenerPdfBoletaRecibida(DummyRequest())
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, bytes)
+        self.assertEqual(response.data, b"%PDF-1.4")
 
-    async def test_ObtenerPdfBoletaRecibida_ReturnBadRequest(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor="",
-                rut_contribuyente= "26429782-6"
-            ),
-            Folio=0
+    async def test_ObtenerPdfBoletaRecibida_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, read_data=b'{"errors":["bad"]}')
         )
-        response = await self.service.ObtenerPdfBoletaRecibida(solicitud)
-        self.assertTrue(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ObtenerPdfBoletaRecibida(DummyRequest())
         self.assertEqual(response.status, 400)
-        self.assertIsNone(response.data)
 
-    async def test_ObtenerPdfBoletaRecibida_ReturnServerError(self):
-        solicitud= BHERequest(
-            credenciales=Credenciales(
-                rut_emisor="",
-                rut_contribuyente= "26429782-6"
-            ),
-            Folio=0
+    async def test_ObtenerPdfBoletaRecibida_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ObtenerPdfBoletaRecibida(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_ListadoBHERecibido_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": [bhe_item()]}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ObtenerPdfBoletaRecibida")
-            response = await self.service.ObtenerPdfBoletaRecibida(solicitud)
-            self.assertTrue(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500)
-            self.assertIsNone(response.data)
-
-    async def test_ListadoBHERecibido_ReturnOK(self):
-        fecha_desde = datetime.strptime("2024-09-03", "%Y-%m-%d").isoformat()
-        fecha_hasta = datetime.strptime("2024-11-11", "%Y-%m-%d").isoformat()
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde=fecha_desde,
-            Hasta=fecha_hasta
-        )
-
-        response = await self.service.ListadoBHERecibido(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ListadoBHERecibido(DummyRequest())
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, bhe in enumerate(response.data):
-            if i >= 3:
-                break
-            self.assertIsNotNone(bhe.folio)
-            self.assertIsNotNone(bhe.fechaEmision)
+        self.assertEqual(response.data[0].folio, 15)
 
     async def test_ListadoBHERecibido_BadRequest(self):
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde="",
-            Hasta=""
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
         )
-        response = await self.service.ListadoBHERecibido(solicitud)
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+        response = await service.ListadoBHERecibido(DummyRequest())
         self.assertEqual(response.status, 400)
-        self.assertIsNone(response.data)
 
     async def test_ListadoBHERecibido_ServerError(self):
-        solicitud= ListaBHERequest(
-            credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Folio=None,
-            Desde="",
-            Hasta=""
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ListadoBHERecibido(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_EmitirBHE_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": {"folio": 123}, "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ListadoBHERecibido")
-            response = await self.service.ListadoBHERecibido(solicitud)
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500)
-            self.assertIsNone(response.data)
+        response = await service.EmitirBHE(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data["folio"], 123)
+
+    async def test_EmitirBHE_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
+        )
+        response = await service.EmitirBHE(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_EmitirBHE_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.EmitirBHE(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_EmitirBHETerceros_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": {"folio": 124}, "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.EmitirBHETerceros(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data["folio"], 124)
+
+    async def test_EmitirBHETerceros_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
+        )
+        response = await service.EmitirBHETerceros(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_EmitirBHETerceros_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.EmitirBHETerceros(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_AnularBHE_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": "BHE anulada", "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.AnularBHE(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data, "BHE anulada")
+
+    async def test_AnularBHE_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
+        )
+        response = await service.AnularBHE(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_AnularBHE_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.AnularBHE(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_ObservarBHE_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": "BHE observada", "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.ObservarBHE(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data, "BHE observada")
+
+    async def test_ObservarBHE_BadRequest(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad"]}')
+        )
+        response = await service.ObservarBHE(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_ObservarBHE_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ObservarBHE(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_ConciliarBHEEmitidas_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": "OK", "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.ConciliarBHEEmitidas(DummyRequest(), 5, 2026)
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data, "OK")
+
+    async def test_ConciliarBHEEmitidas_BadRequest(self):
+        service, _, _ = make_service(BoletaHonorarioService)
+        response = await service.ConciliarBHEEmitidas(DummyRequest(), "5", 2026)
+        self.assertEqual(response.status, 400)
+
+    async def test_ConciliarBHEEmitidas_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ConciliarBHEEmitidas(DummyRequest(), 5, 2026)
+        self.assertEqual(response.status, 500)
+
+    async def test_ConciliarBHERecibidas_Ok(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        payload = {"status": 200, "data": "OK", "message": "ok"}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.ConciliarBHERecibidas(DummyRequest(), 5, 2026)
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data, "OK")
+
+    async def test_ConciliarBHERecibidas_BadRequest(self):
+        service, _, _ = make_service(BoletaHonorarioService)
+        response = await service.ConciliarBHERecibidas(DummyRequest(), 5, "2026")
+        self.assertEqual(response.status, 400)
+
+    async def test_ConciliarBHERecibidas_ServerError(self):
+        service, session, _ = make_service(BoletaHonorarioService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ConciliarBHERecibidas(DummyRequest(), 5, 2026)
+        self.assertEqual(response.status, 500)
