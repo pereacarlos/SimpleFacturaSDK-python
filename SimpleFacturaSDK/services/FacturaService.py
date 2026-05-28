@@ -489,7 +489,20 @@ class FacturacionService:
     async def ultima_sincronizacion(self, solicitud, mes, anio) -> Response[str]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/sii/lastsync/{mes}/{anio}"
+        if not isinstance(mes, int):
+            return Response(
+                status=400,
+                message="El parámetro 'mes' debe ser un número entero.",
+                data=None
+            )
+        if not isinstance(anio, int):
+            return Response(
+                status=400,
+                message="El parámetro 'anio' debe ser un número entero.",
+                data=None
+            )
         solicitud_dict = serializar_solicitud_dict(solicitud)
+        print(solicitud_dict)
         try:
             async with self.session.post(url, json=solicitud_dict) as response:
                 contenidoRespuesta = await response.text()
