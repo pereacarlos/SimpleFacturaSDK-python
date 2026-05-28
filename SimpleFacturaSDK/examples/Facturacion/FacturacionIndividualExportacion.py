@@ -38,7 +38,7 @@ async def main():
                         FchVenc="2026-03-05"
                     ),
                     Emisor=Emisor(
-                        RUTEmisor="76269769-6",
+                        RUTEmisor="78181331-1",
                         RznSoc="Chilesystems",
                         GiroEmis="Desarrollo de software",
                         Telefono=["912345678"],

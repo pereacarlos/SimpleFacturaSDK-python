@@ -13,7 +13,7 @@ password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud = EnvioMailRequest(
-            RutEmpresa="76269769-6",
+            RutEmpresa="78181331-1",
             Dte= DteClass(folio=2149, tipoDTE=33),
             Mail= MailClass(
                 to=["contacto@chilesystems.com"],

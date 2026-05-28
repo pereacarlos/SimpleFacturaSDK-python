@@ -79,6 +79,30 @@ class ClientesService:
                 message=error.__str__(),
                 data=None
             )
+    
+    async def Actualizar_Clientes(self, solicitud) -> Optional[List[ReceptorExternoEnt]]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/editClients"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[List[ReceptorExternoEnt]].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+
     async def close(self):
         if not self.session.closed:
             await self.session.close()

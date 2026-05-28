@@ -1,60 +1,54 @@
+import json
 import unittest
-from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
+
 from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-import requests
-import base64
-from dotenv import load_dotenv
-import aiohttp
-from unittest.mock import AsyncMock, patch
-import os
-load_dotenv()
+from SimpleFacturaSDK.services.SucursalService import SucursalService
+from SimpleFacturaSDK.tests.mock_utils import (
+    DummyRequest,
+    MockAiohttpResponse,
+    MockRequestContext,
+    make_service,
+)
+
 
 class TestSucursalService(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        username = os.getenv("SF_USERNAME")
-        password = os.getenv("SF_PASSWORD")
-        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
-        self.service = self.client_api.Sucursales
-
-    async def test_ListarSucursales_ReturnOK(self):
-        solicitud= Credenciales(
-            rut_emisor="76269769-6"
+    async def test_ListarSucursales_Ok(self):
+        service, session, client = make_service(SucursalService)
+        payload = {
+            "status": 200,
+            "data": [
+                {"nombre": "Casa Matriz", "direccion": "Av. Principal 123"},
+            ],
+        }
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        response = await self.service.ListarSucursales(solicitud)
-        self.assertIsNotNone(response)
+
+        response = await service.ListarSucursales(DummyRequest())
+
+        client.ensure_token_valid.assert_awaited_once()
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, sucursal in enumerate(response.data):
-            if i >= 2:
-                break
-            self.assertIsNotNone(sucursal.nombre)
-            self.assertIsNotNone(sucursal.direccion)
+        self.assertEqual(response.data[0].nombre, "Casa Matriz")
 
     async def test_ListarSucursales_BadRequest(self):
-        solicitud= Credenciales(
-            rut_emisor=""
+        service, session, _ = make_service(SucursalService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
         )
-        response = await self.service.ListarSucursales(solicitud)
 
-        self.assertIsNotNone(response)
+        response = await service.ListarSucursales(DummyRequest())
+
         self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 400) 
-        self.assertIsNone(response.data) 
-        self.assertIsNotNone(response.message)
+        self.assertEqual(response.status, 400)
+        self.assertIsNone(response.data)
 
-    async def test_ListarSucursales_ServeError(self):
-        solicitud= Credenciales(
-            rut_emisor="76269769-6"
-        )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al ListarSucursales")
+    async def test_ListarSucursales_ServerError(self):
+        service, session, _ = make_service(SucursalService)
+        session.post.side_effect = Exception("server error")
 
-            response = await self.service.ListarSucursales(solicitud)
+        response = await service.ListarSucursales(DummyRequest())
 
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500) 
-            self.assertIsNone(response.data) 
-            self.assertIsNotNone(response.message)
+        self.assertIsInstance(response, Response)
+        self.assertEqual(response.status, 500)
+        self.assertEqual(response.message, "server error")

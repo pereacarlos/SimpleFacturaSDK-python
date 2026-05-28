@@ -16,7 +16,7 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud = SolicitudPdfDte(
             credenciales=Credenciales(
-                rut_emisor="76269769-6",
+                rut_emisor="78181331-1",
                 rut_contribuyente="76269769-6"
             ),
             dte_referenciado_externo=DteReferenciadoExterno(

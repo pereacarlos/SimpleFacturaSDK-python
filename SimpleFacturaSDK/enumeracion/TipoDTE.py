@@ -18,6 +18,7 @@ class DTEType(Enum):
     NotaCreditoElectronica = 61
     BoletaElectronica = 39
     BoletaElectronicaExenta = 41
+    LiquidacionFacturaElectronica = 43
 
     def description(self):
         descriptions = {
@@ -35,7 +36,8 @@ class DTEType(Enum):
             60: "Nota Crédito",
             61: "Nota Crédito Electrónica",
             39: "Boleta Electrónica",
-            41: "Boleta Electrónica Exenta"
+            41: "Boleta Electrónica Exenta",
+            43: "Liquidación Factura Electrónica"
         }
         return descriptions.get(self.value, "Error")
 

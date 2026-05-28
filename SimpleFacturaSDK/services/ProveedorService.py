@@ -139,7 +139,6 @@ class ProveedorService:
                 data=None
             )
 
-
     async def obtener_TrazasRecibidas(self, solicitud)-> Response[List[TrazasEnt]]:
         await self.client.ensure_token_valid()
         url = f"{self.base_url}/dte/trazasReceived"
@@ -162,6 +161,26 @@ class ProveedorService:
                 data=None
             )
 
+    async def actualizar_Lista_Proveedor(self, solicitud) -> Response[bool]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/proveedor/update-lista"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    return Response(status=200, message="Proveedor actualizado correctamente.", data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
 
     async def close(self):
         if not self.session.closed:

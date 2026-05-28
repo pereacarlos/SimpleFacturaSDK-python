@@ -20,40 +20,40 @@ async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud= DatoExternoRequest(
             Credenciales=Credenciales(
-                rut_emisor="76269769-6",
+                rut_emisor="78181331-1",
                 nombre_sucursal="Casa Matriz"
             ),
             Clientes=[
                 NuevoReceptorExternoRequest(
                     Rut="57681892-0",
-                    RazonSocial="Cliente Test 1",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 1",
                     DirPart="direccion 1",
                     DirFact="direccion 1",
-                    CorreoPar="correo 1",
-                    CorreoFact="correo 1",
+                    CorreoPar="modificado@123.cl",
+                    CorreoFact="modificado@123.cl",
                     Ciudad="Ciudad 1",
                     Comuna="Comuna 1"
                 ),
                 NuevoReceptorExternoRequest(
                     Rut="56516677-8",
-                    RazonSocial="Cliente Test 2",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 2",
                     DirPart="direccion 2",
                     DirFact="direccion 2",
-                    CorreoPar="correo 2",
-                    CorreoFact="correo 2",
+                   CorreoPar="modificado@321.cl",
+                    CorreoFact="modificado@321.cl",
                     Ciudad="Ciudad 2",
                     Comuna="Comuna 2"
                 ),
                 NuevoReceptorExternoRequest(
                     Rut="68959276-7",
-                    RazonSocial="Cliente Test 3",
+                    RazonSocial="CHILESYSTEMS SPA",
                     Giro="Giro 3",
                     DirPart="direccion 3",
                     DirFact="direccion 3",
-                    CorreoPar="correo 3",
-                    CorreoFact="correo 3",
+                    CorreoPar="modificado@456.cl",
+                    CorreoFact="modificado@456.cl",
                     Ciudad="Ciudad 3",
                     Comuna="Comuna 3"
                 )
@@ -66,8 +66,6 @@ async def main():
             print(f"Message: {AddClient.message}")
             
             for cliente in AddClient.data:
-                print(f"ReceptorId: {cliente.receptorId}")
-                print(f"EmisorId: {cliente.emisorId}")
                 print(f"RUT: {cliente.rut}")
                 print(f"Dv: {cliente.dv}")
                 print(f"RutFormateado: {cliente.rutFormateado}")

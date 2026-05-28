@@ -10,10 +10,11 @@ password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         credenciales = Credenciales(
-            rut_emisor="76269769-6",
+            rut_emisor="78181331-1",
             nombre_sucursal="Casa Matriz"
         )
-        path_csv = r"C:\Users\perea\Downloads\ejemplo_carga_masiva_nacional.csv"
+        """Ruta donde se encuentra el CSV"""
+        path_csv = r"C:\Users\nombre\Downloads\ejemplo_carga_masiva_nacional.csv"
         try:
             factura = await client_api.Facturacion.facturacion_Masiva(credenciales, path_csv)
             print("\nDatos de la Respuesta:")

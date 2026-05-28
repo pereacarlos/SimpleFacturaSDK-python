@@ -100,6 +100,178 @@ class BoletaHonorarioService:
                 message=error.__str__(),
                 data=None
             )
+    
+    async def EmitirBHE(self, solicitud) -> Response[object]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhe/emitir"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[object].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data, message=deserialized_response.message)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def EmitirBHETerceros(self, solicitud) -> Response[object]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhe/terceros/emitir"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[object].parse_raw(contenidoRespuesta)
+                    return Response(status=200, data=deserialized_response.data, message=deserialized_response.message)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def AnularBHE(self, solicitud) -> Response[str]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhe/anular"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        data=deserialized_response.data,
+                        message=deserialized_response.message
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def ObservarBHE(self, solicitud) -> Response[str]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhe/observacion"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        data=deserialized_response.data,
+                        message=deserialized_response.message
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def ConciliarBHEEmitidas(self, solicitud, mes, anio) -> Response[str]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhesIssued/consolidate/{mes}/{anio}"
+        if not isinstance(mes, int):
+            return Response(
+                status=400,
+                message="El parámetro 'mes' debe ser un número entero.",
+                data=None
+            )
+        if not isinstance(anio, int):
+            return Response(
+                status=400,
+                message="El parámetro 'anio' debe ser un número entero.",
+                data=None
+            )
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        data=deserialized_response.data,
+                        message=deserialized_response.message
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def ConciliarBHERecibidas(self, solicitud, mes, anio) -> Response[str]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/bhesReceived/consolidate/{mes}/{anio}"
+        if not isinstance(mes, int):
+            return Response(
+                status=400,
+                message="El parámetro 'mes' debe ser un número entero.",
+                data=None
+            )
+        if not isinstance(anio, int):
+            return Response(
+                status=400,
+                message="El parámetro 'anio' debe ser un número entero.",
+                data=None
+            )
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[str].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        data=deserialized_response.data,
+                        message=deserialized_response.message
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
 
     async def close(self):
         if not self.session.closed:

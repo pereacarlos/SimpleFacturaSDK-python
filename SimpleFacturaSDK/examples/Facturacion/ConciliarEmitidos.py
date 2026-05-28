@@ -13,7 +13,7 @@ password = os.getenv("SF_PASSWORD")
 async def main():
     async with ClientSimpleFactura(username, password) as client_api:
         solicitud =Credenciales(
-            rut_emisor="76269769-6"
+            rut_emisor="78181331-1"
         )
         try:
             Conciliar = await client_api.Facturacion.ConciliarEmitidos(solicitud,5,2024)

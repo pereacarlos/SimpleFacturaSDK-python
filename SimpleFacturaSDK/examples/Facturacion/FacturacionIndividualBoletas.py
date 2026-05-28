@@ -33,7 +33,7 @@ async def main():
                         IndServicio=IndicadorServicioEnum.BoletaVentasYServicios,
                     ),
                     Emisor=Emisor(
-                        RUTEmisor="76269769-6",
+                        RUTEmisor="78181331-1",
                         RznSocEmisor="Chilesystems",
                         GiroEmisor="Desarrollo de software",
                         DirOrigen="Calle 7 numero 3",
@@ -105,3 +105,4 @@ async def main():
             print(f"Error: {err}")
 if __name__ == "__main__":
     asyncio.run(main())
+

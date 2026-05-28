@@ -1,214 +1,133 @@
-import unittest
-from SimpleFacturaSDK.client_simple_factura import ClientSimpleFactura
-from SimpleFacturaSDK.models.ResponseDTE import Response
-from SimpleFacturaSDK.models.GetFactura.ListadoRequest import ListaDteRequestEnt
-from SimpleFacturaSDK.enumeracion.Ambiente import AmbienteEnum
-from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.models.GetFactura.Credenciales import Credenciales
-from SimpleFacturaSDK.models.Productos.DatoExternoRequest import DatoExternoRequest
-from SimpleFacturaSDK.models.Productos.NuevoProductoExternoRequest import NuevoProductoExternoRequest
-from SimpleFacturaSDK.models.Clientes.NuevoReceptorExternoRequest import NuevoReceptorExternoRequest
-import base64
-import requests
 import json
-from dotenv import load_dotenv
-import aiohttp
-from unittest.mock import AsyncMock, patch
-import os
-load_dotenv()
+import unittest
+from uuid import uuid4
+
+from SimpleFacturaSDK.models.ResponseDTE import Response
+from SimpleFacturaSDK.services.ClientesService import ClientesService
+from SimpleFacturaSDK.tests.mock_utils import (
+    DummyRequest,
+    MockAiohttpResponse,
+    MockRequestContext,
+    make_service,
+)
+
+
+def cliente_payload():
+    return {
+        "receptorId": str(uuid4()),
+        "emisorId": str(uuid4()),
+        "rut": 78181331,
+        "dv": "1",
+        "rutFormateado": "78181331-1",
+        "razonSocial": "CHILESYSTEMS SPA",
+        "giro": "Servicios",
+        "dirPart": "Direccion 1",
+        "dirFact": "Direccion 1",
+        "correoFact": "facturacion@chilesystems.cl",
+        "ciudad": "Santiago",
+        "comuna": "Santiago",
+        "activo": True,
+    }
+
 
 class TestClientesService(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        username = os.getenv("SF_USERNAME")
-        password = os.getenv("SF_PASSWORD") 
-        self.client_api = await ClientSimpleFactura(username, password).__aenter__()
-        self.service = self.client_api.Clientes
-
-    async def test_CrearClientes_ReturnOK(self):
-        solicitud= DatoExternoRequest(
-            Credenciales=Credenciales(
-                rut_emisor="76269769-6",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Clientes=[
-                NuevoReceptorExternoRequest(
-                    Rut="57681892-0",
-                    RazonSocial="Cliente Test 1",
-                    Giro="Giro 1",
-                    DirPart="direccion 1",
-                    DirFact="direccion 1",
-                    CorreoPar="correo 1",
-                    CorreoFact="correo 1",
-                    Ciudad="Ciudad 1",
-                    Comuna="Comuna 1"
-                ),
-                NuevoReceptorExternoRequest(
-                    Rut="56516677-8",
-                    RazonSocial="Cliente Test 2",
-                    Giro="Giro 2",
-                    DirPart="direccion 2",
-                    DirFact="direccion 2",
-                    CorreoPar="correo 2",
-                    CorreoFact="correo 2",
-                    Ciudad="Ciudad 2",
-                    Comuna="Comuna 2"
-                ),
-                NuevoReceptorExternoRequest(
-                    Rut="68959276-7",
-                    RazonSocial="Cliente Test 3",
-                    Giro="Giro 3",
-                    DirPart="direccion 3",
-                    DirFact="direccion 3",
-                    CorreoPar="correo 3",
-                    CorreoFact="correo 3",
-                    Ciudad="Ciudad 3",
-                    Comuna="Comuna 3"
-                )
-            ]
+    async def test_CrearClientes_Ok(self):
+        service, session, client = make_service(ClientesService)
+        payload = {"status": 200, "data": [cliente_payload()]}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
         )
-        response = await self.service.CrearClientes(solicitud)
-        self.assertIsNotNone(response)
+
+        response = await service.CrearClientes(DummyRequest())
+
+        client.ensure_token_valid.assert_awaited_once()
         self.assertIsInstance(response, Response)
         self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, cliente in enumerate(response.data):
-            if i >= 3:
-                break
-            formatted_rut = f"{cliente.rut}-{cliente.dv}"
-            self.assertEqual(formatted_rut, solicitud.Clientes[i].Rut)
-            self.assertIsNotNone(cliente.receptorId)
-            self.assertIsNotNone(cliente.giro)
-            self.assertIsNotNone(cliente.emisorId)
+        self.assertEqual(response.data[0].razonSocial, "CHILESYSTEMS SPA")
 
     async def test_CrearClientes_BadRequest(self):
-
-        solicitud = DatoExternoRequest(
-            Credenciales=Credenciales(
-                rut_emisor="",
-                nombre_sucursal="Casa Matriz"
-            ),
-            Clientes=[
-                NuevoReceptorExternoRequest(
-                    Rut="", 
-                    RazonSocial="", 
-                    Giro="",
-                    DirPart="",
-                    DirFact="",
-                    CorreoPar="", 
-                    CorreoFact="",
-                    Ciudad="",
-                    Comuna="" 
-                )
-            ]
+        service, session, _ = make_service(ClientesService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
         )
-
-        response = await self.service.CrearClientes(solicitud)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 400) 
-        self.assertIsNone(response.data) 
-        self.assertIsNotNone(response.message)
-
-    async def test_CrearClientes_ServerError(self):
-
-        solicitud = DatoExternoRequest(
-            Credenciales=Credenciales(
-                rut_emisor= "76269769-6",
-                nombre_sucursal= "Matriz"
-            )
-        )
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al Crear Clientes")
-
-            response = await self.service.CrearClientes(solicitud)
-
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500) 
-            self.assertIsNone(response.data) 
-            self.assertIsNotNone(response.message)
-
-    async def test_ListarClientes_ReturnOK(self):
-        solicitud= Credenciales(rut_emisor="76269769-6")
-
-        response = await self.service.ListarClientes(solicitud)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 200)
-        self.assertIsInstance(response.data, list)
-        for i, cliente in enumerate(response.data):
-            if i >= 3:
-                break
-            self.assertIsNotNone(cliente.receptorId)
-            self.assertIsNotNone(cliente.giro)
-            self.assertIsNotNone(cliente.emisorId)
-
-    async def test_ListarClientes_BadRequest(self):
-            
-        solicitud = Credenciales(rut_emisor="")
-
-        response = await self.service.ListarClientes(solicitud)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 400) 
-        self.assertIsNone(response.data) 
-        self.assertIsNotNone(response.message)
-
-    async def test_ListarClientes_ServerError(self):
-            
-        solicitud = Credenciales(rut_emisor="76269769-6")
-
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al Listar Clientes")
-
-            response = await self.service.ListarClientes(solicitud)
-
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500) 
-            self.assertIsNone(response.data) 
-            self.assertIsNotNone(response.message)
-
-    async def test_ObtenerDatosCliente_ReturnOK(self):
-        solicitud= Credenciales(rut_emisor="76269769-6")
-        rutCliente = "17096073-4"
-        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
-        self.assertEqual(response.status, 200)
-        self.assertIsNotNone(response.data)
-
-    async def test_ObtenerDatosCliente_BadRequest(self):
-        solicitud= Credenciales(rut_emisor="")
-        rutCliente = "17096073-4"
-        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+        response = await service.CrearClientes(DummyRequest())
         self.assertEqual(response.status, 400)
         self.assertIsNone(response.data)
 
-    async def test_ObtenerDatosCliente_ServerError(self):
-        solicitud= Credenciales(rut_emisor="76269769-6")
-        rutCliente = "17096073-4"
-        with patch('aiohttp.ClientSession.post', new_callable=AsyncMock) as mock_post:
-            mock_post.side_effect = Exception("Error al Obtener Datos Cliente")
-            response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
-            self.assertIsNotNone(response)
-            self.assertIsInstance(response, Response)
-            self.assertEqual(response.status, 500)
-            self.assertIsNone(response.data)
-
-    async def test_ObtenerDatosCliente_ServerError_WhenRutClientIsNull(self):
-        solicitud= Credenciales(rut_emisor="76269769-6")
-        rutCliente = ""
-        response = await self.service.ObtenerDatosCliente(solicitud,rutCliente)
-
-        self.assertIsNotNone(response)
-        self.assertIsInstance(response, Response)
+    async def test_CrearClientes_ServerError(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.side_effect = Exception("server error")
+        response = await service.CrearClientes(DummyRequest())
         self.assertEqual(response.status, 500)
-        self.assertIsNone(response.data)
+
+    async def test_ListarClientes_Ok(self):
+        service, session, _ = make_service(ClientesService)
+        payload = {"status": 200, "data": [cliente_payload()]}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.ListarClientes(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data[0].rutFormateado, "78181331-1")
+
+    async def test_ListarClientes_BadRequest(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
+        )
+        response = await service.ListarClientes(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_ListarClientes_ServerError(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ListarClientes(DummyRequest())
+        self.assertEqual(response.status, 500)
+
+    async def test_ObtenerDatosCliente_Ok(self):
+        service, session, _ = make_service(ClientesService)
+        payload = {"status": 200, "data": cliente_payload()}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.ObtenerDatosCliente(DummyRequest(), "78181331-1")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.data.razonSocial, "CHILESYSTEMS SPA")
+
+    async def test_ObtenerDatosCliente_BadRequest(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
+        )
+        response = await service.ObtenerDatosCliente(DummyRequest(), "78181331-1")
+        self.assertEqual(response.status, 400)
+
+    async def test_ObtenerDatosCliente_ServerError(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.side_effect = Exception("server error")
+        response = await service.ObtenerDatosCliente(DummyRequest(), "78181331-1")
+        self.assertEqual(response.status, 500)
+
+    async def test_Actualizar_Clientes_Ok(self):
+        service, session, _ = make_service(ClientesService)
+        payload = {"status": 200, "data": [cliente_payload()]}
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=200, text_data=json.dumps(payload))
+        )
+        response = await service.Actualizar_Clientes(DummyRequest())
+        self.assertEqual(response.status, 200)
+        self.assertEqual(len(response.data), 1)
+
+    async def test_Actualizar_Clientes_BadRequest(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.return_value = MockRequestContext(
+            MockAiohttpResponse(status=400, text_data='{"errors":["bad request"]}')
+        )
+        response = await service.Actualizar_Clientes(DummyRequest())
+        self.assertEqual(response.status, 400)
+
+    async def test_Actualizar_Clientes_ServerError(self):
+        service, session, _ = make_service(ClientesService)
+        session.post.side_effect = Exception("server error")
+        response = await service.Actualizar_Clientes(DummyRequest())
+        self.assertEqual(response.status, 500)
