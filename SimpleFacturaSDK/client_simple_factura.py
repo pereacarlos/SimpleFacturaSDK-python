@@ -15,6 +15,7 @@ from SimpleFacturaSDK.services.BoletaHonorarioService import BoletaHonorarioServ
 from SimpleFacturaSDK.services.UsuarioService import UsuarioService
 from SimpleFacturaSDK.services.CesionServices import CesionService
 from SimpleFacturaSDK.services.PartnerServices import PartnerService
+from SimpleFacturaSDK.services.PaykuService import PaykuService
 
 from SimpleFacturaSDK.Utilidades.auth_utils import (
     obtener_y_configurar_token,
@@ -45,6 +46,7 @@ class ClientSimpleFactura:
             ("Usuarios", UsuarioService),
             ("CesionService", CesionService),
             ("PartnerService", PartnerService),
+            ("PaykuService", PaykuService)
         ]
 
     async def __aenter__(self):
