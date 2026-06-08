@@ -8,6 +8,19 @@ class IndicadorServicioEnum(Enum):
     FacturaServicios = 3
     ServiciosHoteleria = 4
     ServicioTransporteTerrestreInternacional = 5
+
+    def description(self):
+        descriptions = {
+            0: "",
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5
+        }
+        return descriptions.get(self.value, "")
+class IndicadorServicioBoletaEnum(Enum):
+    NotSet = 0
     BoletaServiciosPeriodicos = 1
     BoletaServiciosPeriodicosDomiciliarios = 2
     BoletaVentasYServicios = 3
@@ -19,15 +32,9 @@ class IndicadorServicioEnum(Enum):
             1: 1,
             2: 2,
             3: 3,
-            4: 4,
-            5: 5,
-            1: 1,
-            2: 2,
-            3: 3,
             4: 4
         }
-
-    
+        return descriptions.get(self.value, "")
 
 class IndicadorServicioDetalleLibroEnum(Enum):
     NotSet = 0

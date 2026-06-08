@@ -4,6 +4,7 @@ from datetime import datetime
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
 from SimpleFacturaSDK.enumeracion.CodigosAduana import FormaPagoExportacionEnum
 from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioBoletaEnum
 from SimpleFacturaSDK.enumeracion.TipoImpresion import TipoImpresionEnum
 from SimpleFacturaSDK.enumeracion.MedioPago import MedioPagoEnum
 from SimpleFacturaSDK.enumeracion.TipoCuentaPago import TipoCuentaPagoEnum
@@ -27,6 +28,7 @@ class IdDoc:
     IdNorebaja: int = None
     FmaPago: int = None
     IndServicio: IndicadorServicioEnum = None
+    IndServicioBoleta: IndicadorServicioBoletaEnum = None
     MntPagos: List[MontoPagoItem] = field(default_factory=list)  # Usar una lista vacía como valor predeterminado
     PeriodoDesde: datetime = None
     PeriodoHasta: datetime = None

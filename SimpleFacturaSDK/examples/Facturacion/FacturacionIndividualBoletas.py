@@ -12,7 +12,7 @@ from SimpleFacturaSDK.models.GetFactura.Totales import Totales
 from SimpleFacturaSDK.models.GetFactura.Detalle import Detalle
 from SimpleFacturaSDK.models.GetFactura.CodigoItem import CdgItem
 from SimpleFacturaSDK.enumeracion.TipoDTE import DTEType
-from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioEnum
+from SimpleFacturaSDK.enumeracion.IndicadorServicio import IndicadorServicioBoletaEnum
 from SimpleFacturaSDK.models.GetFactura.RequestDTE import RequestDTE
 from SimpleFacturaSDK.models.ResponseDTE import Response
 import requests
@@ -28,9 +28,9 @@ async def main():
                 Encabezado=Encabezado(
                     IdDoc=IdDoc(
                         TipoDTE=DTEType.BoletaElectronica,
-                        FchEmis="2024-09-03",
-                        FchVenc="2024-09-03",
-                        IndServicio=IndicadorServicioEnum.BoletaVentasYServicios,
+                        FchEmis="2026-06-08",
+                        FchVenc="2026-06-08",
+                        IndServicioBoleta=IndicadorServicioBoletaEnum.BoletaEspectaculosPorTerceros
                     ),
                     Emisor=Emisor(
                         RUTEmisor="78181331-1",
