@@ -1,7 +1,8 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from SimpleFacturaSDK.models.ResponseDTE import Response
 from SimpleFacturaSDK.models.GetFactura.Dte import Dte
 from SimpleFacturaSDK.models.TrazasEnt import TrazasEnt
+from SimpleFacturaSDK.models.Proveedores.ProveedorExternoEnt import ProveedorExternoEnt
 from SimpleFacturaSDK.Utilidades.Simplificar_error import simplificar_errores
 import requests
 from SimpleFacturaSDK.models.SerializarJson import serializar_solicitud, serializar_solicitud_dict,dataclass_to_dict
@@ -15,6 +16,19 @@ class ProveedorService:
         self.headers = headers
         self.session = session
         self.client = client
+
+    @staticmethod
+    def _deserialize_proveedores(data: Any):
+        if data is None:
+            return None
+        if isinstance(data, list):
+            return [
+                ProveedorExternoEnt.from_dict(item) if isinstance(item, dict) else item
+                for item in data
+            ]
+        if isinstance(data, dict):
+            return ProveedorExternoEnt.from_dict(data)
+        return data
 
     #Revisar
     async def Aceptar_RechazarDTE(self, solicitud) -> Response[bool]:
@@ -170,6 +184,84 @@ class ProveedorService:
                 contenidoRespuesta = await response.text()
                 if response.status == 200:
                     return Response(status=200, message="Proveedor actualizado correctamente.", data=True)
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def ListarProveedores(self, solicitud) -> Response[Optional[List[ProveedorExternoEnt]]]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/list/proveedores"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[Any].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        message=deserialized_response.message,
+                        data=self._deserialize_proveedores(deserialized_response.data)
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def AgregarProveedores(self, solicitud) -> Response[Optional[List[ProveedorExternoEnt]]]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/addProveedores"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[Any].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        message=deserialized_response.message,
+                        data=self._deserialize_proveedores(deserialized_response.data)
+                    )
+                return Response(
+                    status=response.status,
+                    message=simplificar_errores(contenidoRespuesta),
+                    data=None
+                )
+        except Exception as error:
+            return Response(
+                status=500,
+                message=error.__str__(),
+                data=None
+            )
+
+    async def EditarProveedores(self, solicitud) -> Response[Optional[List[ProveedorExternoEnt]]]:
+        await self.client.ensure_token_valid()
+        url = f"{self.base_url}/editProveedores"
+        solicitud_dict = serializar_solicitud_dict(solicitud)
+        try:
+            async with self.session.post(url, json=solicitud_dict) as response:
+                contenidoRespuesta = await response.text()
+                if response.status == 200:
+                    deserialized_response = Response[Any].parse_raw(contenidoRespuesta)
+                    return Response(
+                        status=200,
+                        message=deserialized_response.message,
+                        data=self._deserialize_proveedores(deserialized_response.data)
+                    )
                 return Response(
                     status=response.status,
                     message=simplificar_errores(contenidoRespuesta),
